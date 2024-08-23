@@ -1,0 +1,20 @@
+# name: List places outside Canada
+PREFIX schema: <http://schema.org/>
+
+select ?place 
+?graph 
+(sample(?name) as ?name_sample) 
+(sample(?country) as ?country_sample)  
+(sample(?event) as ?event_sample)
+where {
+    graph ?graph {
+        OPTIONAL {
+            ?event schema:location ?place .
+        }
+        ?place a schema:Place ;
+               schema:address ?address ;
+               schema:name ?name .
+        ?address schema:addressCountry ?country .
+    }
+    filter ( lcase(str(?country)) != "ca" && lcase(str(?country)) != "canada" )
+} group by ?place ?graph
