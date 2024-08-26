@@ -1,0 +1,15 @@
+# SPARQL lists Artsdata events that have been modified since they were minted.
+PREFIX schema: <http://schema.org/>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+select ?event (SAMPLE(?event_name) as ?name)  (SAMPLE(?sameAs) as ?external) ?modified_time ?minted where {
+    ?event_dateset schema:about ?event ;
+                   schema:dateModified ?modified_time .
+    ?event a schema:Event ;
+           schema:name ?event_name ;
+           schema:sameAs ?sameAs ;
+           prov:generatedAtTime ?mint_time .
+    BIND(STRDT( SUBSTR(STR(?mint_time), 1, 10), xsd:date) AS ?minted)
+    BIND(STRDT( SUBSTR(STR(?modified_time), 1, 10), xsd:date) AS ?modified)
+    filter (?minted != ?modified )
+} group by ?event ?modified_time  ?minted limit 100
