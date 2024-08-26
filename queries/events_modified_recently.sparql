@@ -13,5 +13,5 @@ select ?event (SAMPLE(?event_name) as ?name)  (SAMPLE(?sameAs) as ?external) ?mo
     BIND(STRDT( SUBSTR(STR(?modified_time), 1, 10), xsd:date) AS ?modified)
     filter (?minted != ?modified )
 } group by ?event ?modified_time  ?minted 
-    order by ?modified_time  
+    order by DESC(?modified_time)  
     limit 100
