@@ -1,0 +1,33 @@
+PREFIX schema: <http://schema.org/>
+construct {
+    ?event a schema:Event ;
+           schema:name ?name ;
+           schema:startDate ?startDate ;
+           schema:url ?url ;
+           schema:description ?desc ;
+           schema:location ?loc .
+    ?loc schema:name ?loc_name ;
+         schema:address ?address .
+    ?address schema:streetAddress ?streetAddress ;
+             schema:addressRegion ?addressRegion ;
+             schema:addressCountry ?addressCountry ;
+             schema:postalCode ?postalCode ;
+             schema:addressLocality ?addressLocality .
+}
+where {
+    graph <http://kg.artsdata.ca/culture-creates/google-sheet/indigenous-performances> {
+        ?event a schema:Event ;
+               schema:name ?name ;
+               schema:startDate ?startDate ;
+               schema:url ?url ;
+               schema:description ?desc ;
+               schema:location ?loc .
+    }
+    ?loc schema:name ?loc_name ;
+         schema:address ?address .
+    ?address schema:streetAddress ?streetAddress ;
+             schema:addressRegion ?addressRegion ;
+             schema:addressCountry ?addressCountry ;
+             schema:postalCode ?postalCode ;
+             schema:addressLocality ?addressLocality .
+}
