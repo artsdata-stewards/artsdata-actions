@@ -5,7 +5,8 @@ construct {
            schema:startDate ?startDate ;
            schema:url ?url ;
            schema:description ?desc ;
-           schema:location ?loc .
+           schema:location ?loc ;
+           schema:endDate ?endDate .
     ?loc schema:name ?loc_name ;
          schema:address ?address .
     ?address schema:streetAddress ?streetAddress ;
@@ -30,4 +31,7 @@ where {
              schema:addressCountry ?addressCountry ;
              schema:postalCode ?postalCode ;
              schema:addressLocality ?addressLocality .
+    OPTIONAL {
+        ?event schema:endDate ?endDate .
+    }
 }
