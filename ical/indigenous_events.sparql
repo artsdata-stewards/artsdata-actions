@@ -34,4 +34,8 @@ where {
     OPTIONAL {
         ?event schema:endDate ?endDate .
     }
+    OPTIONAL {
+          ?error sh:focusNode  ?event .
+    }
+    filter(!Bound(?error))
 }
