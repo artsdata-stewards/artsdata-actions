@@ -16,7 +16,7 @@ construct {
              schema:addressLocality ?addressLocality .
 }
 where {
-    graph <http://kg.artsdata.ca/culture-creates/google-sheet/indigenous-performances> {
+    graph <http://kg.artsdata.ca/capacoa/google-sheet/indigenous-performances> {
         ?event a schema:Event ;
                schema:name ?name ;
                schema:startDate ?startDate ;
