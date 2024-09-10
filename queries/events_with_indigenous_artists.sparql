@@ -1,30 +1,42 @@
 PREFIX schema: <http://schema.org/>
 PREFIX wd: <http://www.wikidata.org/entity/>
 PREFIX wdt: <http://www.wikidata.org/prop/direct/>
-select * where {
+select * 
+where {
     {
         select distinct ?indigenousPerson where {
-            # 1. Get indigenous types from Wikidata
-            SERVICE <https://query.wikidata.org/sparql> {
-                select * where {
-                    wd:Q863284 ^wdt:P279* ?indigenousType   #  indigenous peoples in Canada (Q863284)
+            {
+                # 1. Get indigenous people in Wikidata with Artsdata IDs
+                SERVICE <https://query.wikidata.org/sparql> {
+                    ?person  wdt:P172/wdt:P279* wd:Q863284 ;
+                                              #  indigenous peoples in Canada (Q863284)
+                                              wdt:P7627 ?adid .
                 }
-            }
-            # 2. Get indigenous people in Artsdata
-            ?person a schema:Person ; schema:additionalType ?indigenousType .
-            {
-                ?person schema:sameAs* ?indigenousPerson .
-            }
-            UNION 
-            {
-                ?person ^schema:sameAs ?indigenousPerson .
+                bind(uri(concat("http://kg.artsdata.ca/resource/",?adid))  as ?indigenousPerson)
+            } UNION {
+                # 1. Get indigenous types from Wikidata
+                SERVICE <https://query.wikidata.org/sparql> {
+                    select * where {
+                        wd:Q863284 ^wdt:P279* ?indigenousType   #  indigenous peoples in Canada (Q863284)
+                    }
+                }
+                # 2. Get indigenous people in Artsdata
+                ?person a schema:Person ;
+                        schema:additionalType ?indigenousType .
+                {
+                    ?person schema:sameAs* ?indigenousPerson .
+                }
+                UNION 
+                {
+                    ?person ^schema:sameAs ?indigenousPerson .
+                }
             }
         }
     }
     # 3. Get their events
     ?event a schema:Event ;
            schema:performer ?indigenousPerson ;
-             schema:name ?event_name ;
-             schema:startDate ?startDate .
+           schema:name ?event_name ;
+           schema:startDate ?startDate .
     ?indigenousPerson schema:name ?person_name .
 }
