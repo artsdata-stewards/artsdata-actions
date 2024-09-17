@@ -9,7 +9,7 @@ where {
                 # 1. Get indigenous people in Wikidata with Artsdata IDs
                 SERVICE <https://query.wikidata.org/sparql> {
                     ?person  wdt:P172/wdt:P279* wd:Q15571255 ;
-                                              #  indigenous peoples in North Americaq (Q15571255)
+                                              #  indigenous peoples in North America (Q15571255)
                                               wdt:P7627 ?adid .
                 }
                 bind(uri(concat("http://kg.artsdata.ca/resource/",?adid))  as ?indigenousPerson)
