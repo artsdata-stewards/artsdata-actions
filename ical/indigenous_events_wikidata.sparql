@@ -1,0 +1,42 @@
+PREFIX schema: <http://schema.org/>
+PREFIX wd: <http://www.wikidata.org/entity/>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+select * 
+where {
+    {
+        select distinct ?indigenousPerson where {
+            {
+                # 1. Get indigenous people in Wikidata with Artsdata IDs
+                SERVICE <https://query.wikidata.org/sparql> {
+                    ?person  wdt:P172/wdt:P279* wd:Q15571255 ;
+                                              #  indigenous peoples in North America (Q15571255)
+                                              wdt:P7627 ?adid .
+                }
+                bind(uri(concat("http://kg.artsdata.ca/resource/",?adid))  as ?indigenousPerson)
+            } UNION {
+                # 1. Get indigenous types from Wikidata
+                SERVICE <https://query.wikidata.org/sparql> {
+                    select * where {
+                        wd:Q15571255 ^wdt:P279* ?indigenousType   #  indigenous peoples in North Americaq (Q15571255) 
+                    }
+                }
+                # 2. Get indigenous people in Artsdata
+                ?person a schema:Person ;
+                        schema:additionalType ?indigenousType .
+                {
+                    ?person schema:sameAs* ?indigenousPerson .
+                }
+                UNION 
+                {
+                    ?person ^schema:sameAs ?indigenousPerson .
+                }
+            }
+        }
+    }
+    # 3. Get their events
+    ?event a schema:Event ;
+           schema:performer ?indigenousPerson ;
+           schema:name ?event_name ;
+           schema:startDate ?startDate .
+    ?indigenousPerson schema:name ?person_name .
+}
