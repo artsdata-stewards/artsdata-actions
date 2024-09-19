@@ -21,7 +21,7 @@ construct {
              schema:addressLocality ?addressLocality .
 }
 where {
-    # 1. Get indigenous people in Wikidata with Artsdata IDs
+    # 1 Get indigenous people in Wikidata with Artsdata IDs
     {
         select distinct ?indigenousPerson where {
             {
@@ -34,7 +34,7 @@ where {
             }
         }
     }
-    # 2. Get event properties needed for iCal
+    # 2 Get event properties needed for iCal
       ?event a schema:Event ;
             schema:performer ?indigenousPerson ;
                schema:name ?name ;
