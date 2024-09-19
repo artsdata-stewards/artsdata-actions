@@ -1,6 +1,7 @@
 PREFIX schema: <http://schema.org/>
 PREFIX wd: <http://www.wikidata.org/entity/>
 PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+PREFIX sh: <http://www.w3.org/ns/shacl#>
 construct {
     ?event a schema:Event ;
            schema:name ?name ;
