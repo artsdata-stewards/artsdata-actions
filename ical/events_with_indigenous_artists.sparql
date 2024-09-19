@@ -1,39 +1,36 @@
 PREFIX schema: <http://schema.org/>
 PREFIX wd: <http://www.wikidata.org/entity/>
 PREFIX wdt: <http://www.wikidata.org/prop/direct/>
-select * 
+construct {
+    ?event a schema:Event ;
+           schema:name ?name ;
+           schema:startDate ?startDate ;
+           schema:url ?url ;
+           schema:description ?desc ;
+           schema:location ?loc ;
+           schema:endDate ?endDate .
+    ?loc schema:name ?loc_name ;
+         schema:address ?address .
+    ?address schema:streetAddress ?streetAddress ;
+             schema:addressRegion ?addressRegion ;
+             schema:addressCountry ?addressCountry ;
+             schema:postalCode ?postalCode ;
+             schema:addressLocality ?addressLocality .
+}
 where {
     {
         select distinct ?indigenousPerson where {
             {
                 # 1. Get indigenous people in Wikidata with Artsdata IDs
                 SERVICE <https://query.wikidata.org/sparql> {
-                    ?person  wdt:P172/wdt:P279* wd:Q15571255 ;
-                                              #  indigenous peoples in North America (Q15571255)
-                                              wdt:P7627 ?adid .
+                    ?person  wdt:P172/wdt:P279* wd:Q15571255 ;  # indigenous peoples in North America
+                            wdt:P7627 ?adid .
                 }
                 bind(uri(concat("http://kg.artsdata.ca/resource/",?adid))  as ?indigenousPerson)
-            } UNION {
-                # 1. Get indigenous types from Wikidata
-                SERVICE <https://query.wikidata.org/sparql> {
-                    select * where {
-                        wd:Q15571255 ^wdt:P279* ?indigenousType   #  indigenous peoples in North Americaq (Q15571255) 
-                    }
-                }
-                # 2. Get indigenous people in Artsdata
-                ?person a schema:Person ;
-                        schema:additionalType ?indigenousType .
-                {
-                    ?person schema:sameAs* ?indigenousPerson .
-                }
-                UNION 
-                {
-                    ?person ^schema:sameAs ?indigenousPerson .
-                }
             }
         }
     }
-    # 3. Get event properties needed for iCal
+    # 2. Get event properties needed for iCal
       ?event a schema:Event ;
             schema:performer ?indigenousPerson ;
                schema:name ?name ;
