@@ -41,7 +41,6 @@ where {
                schema:url ?url ;
                schema:description ?desc ;
                schema:location ?loc .
-    }
     ?loc schema:name ?loc_name ;
          schema:address ?address .
     ?address schema:streetAddress ?streetAddress ;
