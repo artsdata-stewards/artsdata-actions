@@ -48,6 +48,7 @@ where {
              schema:addressLocality ?addressLocality .
     OPTIONAL {
         ?event schema:endDate ?endDate .
+        filter(datatype(?endDate) = xsd:dateTime)
     }
     OPTIONAL {
           ?error sh:focusNode  ?event .
