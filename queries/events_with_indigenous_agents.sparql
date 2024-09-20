@@ -29,7 +29,8 @@ where {
            schema:name ?name ;
            schema:startDate ?startDate .
     OPTIONAL {
-        ?event schema:url ?url 
+        ?event schema:url ?url_any
+        bind(URI(?url_any) as ?url)
     }
     OPTIONAL {
         ?event schema:description ?desc .
