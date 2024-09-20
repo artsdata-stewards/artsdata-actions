@@ -3,7 +3,7 @@ PREFIX wd: <http://www.wikidata.org/entity/>
 PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 PREFIX sh: <http://www.w3.org/ns/shacl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-select  ?event ?name ?startDate   ?endDate ?performer ?desc  ?loc_name ?streetAddress ?addressLocality ?addressRegion ?addressCountry ?postalCode  ?url ?error
+select  ?event ?name ?startDate   ?endDate ?performer ?desc_trunc  ?loc_name ?streetAddress ?addressLocality ?addressRegion ?addressCountry ?postalCode  ?url ?error
 where {
     # 1 Get indigenous people in Wikidata with Artsdata IDs
     {
@@ -33,6 +33,7 @@ where {
     }
     OPTIONAL {
         ?event schema:description ?desc .
+        bind(substr(?desc,1,50) as ?desc_trunc)
     }
     OPTIONAL {
         ?event schema:location ?loc .
@@ -49,7 +50,8 @@ where {
         filter(datatype(?endDate) = xsd:dateTime)
     }
     OPTIONAL {
-        ?error sh:focusNode  ?event .
+        ?bn sh:focusNode  ?event .
+        ?bn sh:severity ?error .
     }
     # filter(!Bound(?error))
 }
