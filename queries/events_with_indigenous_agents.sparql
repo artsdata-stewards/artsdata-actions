@@ -33,7 +33,7 @@ where {
     }
     OPTIONAL {
         ?event schema:description ?desc .
-        bind(substr(?desc,1,50) as ?desc_trunc)
+        bind(CONCAT(substr(?desc,1,50),"...") as ?desc_trunc)
     }
     OPTIONAL {
         ?event schema:location ?loc .
