@@ -51,7 +51,7 @@ where {
     }
     OPTIONAL {
         ?bn sh:focusNode  ?event .
-        ?bn sh:severity ?error .
+        ?bn sh:resultSeverity ?error .
     }
     # filter(!Bound(?error))
 }
