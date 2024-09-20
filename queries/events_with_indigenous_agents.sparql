@@ -3,7 +3,20 @@ PREFIX wd: <http://www.wikidata.org/entity/>
 PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 PREFIX sh: <http://www.w3.org/ns/shacl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-select  ?event ?name ?startDate   ?endDate ?performer ?desc_trunc  ?loc_name ?streetAddress ?addressLocality ?addressRegion ?addressCountry ?postalCode  ?url ?error
+select  ?event 
+(sample(?names) as ?name) 
+?startDate   
+?endDate 
+?performer 
+(sample(?descs_trunc) as ?desc_trunc)  
+(sample(?loc_names) as ?loc_name) 
+(sample(?streetAddresss) as ?streetAddress) 
+(sample(?addressLocalitys) as ?addressLocality)  
+(sample(?addressRegions) as ?addressRegion)  
+(sample(?addressCountrys) as ?addressCountry)  
+?postalCode  
+?url 
+?error
 where {
     # 1 Get indigenous people in Wikidata with Artsdata IDs
     {
@@ -25,7 +38,7 @@ where {
     # 2 Get event properties needed for iCal
     ?event a schema:Event ;
            schema:performer ?performer ;
-           schema:name ?name ;
+           schema:name ?names ;
            schema:startDate ?startDate .
     OPTIONAL {
         ?event schema:url ?url_any
@@ -33,17 +46,17 @@ where {
     }
     OPTIONAL {
         ?event schema:description ?desc .
-        bind(CONCAT(substr(?desc,1,50),"...") as ?desc_trunc)
+        bind(CONCAT(substr(?desc,1,50),"...") as ?descs_trunc)
     }
     OPTIONAL {
         ?event schema:location ?loc .
-        ?loc schema:name ?loc_name ;
+        ?loc schema:name ?loc_names ;
              schema:address ?address .
-        ?address schema:streetAddress ?streetAddress ;
-                 schema:addressRegion ?addressRegion ;
-                 schema:addressCountry ?addressCountry ;
+        ?address schema:streetAddress ?streetAddresss ;
+                 schema:addressRegion ?addressRegions ;
+                 schema:addressCountry ?addressCountrys ;
                  schema:postalCode ?postalCode ;
-                 schema:addressLocality ?addressLocality .
+                 schema:addressLocality ?addressLocalitys .
     }
     OPTIONAL {
         ?event schema:endDate ?endDate .
@@ -54,4 +67,4 @@ where {
         ?bn sh:resultSeverity ?error .
     }
     # filter(!Bound(?error))
-}
+} group by ?event ?startDate   ?endDate ?performer   ?postalCode  ?url ?error
