@@ -3,12 +3,11 @@ PREFIX wd: <http://www.wikidata.org/entity/>
 PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 PREFIX sh: <http://www.w3.org/ns/shacl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-
-select *
+select  ?event ?name ?startDate   ?endDate ?performer ?desc  ?loc_name ?streetAddress ?addressLocality ?addressRegion ?addressCountry ?postalCode  ?url ?error
 where {
     # 1 Get indigenous people in Wikidata with Artsdata IDs
     {
-        select distinct ?artsdata_uri where {
+        select distinct ?performer where {
             SERVICE <https://query.wikidata.org/sparql> {
                 {
                     ?wdid_uri  wdt:P172/wdt:P279* wd:Q15571255 ;
@@ -20,12 +19,12 @@ where {
                                                  wdt:P7627 ?adid .
                 }
             }
-            bind(uri(concat("http://kg.artsdata.ca/resource/",?adid))  as ?artsdata_uri)
+            bind(uri(concat("http://kg.artsdata.ca/resource/",?adid))  as ?performer)
         }
     }
     # 2 Get event properties needed for iCal
     ?event a schema:Event ;
-           schema:performer ?artsdata_uri ;
+           schema:performer ?performer ;
            schema:name ?name ;
            schema:startDate ?startDate .
     OPTIONAL {
