@@ -67,5 +67,7 @@ where {
         ?bn sh:resultSeverity ?error .
     }
     # filter(!Bound(?error))
+    # Remove events linked to Artsdata minted event
+    filter( not exists { ?event ^schema:sameAs ?ad_event . filter(contains(str(?ad_event),"kg.artsdata.ca/resource/"))  })
     filter(?startDate > now())
 } group by ?event ?startDate   ?endDate ?performer   ?postalCode  ?url ?error
