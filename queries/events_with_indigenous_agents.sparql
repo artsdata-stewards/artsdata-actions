@@ -67,4 +67,5 @@ where {
         ?bn sh:resultSeverity ?error .
     }
     # filter(!Bound(?error))
+    filter(?startDate > now())
 } group by ?event ?startDate   ?endDate ?performer   ?postalCode  ?url ?error
