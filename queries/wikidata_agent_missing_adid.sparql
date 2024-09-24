@@ -1,0 +1,31 @@
+# Find People in Wikidata missing an Artsdata ID
+
+PREFIX schema: <http://schema.org/>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+PREFIX wd: <http://www.wikidata.org/entity/>
+PREFIX wikibase: <http://wikiba.se/ontology#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+select ?ad_uri ?wd_uri ?ad_id (sample(?name) as ?sample_name) 
+
+WHERE {
+    values ?type {schema:Person schema:Organization }
+    ?ad_uri a ?type  .
+    OPTIONAL{
+        ?ad_uri schema:sameAs ?sameAs 
+    }
+    OPTIONAL{
+        ?ad_uri schema:name ?name 
+    }
+    filter(contains(str(?sameAs),"wikidata.org"))
+    filter(contains(str(?ad_uri),"kg.artsdata.ca/resource"))
+    bind(strafter(str(?ad_uri),"kg.artsdata.ca/resource/") as ?ad_id)
+    bind(URI(?sameAs) as ?wd_uri)
+    SERVICE <https://query.wikidata.org/sparql>
+    {
+        OPTIONAL {
+            ?wd_uri   wdt:P7627   ?adid  
+        }
+    }
+    filter(!Bound(?adid ))
+} group by ?ad_uri ?wd_uri ?ad_id
