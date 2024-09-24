@@ -26,11 +26,10 @@ where {
         select distinct ?indigenousPerson where {
                 SERVICE <https://query.wikidata.org/sparql> {
                     ?person  wdt:P172/wdt:P279* wd:Q15571255 ;  # indigenous peoples in North America
-                            wdt:P7627 ?adid .
+                        wdt:P7627 ?adid .
                 } UNION {
-                    ?wdid_uri  wdt:P1552/wdt:P279* wd:Q15571255 ;
-                                                 # indigenous peoples in North America
-                                                 wdt:P7627 ?adid .
+                    ?wdid_uri  wdt:P1552/wdt:P279* wd:Q15571255 ;  # indigenous peoples in North America            
+                        wdt:P7627 ?adid .
                 }
                 bind(uri(concat("http://kg.artsdata.ca/resource/",?adid))  as ?indigenousPerson)
         }
@@ -58,4 +57,6 @@ where {
           ?error sh:focusNode  ?event .
     }
     filter(!Bound(?error))
+    filter( not exists { ?event ^schema:sameAs ?ad_event . filter(contains(str(?ad_event),"kg.artsdata.ca/resource/"))  })
+    filter(?startDate > now())
 }
