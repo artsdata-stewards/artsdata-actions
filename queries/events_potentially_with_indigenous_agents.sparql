@@ -5,7 +5,7 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 PREFIX wd: <http://www.wikidata.org/entity/>
-select distinct ?event ?event_name  ?startDate ?linked_person_name ?score ?agent_name ?artsdata_agent ?type_sample ?wdid_uri  where {
+select distinct ?event ?event_name  ?startDate ?linked_performer_name ?score ?agent_name ?artsdata_agent ?type_sample ?wdid_uri  where {
     {
         select   (sample(?name) as ?agent_name)  ?artsdata_agent  (sample(?type) as ?type_sample)  ?wdid_uri where {
             SERVICE <https://query.wikidata.org/sparql> {
@@ -32,12 +32,12 @@ select distinct ?event ?event_name  ?startDate ?linked_person_name ?score ?agent
            luc:score ?score ;
            rdfs:label ?event_name .
    optional {
-        ?event schema:performer/schema:name ?linked_person_optional_name 
+        ?event schema:performer/schema:name ?linked_performer_optional_name 
     }
-    bind(coalesce(?linked_person_optional_name,"") as ?linked_person_name)
+    bind(coalesce(?linked_performer_optional_name,"") as ?linked_performer_name)
     filter(?startDate > now())
     bind(strdt(?score,xsd:decimal) as ?score_decimal)
     filter(?score_decimal > 2.0)
-    filter(str(?linked_person_name) != str(?agent_name) )
+    filter(str(?linked_performer_name) != str(?agent_name) )
    
 } order by DESC(?score)
