@@ -28,7 +28,6 @@ where {
            schema:name ?name ;
            schema:startDate ?startDate ;
            schema:url ?url ;
-           schema:description ?desc ;
            schema:location ?loc .
     ?loc schema:name ?loc_name ;
          schema:address ?address .
@@ -37,6 +36,9 @@ where {
              schema:addressCountry ?addressCountry ;
              schema:postalCode ?postalCode ;
              schema:addressLocality ?addressLocality .
+    OPTIONAL {
+       ?event schema:description ?desc .
+    }
     OPTIONAL {
         ?event schema:endDate ?endDate .
         filter(datatype(?endDate) = xsd:dateTime)
