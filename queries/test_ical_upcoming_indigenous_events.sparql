@@ -3,7 +3,7 @@ PREFIX wd: <http://www.wikidata.org/entity/>
 PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 PREFIX sh: <http://www.w3.org/ns/shacl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-select distinct ?event (sample(?name) as ?event_name) ?startDate ?desc ?loc (sample(?loc_name) as ?location_name)
+select distinct ?event (sample(?name) as ?event_name) ?startDate ?desc ?loc (sample(?loc_name) as ?location_name) ?url
 where {
     # 1 Get indigenous people in Wikidata with Artsdata IDs
     {
@@ -52,4 +52,4 @@ where {
             filter(contains(str(?ad_event),"kg.artsdata.ca/resource/"))  
         })
     filter(?startDate > now())
-} group by ?event ?startDate ?desc ?loc
+} group by ?event ?startDate ?desc ?loc ?url
