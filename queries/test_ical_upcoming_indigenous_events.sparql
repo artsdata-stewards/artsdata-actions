@@ -23,12 +23,21 @@ where {
         }
     }
     # 2 Get event properties needed for iCal
-    ?event a schema:Event ;
-           schema:performer ?indigenousPerson ;
+    ?event a schema:Event .
+    graph ?g {
+         ?event  schema:performer ?indigenousPerson ;
            schema:name ?name ;
            schema:startDate ?startDate ;
            schema:url ?url ;
            schema:location ?loc .
+         OPTIONAL {
+           ?event schema:description ?desc .
+        }
+        OPTIONAL {
+            ?event schema:endDate ?endDate .
+            filter(datatype(?endDate) = xsd:dateTime)
+        }
+    }
     ?loc schema:name ?loc_name ;
          schema:address ?address .
     ?address schema:streetAddress ?streetAddress ;
@@ -36,13 +45,8 @@ where {
              schema:addressCountry ?addressCountry ;
              schema:postalCode ?postalCode ;
              schema:addressLocality ?addressLocality .
-    OPTIONAL {
-       ?event schema:description ?desc .
-    }
-    OPTIONAL {
-        ?event schema:endDate ?endDate .
-        filter(datatype(?endDate) = xsd:dateTime)
-    }
+    
+   
     OPTIONAL {
         ?error sh:focusNode  ?event .
     }
