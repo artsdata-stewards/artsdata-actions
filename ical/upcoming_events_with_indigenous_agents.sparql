@@ -37,12 +37,21 @@ where {
         }
     }
     # 2 Get event properties needed for iCal
-      ?event a schema:Event ;
-            schema:performer ?indigenousPerson ;
-               schema:name ?name ;
-               schema:startDate ?startDate ;
-               schema:url ?url ;
-               schema:location ?loc .
+    ?event a schema:Event .
+    graph ?g {
+        schema:performer ?indigenousPerson ;
+        schema:name ?name ;
+        schema:startDate ?startDate ;
+        schema:url ?url ;
+        schema:location ?loc .
+        OPTIONAL {
+           ?event schema:description ?desc .
+        }
+        OPTIONAL {
+            ?event schema:endDate ?endDate .
+            filter(datatype(?endDate) = xsd:dateTime)
+        }
+    }
     ?loc schema:name ?loc_name ;
          schema:address ?address .
     ?address schema:streetAddress ?streetAddress ;
@@ -51,16 +60,12 @@ where {
              schema:postalCode ?postalCode ;
              schema:addressLocality ?addressLocality .
     OPTIONAL {
-       ?event schema:description ?desc .
-    }
-    OPTIONAL {
-        ?event schema:endDate ?endDate .
-        filter(datatype(?endDate) = xsd:dateTime)
-    }
-    OPTIONAL {
           ?error sh:focusNode  ?event .
     }
+    # Remove SHACL errors
     filter(!Bound(?error))
+    # Remove event duplicates, keeping the Artsdata minted event
     filter( not exists { ?event ^schema:sameAs ?ad_event . filter(contains(str(?ad_event),"kg.artsdata.ca/resource/"))  })
+    # Remove past events
     filter(?startDate > now())
 }
