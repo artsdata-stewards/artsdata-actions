@@ -3,7 +3,6 @@ PREFIX wd: <http://www.wikidata.org/entity/>
 PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 PREFIX sh: <http://www.w3.org/ns/shacl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-
 select distinct ?event (sample(?name) as ?event_name) ?startDate ?desc ?loc (sample(?loc_name) as ?location_name)
 where {
     # 1 Get indigenous people in Wikidata with Artsdata IDs
@@ -11,10 +10,12 @@ where {
         select distinct ?indigenousPerson where {
             SERVICE <https://query.wikidata.org/sparql> {
                 {
-                    ?person  wdt:P172/wdt:P279* wd:Q15571255 ;  # indigenous peoples in North America
+                    ?person  wdt:P172/wdt:P279* wd:Q15571255 ;
+                                              # indigenous peoples in North America
                                               wdt:P7627 ?adid .
                 } UNION {
-                    ?wdid_uri  wdt:P1552/wdt:P279* wd:Q15571255 ;  # indigenous peoples in North America            
+                    ?wdid_uri  wdt:P1552/wdt:P279* wd:Q15571255 ;
+                                                 # indigenous peoples in North America            
                                                  wdt:P7627 ?adid .
                 }
                 bind(uri(concat("http://kg.artsdata.ca/resource/",?adid))  as ?indigenousPerson)
@@ -22,13 +23,13 @@ where {
         }
     }
     # 2 Get event properties needed for iCal
-      ?event a schema:Event ;
-            schema:performer ?indigenousPerson ;
-               schema:name ?name ;
-               schema:startDate ?startDate ;
-               schema:url ?url ;
-               schema:description ?desc ;
-               schema:location ?loc .
+    ?event a schema:Event ;
+           schema:performer ?indigenousPerson ;
+           schema:name ?name ;
+           schema:startDate ?startDate ;
+           schema:url ?url ;
+           schema:description ?desc ;
+           schema:location ?loc .
     ?loc schema:name ?loc_name ;
          schema:address ?address .
     ?address schema:streetAddress ?streetAddress ;
@@ -41,9 +42,12 @@ where {
         filter(datatype(?endDate) = xsd:dateTime)
     }
     OPTIONAL {
-          ?error sh:focusNode  ?event .
+        ?error sh:focusNode  ?event .
     }
     filter(!Bound(?error))
-    filter( not exists { ?event ^schema:sameAs ?ad_event . filter(contains(str(?ad_event),"kg.artsdata.ca/resource/"))  })
+    filter( not exists {
+            ?event ^schema:sameAs ?ad_event .
+            filter(contains(str(?ad_event),"kg.artsdata.ca/resource/"))  
+        })
     filter(?startDate > now())
-}
+} group by ?event ?startDate ?desc ?loc
