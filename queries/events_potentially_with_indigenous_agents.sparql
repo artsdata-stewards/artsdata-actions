@@ -5,9 +5,9 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 PREFIX wd: <http://www.wikidata.org/entity/>
-select distinct ?event ?event_name  ?startDate ?linked_performer_name ?score ?agent_name ?artsdata_agent ?type_sample ?wdid_uri  where {
+select distinct ?event ?event_name  ?startDate ?linked_performer_name ?score ?agent_name ?artsdataid_uri ?type_sample ?wdid_uri  where {
     {
-        select   (sample(?name) as ?agent_name)  ?artsdata_agent  (sample(?type) as ?type_sample)  ?wdid_uri where {
+        select   (sample(?name) as ?agent_name)  ?artsdataid_uri  (sample(?type) as ?type_sample)  ?wdid_uri where {
             SERVICE <https://query.wikidata.org/sparql> {
                 {
                     ?wdid_uri  wdt:P172/wdt:P279* wd:Q15571255 ;
@@ -19,12 +19,12 @@ select distinct ?event ?event_name  ?startDate ?linked_performer_name ?score ?ag
                                                  wdt:P7627 ?adid .
                 }
             }
-            bind(uri(concat("http://kg.artsdata.ca/resource/",?adid))  as ?artsdata_agent)
+            bind(uri(concat("http://kg.artsdata.ca/resource/",?adid))  as ?artsdataid_uri)
             graph ?g {
-                ?artsdata_agent a ?type ;
+                ?artsdataid_uri a ?type ;
                               schema:name ?name .
             }
-        } group by ?artsdata_agent  ?wdid_uri 
+        } group by ?artsdataid_uri  ?wdid_uri 
     }
     ?event luc:Name ?agent_name ;
            a schema:Event ;
