@@ -39,7 +39,7 @@ where {
     # 2 Get event properties needed for iCal
     ?event a schema:Event .
     graph ?g {
-        schema:performer ?indigenousPerson ;
+        ?event schema:performer ?indigenousPerson ;
         schema:name ?name ;
         schema:startDate ?startDate ;
         schema:url ?url ;
