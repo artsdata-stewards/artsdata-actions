@@ -1,6 +1,8 @@
 PREFIX schema: <http://schema.org/>
 PREFIX shacl: <http://www.w3.org/ns/shacl#>
-select * where {
+PREFIX prov: <http://www.w3.org/ns/prov#>
+select   ?event ?name ?type ?startDate ?endDate 
+where {
     values ?g {
         <http://kg.artsdata.ca/culture-creates/footlight/culture3r-com> 
         <http://kg.artsdata.ca/culture-creates/footlight/complexeculturelfelixleclerc-com>
@@ -12,8 +14,12 @@ select * where {
     values ?type {
         schema:Event schema:EventSeries 
     }
+   
     graph ?g {
-        ?event a ?type .
+        ?event a ?type ; schema:startDate ?startDate ; schema:name ?name .
+        OPTIONAL {
+             ?event schema:endDate ?endDate .
+        }
         OPTIONAL {
             ?event schema:sameAs ?ad .
             filter(contains(str(?ad),"kg.artsdata.ca"))
