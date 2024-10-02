@@ -1,0 +1,34 @@
+PREFIX schema: <http://schema.org/>
+PREFIX shacl: <http://www.w3.org/ns/shacl#>
+select * where {
+    values ?g {
+        <http://kg.artsdata.ca/culture-creates/footlight/culture3r-com> 
+        <http://kg.artsdata.ca/culture-creates/footlight/complexeculturelfelixleclerc-com>
+        <http://kg.artsdata.ca/culture-creates/footlight/gatineau-cloud>
+        <http://kg.artsdata.ca/culture-creates/footlight/co-motion-ca>
+        <http://kg.artsdata.ca/culture-creates/footlight/maisondelaculture-ca>
+        <http://kg.artsdata.ca/culture-creates/footlight/tourisme-troisrivieres-com> 
+    }
+    values ?type {
+        schema:Event schema:EventSeries 
+    }
+    graph ?g {
+        ?event a ?type .
+        OPTIONAL {
+            ?event schema:sameAs ?ad .
+            filter(contains(str(?ad),"kg.artsdata.ca"))
+        }
+        FILTER( NOT EXISTS {
+                ?superEvent schema:subEvent ?event 
+            })
+        FILTER( NOT EXISTS {
+                ?violation shacl:focusNode ?event 
+            })
+        FILTER(!BOUND(?ad))
+    }
+    OPTIONAL {
+        ?ad_minted schema:sameAs ?event .
+        filter(contains(str(?ad_minted),"kg.artsdata.ca"))
+    }
+    FILTER(!BOUND(?ad_minted))
+}
