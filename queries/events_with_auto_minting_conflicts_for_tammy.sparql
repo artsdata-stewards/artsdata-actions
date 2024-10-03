@@ -16,25 +16,29 @@ where {
     }
    
     graph ?g {
-        ?event a ?type ; schema:startDate ?startDate ; schema:name ?name .
+        ?event a ?type ; schema:startDate ?startDate ; schema:name ?name ; schema:location ?location .
         OPTIONAL {
              ?event schema:endDate ?endDate .
         }
-        OPTIONAL {
-            ?event schema:sameAs ?ad .
-            filter(contains(str(?ad),"kg.artsdata.ca"))
-        }
+        
         FILTER( NOT EXISTS {
                 ?superEvent schema:subEvent ?event 
             })
         FILTER( NOT EXISTS {
                 ?violation shacl:focusNode ?event 
             })
+         FILTER( NOT EXISTS {
+                ?violation shacl:focusNode ?location 
+            })
         FILTER(!BOUND(?ad))
     }
     OPTIONAL {
         ?ad_minted schema:sameAs ?event .
         filter(contains(str(?ad_minted),"kg.artsdata.ca"))
+    }
+  OPTIONAL {
+        ?event schema:sameAs ?ad .
+        filter(contains(str(?ad),"kg.artsdata.ca"))
     }
     FILTER(!BOUND(?ad_minted))
 }
