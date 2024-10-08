@@ -2,12 +2,18 @@
 PREFIX schema: <http://schema.org/>
 PREFIX shacl: <http://www.w3.org/ns/shacl#>
 PREFIX prov: <http://www.w3.org/ns/prov#>
-
 select * 
 where {
-  ?graph a schema:DataFeed ; 
-           schema:maintainer ?maintainer ; 
-           schema:contentRating/schema:ratingValue ?ratingValue ;
-           schema:contentRating/schema:ratingValue ?ratingExplanation ;
-          prov:generatedAtTime ?generatedAtTime .
-  }
+    ?graph a schema:Dataset ;
+           schema:name ?name ;
+           prov:generatedAtTime ?generatedAtTime .
+    OPTIONAL {
+        ?graph  schema:maintainer ?maintainer .
+    }
+    OPTIONAL {
+        ?graph schema:contentRating/schema:ratingValue ?ratingValue .
+    }
+    OPTIONAL {
+        ?graph  schema:contentRating/schema:ratingExplanation ?ratingExplanation .
+    }
+} order by DESC(?ratingValue)
