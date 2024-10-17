@@ -18,6 +18,6 @@ where {
      
     filter(contains(str(?artsdataUri),"artsdata"))
     filter(contains(str(?artsdataUri2),"artsdata"))
-    filter(?s != ?s2 )
+    filter(?artsdataUri != ?artsdataUri2 )
     bind(str(?name) as ?name_str)
 } group by ?artsdataUri ?name_str ORDER BY ?name_str 
