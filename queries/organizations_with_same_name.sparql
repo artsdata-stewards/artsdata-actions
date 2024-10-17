@@ -1,0 +1,18 @@
+PREFIX luc: <http://www.ontotext.com/owlim/lucene#>
+PREFIX schema: <http://schema.org/>
+select distinct ?name_str  ?s (GROUP_CONCAT(distinct ?disam;SEPARATOR=", ") as ?disam_group) (GROUP_CONCAT(distinct ?sameAs;SEPARATOR=", ") as ?sameAs_group) where { 
+	?s  a schema:Organization ; schema:name ?name .
+    ?s2  a schema:Organization ; schema:name ?name .
+    
+    OPTIONAL {
+        ?s schema:disambiguatingDescription ?disam .
+    }
+     OPTIONAL {
+        ?s schema:sameAs ?sameAs .
+    }
+     
+    filter(contains(str(?s),"artsdata"))
+    filter(contains(str(?s2),"artsdata"))
+    filter(?s != ?s2 )
+    bind(str(?name) as ?name_str)
+} group by ?s ?s2 ?name_str ORDER BY ?name_str 
