@@ -1,5 +1,7 @@
 PREFIX luc: <http://www.ontotext.com/owlim/lucene#>
 PREFIX schema: <http://schema.org/>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+
 select distinct ?name_str  ?type ?artsdataUri (GROUP_CONCAT(distinct ?disam;
         SEPARATOR=", ") as ?disam_group) (GROUP_CONCAT(distinct ?sameAs;
         SEPARATOR=", ") as ?sameAs_group) where {
