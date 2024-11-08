@@ -9,6 +9,7 @@ select distinct ?name_str  ?type ?artsdataUri (GROUP_CONCAT(distinct ?disam;
    
     ?artsdataUri2  a ?type  ;
                    schema:name ?name .
+    FILTER ( not exists { ?artsdataUri owl:differentFrom  ?artsdataUri2  })
     OPTIONAL {
         ?artsdataUri schema:disambiguatingDescription ?disam .
     }
