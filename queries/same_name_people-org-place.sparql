@@ -3,7 +3,7 @@ PREFIX schema: <http://schema.org/>
 select distinct ?name_str  ?artsdataUri (GROUP_CONCAT(distinct ?disam;
         SEPARATOR=", ") as ?disam_group) (GROUP_CONCAT(distinct ?sameAs;
         SEPARATOR=", ") as ?sameAs_group) where {
-  value ?type {schema:Organization schema:Place schema:Person}
+  values ?type {schema:Organization schema:Place schema:Person}
     ?artsdataUri  a ?type  ;
                   schema:name ?name .
     ?artsdataUri2  a ?type  ;
