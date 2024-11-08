@@ -1,11 +1,12 @@
 PREFIX luc: <http://www.ontotext.com/owlim/lucene#>
 PREFIX schema: <http://schema.org/>
-select distinct ?name_str  ?artsdataUri (GROUP_CONCAT(distinct ?disam;
+select distinct ?name_str  ?type ?artsdataUri (GROUP_CONCAT(distinct ?disam;
         SEPARATOR=", ") as ?disam_group) (GROUP_CONCAT(distinct ?sameAs;
         SEPARATOR=", ") as ?sameAs_group) where {
   values ?type {schema:Organization schema:Place schema:Person}
     ?artsdataUri  a ?type  ;
                   schema:name ?name .
+   
     ?artsdataUri2  a ?type  ;
                    schema:name ?name .
     OPTIONAL {
@@ -18,4 +19,4 @@ select distinct ?name_str  ?artsdataUri (GROUP_CONCAT(distinct ?disam;
     filter(contains(str(?artsdataUri2),"artsdata"))
     filter(?artsdataUri != ?artsdataUri2 )
     bind(str(?name) as ?name_str)
-} group by ?artsdataUri  ?name_str ORDER BY ?name_str
+} group by ?artsdataUri ?type ?name_str ORDER BY ?name_str
