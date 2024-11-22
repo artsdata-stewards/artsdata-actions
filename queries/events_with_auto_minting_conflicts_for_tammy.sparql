@@ -44,4 +44,8 @@ where {
         filter(contains(str(?ad),"kg.artsdata.ca"))
     }
     FILTER(!BOUND(?ad_minted))
+
+    # Filter upcoming events or events that have not yet ended
+    bind(coalesce(?endDate, ?startDate) as ?notEarlierThan)
+    filter(strdt(str(?notEarlierThan),xsd:dateTime) > now())
 }
