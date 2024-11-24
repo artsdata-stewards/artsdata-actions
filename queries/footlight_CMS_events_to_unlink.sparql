@@ -1,6 +1,6 @@
 PREFIX prov: <http://www.w3.org/ns/prov#>
 PREFIX schema: <http://schema.org/>
-select ?event ?cms_startDate  (sample(?name) as ?name) ?artsdata_event ?artsdata_startDate (sample(?artsdata_names) as ?artsdata_name)  where {
+select ?event ?cms_startDate  (sample(?names) as ?name) ?artsdata_event ?artsdata_startDate (sample(?artsdata_names) as ?artsdata_name)  where {
     ?event a schema:Event ;
            schema:startDate ?cms_startDate ;
            schema:sameAs ?artsdata_event ;
