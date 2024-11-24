@@ -1,11 +1,12 @@
 PREFIX prov: <http://www.w3.org/ns/prov#>
 PREFIX schema: <http://schema.org/>
-select * where {
+select ?event ?cms_startDate  (sample(?name) as ?name) ?artsdata_event ?artsdata_startDate (sample(?artsdata_names) as ?artsdata_name)  where {
     ?event a schema:Event ;
-           schema:startDate ?startDate ;
-           schema:sameAs ?sameAs .
-    filter(contains(str(?sameAs),"kg.artsdata.ca"))
+           schema:startDate ?cms_startDate ;
+           schema:sameAs ?artsdata_event ;
+             schema:name ?names .
+    filter(contains(str(?artsdata_event),"kg.artsdata.ca"))
     filter(contains(str(?event),"lod.footlight.io"))
-    ?sameAs schema:startDate ?startDate2 .
-    filter(?startDate != ?startDate2)
-}
+    ?sameAs schema:startDate ?artsdata_startDate ; schema:name ?artsdata_names .
+    filter(?cms_startDate != ?artsdata_startDate)
+} group by  ?event ?cms_startDate ?artsdata_event ?artsdata_startDate 
