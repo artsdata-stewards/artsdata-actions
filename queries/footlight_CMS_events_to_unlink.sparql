@@ -9,5 +9,5 @@ select ?event ?cms_startDate  (sample(?names) as ?name) ?artsdata_event ?artsdat
     filter(contains(str(?event),"lod.footlight.io"))
     ?artsdata_event schema:startDate ?artsdata_startDate ; schema:name ?artsdata_names .
     # Compare dates on same floating date not dateTime but also check if timezone dates are the same
-    filter( strdt(substr(str(?cms_startDate),1,10),xsd:date) !=strdt(substr(str(?artsdata_startDate),1,10),xsd:date)  && (?cms_startDate != ?artsdata_startDate)
+    filter( strdt(substr(str(?cms_startDate),1,10),xsd:date) !=strdt(substr(str(?artsdata_startDate),1,10),xsd:date)  && (?cms_startDate != ?artsdata_startDate) )
 } group by  ?event ?cms_startDate ?artsdata_event ?artsdata_startDate 
