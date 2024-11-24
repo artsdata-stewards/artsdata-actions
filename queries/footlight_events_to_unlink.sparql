@@ -1,0 +1,11 @@
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX schema: <http://schema.org/>
+select * where {
+    ?event a schema:Event ;
+           schema:startDate ?startDate ;
+           schema:sameAs ?sameAs .
+    filter(contains(str(?sameAs),"kg.artsdata.ca"))
+    filter(contains(str(?event),"lod.footlight.io"))
+    ?sameAs schema:startDate ?startDate2 .
+    filter(?startDate != ?startDate2)
+}
