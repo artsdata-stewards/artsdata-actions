@@ -1,0 +1,26 @@
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX dataid: <http://dataid.dbpedia.org/ns/core#>
+PREFIX schema: <http://schema.org/>
+select ?event  ?startDate  (sample(?names) as ?name) ?graph_date ?ad_event ?ad_startDate (sample(?ad_names) as ?ad_name)  ?sameAs_date
+where {
+    graph ?g {
+        ?event a schema:Event ;
+               schema:startDate ?startDate ;
+               schema:name ?names .
+        filter(!contains(str(?event),"kg.artsdata.ca"))
+        filter( not exists {
+                ?event a schema:EventSeries 
+            })
+    }
+    ?g <http://www.w3.org/ns/prov#generatedAtTime> ?graph_date ;
+       prov:wasDerivedFrom ?dataid .
+    ?ad_event schema:sameAs ?event ;
+              schema:startDate ?ad_startDate ;
+              schema:name ?ad_names .
+    filter(contains(str(?ad_event),"kg.artsdata.ca"))
+    filter(?startDate != ?ad_startDate)
+    << ?ad_event schema:sameAs ?event >> prov:wasDerivedFrom ?original_dataid .
+    ?original_dataid <http://purl.org/dc/terms/issued> ?sameAs_date .
+    filter(?graph_date > ?sameAs_date )
+} group by ?event ?ad_event ?startDate ?ad_startDate ?graph_date ?sameAs_date
