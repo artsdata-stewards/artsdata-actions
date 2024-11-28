@@ -14,17 +14,22 @@ construct {
            schema:endDate ?endDate ;
            schema:performer ?indigenousAgent ;
            schema:organizer ?organizer .
-    ?loc schema:name ?loc_name ;
-         schema:address ?address .
-    ?address schema:streetAddress ?streetAddress ;
-             schema:addressRegion ?addressRegion ;
-             schema:addressCountry ?addressCountry ;
-             schema:postalCode ?postalCode ;
-             schema:addressLocality ?addressLocality .
-    ?indigenousAgent schema:name ?indigenousAgentName ; 
-                     schema:sameAs ?indigenousAgentSameAs .
-    ?organizer schema:name ?organizerName ; 
-               schema:sameAs ?organizerSameAs .
+    ?loc a schema:Place ;
+           schema:name ?locName ;
+           schema:sameAs ?locSameAs ;
+           schema:address ?address .
+    ?address a schema:PostalAddress ;
+               schema:streetAddress ?streetAddress ;
+               schema:addressRegion ?addressRegion ;
+               schema:addressCountry ?addressCountry ;
+               schema:postalCode ?postalCode ;
+               schema:addressLocality ?addressLocality .
+    ?indigenousAgent a ?agentType ;
+                       schema:name ?indigenousAgentName ; 
+                       schema:sameAs ?indigenousAgentSameAs .
+    ?organizer a ?organizeType ;
+                 schema:name ?organizerName ; 
+                 schema:sameAs ?organizerSameAs .
 }
 where {
     # 1 Get indigenous agents in Wikidata with Artsdata IDs
@@ -60,10 +65,10 @@ where {
     }
 
     # Location
-    ?loc schema:name ?loc_name ;
+    ?loc schema:name ?locName ;
          schema:address ?address .
     OPTIONAL {
-         ?loc schema:sameAs ?sameAs .
+         ?loc schema:sameAs ?locSameAs .
         }
     ?address schema:streetAddress ?streetAddress ;
              schema:addressRegion ?addressRegion ;
@@ -73,14 +78,22 @@ where {
 
     # Performer
     ?indigenousAgent schema:name ?indigenousAgentName .
+    graph ?g {
+         ?indigenousAgent a ?agentType .
+        }
     OPTIONAL {
         ?indigenousAgent schema:sameAs ?indigenousAgentSameAs .
         }
 
     # Organizer
+    
     OPTIONAL {
         ?event schema:organizer ?organizer .
-        ?organizer schema:name ?organizerName ; schema:sameAs ?organizerSameAs .
+         graph ?organizer_graph {
+             ?organizer a ?organizerType .
+        }
+        ?organizer schema:name ?organizerName ; 
+                   schema:sameAs ?organizerSameAs .
         }
     
     OPTIONAL {
