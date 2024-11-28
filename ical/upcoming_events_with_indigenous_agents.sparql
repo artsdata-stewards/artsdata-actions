@@ -11,7 +11,9 @@ construct {
            schema:url ?url ;
            schema:description ?desc ;
            schema:location ?loc ;
-           schema:endDate ?endDate .
+           schema:endDate ?endDate ;
+           schema:performer ?indigenousAgent ;
+           schema:organizer ?organizer .
     ?loc schema:name ?loc_name ;
          schema:address ?address .
     ?address schema:streetAddress ?streetAddress ;
@@ -19,9 +21,13 @@ construct {
              schema:addressCountry ?addressCountry ;
              schema:postalCode ?postalCode ;
              schema:addressLocality ?addressLocality .
+    ?indigenousAgent schema:name ?indigenousAgentName ; 
+                     schema:sameAs ?indigenousAgentSameAs .
+    ?organizer schema:name ?organizerName ; 
+               schema:sameAs ?organizerSameAs .
 }
 where {
-    # 1 Get indigenous people in Wikidata with Artsdata IDs
+    # 1 Get indigenous agents in Wikidata with Artsdata IDs
     {
         select distinct ?indigenousAgent where {
             SERVICE <https://query.wikidata.org/sparql> {
@@ -52,13 +58,31 @@ where {
             filter(datatype(?endDate) = xsd:dateTime)
         }
     }
+
+    # Location
     ?loc schema:name ?loc_name ;
          schema:address ?address .
+    OPTIONAL {
+         ?loc schema:sameAs ?sameAs .
+        }
     ?address schema:streetAddress ?streetAddress ;
              schema:addressRegion ?addressRegion ;
              schema:addressCountry ?addressCountry ;
              schema:postalCode ?postalCode ;
              schema:addressLocality ?addressLocality .
+
+    # Performer
+    ?indigenousAgent schema:name ?indigenousAgentName .
+    OPTIONAL {
+        ?indigenousAgent schema:sameAs ?indigenousAgentSameAs .
+        }
+
+    # Organizer
+    OPTIONAL {
+        ?event schema:organizer ?organizer .
+        ?organizer schema:name ?organizerName ; schema:sameAs ?organizerSameAs .
+        }
+    
     OPTIONAL {
           ?error sh:focusNode  ?event .
     }
