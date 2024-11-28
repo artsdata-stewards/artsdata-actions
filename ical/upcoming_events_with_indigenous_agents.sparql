@@ -23,7 +23,7 @@ construct {
 where {
     # 1 Get indigenous people in Wikidata with Artsdata IDs
     {
-        select distinct ?indigenousPerson where {
+        select distinct ?indigenousAgent where {
             SERVICE <https://query.wikidata.org/sparql> {
                 {
                     ?person  wdt:P172/wdt:P279* wd:Q15571255 ;  # indigenous peoples in North America
@@ -32,14 +32,14 @@ where {
                     ?wdid_uri  wdt:P1552/wdt:P279* wd:Q15571255 ;  # indigenous peoples in North America            
                                                  wdt:P7627 ?adid .
                 }
-                bind(uri(concat("http://kg.artsdata.ca/resource/",?adid))  as ?indigenousPerson)
+                bind(uri(concat("http://kg.artsdata.ca/resource/",?adid))  as ?indigenousAgent)
             }
         }
     }
     # 2 Get event properties needed for iCal
     ?event a schema:Event .
     graph ?g {
-        ?event schema:performer ?indigenousPerson ;
+        ?event schema:performer ?indigenousAgent ;
         schema:name ?name ;
         schema:startDate ?startDate ;
         schema:url ?url ;
