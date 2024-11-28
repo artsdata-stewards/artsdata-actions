@@ -78,7 +78,7 @@ where {
 
     # Performer
     ?indigenousAgent schema:name ?indigenousAgentName .
-    graph ?g {
+    graph ?performer_graph {
          ?indigenousAgent a ?agentType .
         }
     OPTIONAL {
