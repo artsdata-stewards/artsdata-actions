@@ -1,13 +1,17 @@
 PREFIX prov: <http://www.w3.org/ns/prov#>
 PREFIX schema: <http://schema.org/>
-select ?event ?cms_startDate  (sample(?names) as ?name) ?artsdata_event ?artsdata_startDate (sample(?artsdata_names) as ?artsdata_name)  where {
+select ?graph_str ?event ?cms_startDate  (sample(?names) as ?name) ?artsdata_event ?artsdata_startDate (sample(?artsdata_names) as ?artsdata_name)  where {
+    graph ?g {
     ?event a schema:Event ;
            schema:startDate ?cms_startDate ;
            schema:sameAs ?artsdata_event ;
              schema:name ?names .
+  }
+  
+  bind(strafter(str(?g),"planet-footlight/") as ?graph_str)
     filter(contains(str(?artsdata_event),"kg.artsdata.ca"))
     filter(contains(str(?event),"lod.footlight.io"))
     ?artsdata_event schema:startDate ?artsdata_startDate ; schema:name ?artsdata_names .
     # Compare dates on same floating date not dateTime but also check if timezone dates are the same
     filter( strdt(substr(str(?cms_startDate),1,10),xsd:date) !=strdt(substr(str(?artsdata_startDate),1,10),xsd:date)  && (?cms_startDate != ?artsdata_startDate) )
-} group by  ?event ?cms_startDate ?artsdata_event ?artsdata_startDate 
+} group by  ?graph_str ?event ?cms_startDate ?artsdata_event ?artsdata_startDate 
