@@ -1,5 +1,12 @@
 PREFIX schema: <http://schema.org/>
-select * where {
-  ?event a schema:Event ; schema:eventStatus schema:CancelledEvent .
+select ?event (sample(?names) as ?name) ?startDate ?location  (sample(?location_names) as ?location_name)where {
+  values ?status {schema:EventCancelled}
+  ?event a schema:Event ; 
+         schema:eventStatus ?status ;
+         schema:name ?names ;
+         schema:startDate ?startDate ;
+         schema:location ?location ;
+         schema:location/schema:name ?location_names .
+  
   filter(contains(str(?event),"kg.artsdata.ca/resource/K"))
-  }
+  } group by ?event ?startDate ?status ?location
