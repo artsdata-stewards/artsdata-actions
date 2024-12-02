@@ -1,0 +1,4 @@
+select * where {
+  ?event a schema:Event ; schema:eventStatus schema:CancelledEvent .
+  filter(contains(str(?event),"kg.artsdata.ca/resource/K"))
+  }
