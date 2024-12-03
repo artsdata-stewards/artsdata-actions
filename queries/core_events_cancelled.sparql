@@ -1,5 +1,5 @@
 PREFIX schema: <http://schema.org/>
-select ?event (sample(?names) as ?name) ?startDate ?location  (sample(?location_names) as ?location_name)where {
+select ?event ?status (sample(?names) as ?name) ?startDate ?location  (sample(?location_names) as ?location_name)where {
   values ?status {schema:EventCancelled}
   ?event a schema:Event ; 
          schema:eventStatus ?status ;
