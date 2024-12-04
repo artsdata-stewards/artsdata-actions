@@ -1,0 +1,5 @@
+PREFIX schema: <http://schema.org/>
+select ?type (count(?s) as ?count) where { 
+	?s a schema:Event ; a ?type .
+    filter(contains(str(?type),"kg.artsdata.ca/resource/"))
+} group by ?type order by DESC(?count)
