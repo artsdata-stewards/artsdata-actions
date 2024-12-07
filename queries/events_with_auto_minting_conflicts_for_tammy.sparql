@@ -14,6 +14,7 @@ where {
         <http://kg.artsdata.ca/culture-creates/artsdata-planet-ville-de-laval/calendrier-activites>
         <http://kg.artsdata.ca/culture-creates/footlight/minotaure-ca>
         <http://kg.artsdata.ca/culture-creates/footlight/culturemauricie_lepointdevente-com>
+        <http://kg.artsdata.ca/culture-creates/footlight/placedesarts-com>
     }
     values ?type {
         schema:Event schema:EventSeries 
