@@ -1,0 +1,24 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX schema: <http://schema.org/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?event (SAMPLE(?name) AS ?eventName) ?startDate ?endDate (GROUP_CONCAT(?type; separator=", ") AS ?types)
+WHERE {
+  ?event a schema:EventSeries ;
+         schema:startDate ?startDate ;
+    	 schema:name ?name ;
+      	 schema:additionalType ?type .
+  OPTIONAL { ?event schema:endDate ?endDate . }
+
+  BIND(IF(datatype(?startDate) = xsd:date, xsd:dateTime(CONCAT(STR(?startDate), "T00:00:00")), ?startDate) AS ?normalizedStartDate)
+  BIND(IF(BOUND(?endDate) && datatype(?endDate) = xsd:date, xsd:dateTime(CONCAT(STR(?endDate), "T23:59:59")), ?endDate) AS ?normalizedEndDate)
+
+  FILTER(
+    (
+      (?normalizedStartDate > NOW()) ||
+      (?normalizedEndDate > NOW())
+    )
+  )
+}
+GROUP BY ?event ?name ?startDate ?endDate ?type
