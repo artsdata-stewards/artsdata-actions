@@ -1,0 +1,38 @@
+PREFIX schema: <http://schema.org/>
+
+select  ?Artsdata  ?contained_in  ?wikidata  ?name (sample(?fullAddresses) as ?fullAddress) where {
+    ?Artsdata a schema:Place .
+    OPTIONAL {
+        ?Artsdata schema:containedInPlace ?contained_in .
+        filter(contains(str(?contained_in),"http://kg.artsdata.ca/resource/K"))
+    }
+    OPTIONAL {
+        ?Artsdata schema:name ?name_fr .
+        filter(lang(?name_fr) = "fr")
+    }
+    OPTIONAL {
+        ?Artsdata schema:name ?name_en .
+        filter(lang(?name_en) = "en")
+    }
+    OPTIONAL {
+        ?Artsdata schema:name ?name_none .
+        filter(lang(?name_none) = "")
+    }
+    bind(coalesce(?name_fr,?name_none,?name_en) as ?name)
+    filter(contains(str(?Artsdata),"http://kg.artsdata.ca/resource/K"))
+    OPTIONAL {
+        ?Artsdata schema:sameAs ?wikidata .
+        filter(contains(str(?wikidata),"http://www.wikidata.org/entity/Q"))
+    }
+    ?Artsdata schema:address ?address .
+    ?address schema:streetAddress ?streetAddress .
+    ?address  schema:addressRegion ?region .
+    OPTIONAL {
+        ?address schema:addressCountry ?country ;
+                 schema:addressLocality ?locality ;
+                 schema:postalCode ?postalCode .
+    }
+    BIND(CONCAT(?streetAddress,", ",?locality,", ",?region,", ",?postalCode) as ?fullAddresses)
+    filter(str(?region) = "QC" || str(?region) = "Quebec" || str(?region) = "Québec")
+}
+group by  ?name ?Artsdata   ?wikidata ?contained_in
