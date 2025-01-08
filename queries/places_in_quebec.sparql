@@ -1,6 +1,15 @@
 PREFIX schema: <http://schema.org/>
 
-select  ?Artsdata  ?contained_in  ?wikidata  ?name (sample(?fullAddresses) as ?fullAddress) where {
+select  ?Artsdata  
+?contained_in  
+?wikidata  
+?name 
+(sample(?streetAddresses) as ?streetAddress) 
+(sample(?localities) as ?locality) 
+(sample(?regions) as ?region) 
+(sample(?postalCodes) as ?postalCode)
+(sample(?countries) as ?country)
+where {
     ?Artsdata a schema:Place .
     OPTIONAL {
         ?Artsdata schema:containedInPlace ?contained_in .
@@ -25,14 +34,14 @@ select  ?Artsdata  ?contained_in  ?wikidata  ?name (sample(?fullAddresses) as ?f
         filter(contains(str(?wikidata),"http://www.wikidata.org/entity/Q"))
     }
     ?Artsdata schema:address ?address .
-    ?address schema:streetAddress ?streetAddress .
-    ?address  schema:addressRegion ?region .
+    ?address schema:streetAddress ?streetAddresses .
+    ?address  schema:addressRegion ?regions .
     OPTIONAL {
-        ?address schema:addressCountry ?country ;
-                 schema:addressLocality ?locality ;
-                 schema:postalCode ?postalCode .
+        ?address schema:addressCountry ?countries ;
+                 schema:addressLocality ?localities ;
+                 schema:postalCode ?postalCodes .
     }
-    BIND(CONCAT(?streetAddress,", ",?locality,", ",?region,", ",?postalCode) as ?fullAddresses)
+   
     filter(str(?region) = "QC" || str(?region) = "Quebec" || str(?region) = "Québec")
 }
 group by  ?name ?Artsdata   ?wikidata ?contained_in
