@@ -1,8 +1,8 @@
 PREFIX schema: <http://schema.org/>
 
 select  
-?Artsdata  
-?name 
+?artsdata  
+?nom 
 ?contained_in  
 ?wikidata  
 (sample(?streetAddresses) as ?streetAddress) 
@@ -28,7 +28,7 @@ where {
         ?Artsdata schema:name ?name_none .
         filter(lang(?name_none) = "")
     }
-    bind(coalesce(?name_fr,?name_none,?name_en) as ?name)
+    bind(coalesce(?name_fr,?name_none,?name_en) as ?nom)
     filter(contains(str(?Artsdata),"http://kg.artsdata.ca/resource/K"))
     OPTIONAL {
         ?Artsdata schema:sameAs ?wikidata .
