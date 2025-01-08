@@ -1,6 +1,5 @@
 PREFIX schema: <http://schema.org/>
-
-select  
+SELECT  
 ?artsdata  
 ?nom 
 ?contained_in  
@@ -11,30 +10,30 @@ select
 (sample(?postalCodes) as ?postalCode)
 (sample(?countries) as ?country)
 where {
-    ?Artsdata a schema:Place .
+    ?artsdata a schema:Place .
     OPTIONAL {
-        ?Artsdata schema:containedInPlace ?contained_in .
+        ?artsdata schema:containedInPlace ?contained_in .
         filter(contains(str(?contained_in),"http://kg.artsdata.ca/resource/K"))
     }
     OPTIONAL {
-        ?Artsdata schema:name ?name_fr .
+        ?artsdata schema:name ?name_fr .
         filter(lang(?name_fr) = "fr")
     }
     OPTIONAL {
-        ?Artsdata schema:name ?name_en .
+        ?artsdata schema:name ?name_en .
         filter(lang(?name_en) = "en")
     }
     OPTIONAL {
-        ?Artsdata schema:name ?name_none .
+        ?artsdata schema:name ?name_none .
         filter(lang(?name_none) = "")
     }
     bind(coalesce(?name_fr,?name_none,?name_en) as ?nom)
-    filter(contains(str(?Artsdata),"http://kg.artsdata.ca/resource/K"))
+    filter(contains(str(?artsdata),"http://kg.artsdata.ca/resource/K"))
     OPTIONAL {
-        ?Artsdata schema:sameAs ?wikidata .
+        ?artsdata schema:sameAs ?wikidata .
         filter(contains(str(?wikidata),"http://www.wikidata.org/entity/Q"))
     }
-    ?Artsdata schema:address ?address .
+    ?artsdata schema:address ?address .
     ?address schema:streetAddress ?streetAddresses .
     ?address  schema:addressRegion ?regions .
     OPTIONAL {
@@ -42,7 +41,6 @@ where {
                  schema:addressLocality ?localities ;
                  schema:postalCode ?postalCodes .
     }
-   
     filter(str(?regions) = "QC" || str(?regions) = "Quebec" || str(?regions) = "Québec")
 }
-group by  ?name ?Artsdata   ?wikidata ?contained_in
+group by  ?nom ?artsdata   ?wikidata ?contained_in
