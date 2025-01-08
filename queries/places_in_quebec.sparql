@@ -1,9 +1,10 @@
 PREFIX schema: <http://schema.org/>
 
-select  ?Artsdata  
+select  
+?Artsdata  
+?name 
 ?contained_in  
 ?wikidata  
-?name 
 (sample(?streetAddresses) as ?streetAddress) 
 (sample(?localities) as ?locality) 
 (sample(?regions) as ?region) 
