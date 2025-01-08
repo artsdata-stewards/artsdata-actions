@@ -42,6 +42,6 @@ where {
                  schema:postalCode ?postalCodes .
     }
    
-    filter(str(?region) = "QC" || str(?region) = "Quebec" || str(?region) = "Québec")
+    filter(str(?regions) = "QC" || str(?regions) = "Quebec" || str(?regions) = "Québec")
 }
 group by  ?name ?Artsdata   ?wikidata ?contained_in
