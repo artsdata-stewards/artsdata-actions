@@ -1,0 +1,19 @@
+PREFIX schema: <http://schema.org/>
+select ?s (sample(?names) as ?name) ?ISNI ?desc ?region where {
+    values ?type {
+        schema:Person schema:Organization 
+    }
+    ?s a ?type .
+    ?s schema:name ?names .
+    filter(contains(str(?s),"artsdata.ca"))
+    graph ?g {
+        ?s schema:description ?desc .
+    }
+    OPTIONAL {
+        ?s schema:sameAs ?ISNI .
+        filter(contains(str(?ISNI),"isni.org"))
+    }
+    OPTIONAL {
+        ?s schema:workLocation/schema:address/schema:addressRegion ?region
+    }
+} group by ?s ?ISNI ?desc ?region
