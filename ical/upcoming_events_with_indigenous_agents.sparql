@@ -3,7 +3,7 @@ PREFIX wd: <http://www.wikidata.org/entity/>
 PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 PREFIX sh: <http://www.w3.org/ns/shacl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-
+PREFIX onto: <http://www.ontotext.com/>
 construct {
     ?event a schema:Event ;
            schema:name ?name ;
@@ -15,32 +15,35 @@ construct {
            schema:performer ?indigenousAgent ;
            schema:organizer ?organizer .
     ?loc a schema:Place ;
-           schema:name ?locName ;
-           schema:sameAs ?locSameAs ;
-           schema:address ?address .
+         schema:name ?locName ;
+         schema:sameAs ?locSameAs ;
+         schema:address ?address .
     ?address a schema:PostalAddress ;
-               schema:streetAddress ?streetAddress ;
-               schema:addressRegion ?addressRegion ;
-               schema:addressCountry ?addressCountry ;
-               schema:postalCode ?postalCode ;
-               schema:addressLocality ?addressLocality .
+             schema:streetAddress ?streetAddress ;
+             schema:addressRegion ?addressRegion ;
+             schema:addressCountry ?addressCountry ;
+             schema:postalCode ?postalCode ;
+             schema:addressLocality ?addressLocality .
     ?indigenousAgent a ?agentType ;
-                       schema:name ?indigenousAgentName ; 
-                       schema:sameAs ?indigenousAgentSameAs .
-    ?organizer a ?organizeType ;
-                 schema:name ?organizerName ; 
-                 schema:sameAs ?organizerSameAs .
+                     schema:name ?indigenousAgentName ;
+                     schema:sameAs ?indigenousAgentSameAs .
+    ?organizer a ?organizerType ;
+               schema:name ?organizerName ;
+               schema:sameAs ?organizerSameAs .
 }
+from onto:explicit
 where {
     # 1 Get indigenous agents in Wikidata with Artsdata IDs
     {
         select distinct ?indigenousAgent where {
             SERVICE <https://query.wikidata.org/sparql> {
                 {
-                    ?person  wdt:P172/wdt:P279* wd:Q15571255 ;  # indigenous peoples in North America
+                    ?person  wdt:P172/wdt:P279* wd:Q15571255 ;
+                                              # indigenous peoples in North America
                                               wdt:P7627 ?adid .
                 } UNION {
-                    ?wdid_uri  wdt:P1552/wdt:P279* wd:Q15571255 ;  # indigenous peoples in North America            
+                    ?wdid_uri  wdt:P1552/wdt:P279* wd:Q15571255 ;
+                                                 # indigenous peoples in North America            
                                                  wdt:P7627 ?adid .
                 }
                 bind(uri(concat("http://kg.artsdata.ca/resource/",?adid))  as ?indigenousAgent)
@@ -51,58 +54,54 @@ where {
     ?event a schema:Event .
     graph ?g {
         ?event schema:performer ?indigenousAgent ;
-        schema:name ?name ;
-        schema:startDate ?startDate ;
-        schema:url ?url ;
-        schema:location ?loc .
+               schema:name ?name ;
+               schema:startDate ?startDate ;
+               schema:url ?url ;
+               schema:location ?loc .
         OPTIONAL {
-           ?event schema:description ?desc .
+            ?event schema:description ?desc .
         }
         OPTIONAL {
             ?event schema:endDate ?endDate .
             filter(datatype(?endDate) = xsd:dateTime)
         }
     }
-
     # Location
     ?loc schema:name ?locName ;
          schema:address ?address .
     OPTIONAL {
-         ?loc schema:sameAs ?locSameAs .
-        }
+        ?loc schema:sameAs ?locSameAs .
+    }
     ?address schema:streetAddress ?streetAddress ;
              schema:addressRegion ?addressRegion ;
              schema:addressCountry ?addressCountry ;
              schema:postalCode ?postalCode ;
              schema:addressLocality ?addressLocality .
-
     # Performer
     ?indigenousAgent schema:name ?indigenousAgentName .
     graph ?performer_graph {
-         ?indigenousAgent a ?agentType .
-        }
+        ?indigenousAgent a ?agentType .
+    }
     OPTIONAL {
         ?indigenousAgent schema:sameAs ?indigenousAgentSameAs .
-        }
-
+    }
     # Organizer
-    
     OPTIONAL {
         ?event schema:organizer ?organizer .
-         graph ?organizer_graph {
-             ?organizer a ?organizerType .
-        }
-        ?organizer schema:name ?organizerName ; 
+        ?organizer a ?organizerType ;
+                   schema:name ?organizerName ;
                    schema:sameAs ?organizerSameAs .
-        }
-    
+    }
     OPTIONAL {
-          ?error sh:focusNode  ?event .
+        ?error sh:focusNode  ?event .
     }
     # Remove SHACL errors
     filter(!Bound(?error))
     # Remove event duplicates, keeping the Artsdata minted event
-    filter( not exists { ?event ^schema:sameAs ?ad_event . filter(contains(str(?ad_event),"kg.artsdata.ca/resource/"))  })
+    filter( not exists {
+            ?event ^schema:sameAs ?ad_event .
+            filter(contains(str(?ad_event),"kg.artsdata.ca/resource/"))  
+        })
     # Remove past events
     filter(?startDate > now())
 }
