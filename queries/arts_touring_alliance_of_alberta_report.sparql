@@ -6,10 +6,12 @@ select *
 WHERE {
     {
         SERVICE <https://query.wikidata.org/sparql> {
-            select distinct ?wikidata (sample(?itemLabels) as ?name)  (sample(?types) as ?type)  ?artsdata (sample(?sites) as ?site) where {
+            select distinct ?wikidata (sample(?itemLabels) as ?name)  (sample(?typeLabels) as ?type)  ?artsdata (sample(?sites) as ?site) where {
                 ?wikidata wdt:P463 wd:Q106823895 ;
                           rdfs:label ?itemLabels ;
                           wdt:P31 ?types .
+                ?types  rdfs:label ?typeLabels .
+                 FILTER(LANG(?typeLabels) IN ("en")).
                 OPTIONAL {
                     ?wikidata wdt:P856 ?sites .
                 }
