@@ -1,0 +1,24 @@
+PREFIX schema: <http://schema.org/>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX wd: <http://www.wikidata.org/entity/>
+select *
+WHERE {
+    {
+        SERVICE <https://query.wikidata.org/sparql> {
+            select distinct ?wikidata (sample(?itemLabels) as ?name)  (sample(?types) as ?type)  ?artsdata (sample(?sites) as ?site) where {
+                ?wikidata wdt:P463 wd:Q106823895 ;
+                          rdfs:label ?itemLabels ;
+                          wdt:P31 ?types .
+                OPTIONAL {
+                    ?wikidata wdt:P856 ?sites .
+                }
+                OPTIONAL {
+                    ?wikidata wdt:P7627 ?adid .
+                    bind(URI(CONCAT("http://kg.artsdata.ca/resource/",?adid)) as ?artsdata)
+                }
+                FILTER(LANG(?itemLabels) IN ("fr","en")).
+            } group by ?wikidata  ?artsdata 
+        }
+    }
+}
