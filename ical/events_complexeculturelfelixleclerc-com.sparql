@@ -40,8 +40,8 @@ where {
     }
     OPTIONAL {
         ?error sh:focusNode  ?event .
-    }
-    BIND(CONCAT(str(?desc),"   ", str(?image)) as ?desc_with_image)
+    } 
+    BIND(CONCAT(str(?desc)," <div><a href=\"", str(?image), "\" target=\"_blank\" rel=\"noopener noreferrer\">See image</a></div>") as ?desc_with_image)
     filter(?startDate > now())
     filter(!Bound(?error))
 }
