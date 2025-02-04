@@ -41,6 +41,7 @@ where {
     OPTIONAL {
         ?error sh:focusNode  ?event .
     }
-    BIND(CONCAT(str(?desc), str(?image)) as ?desc_with_image)
+    BIND(CONCAT(str(?desc),"   ", str(?image)) as ?desc_with_image)
+    filter(?startDate > now())
     filter(!Bound(?error))
 }
