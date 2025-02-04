@@ -5,7 +5,7 @@ construct {
            schema:name ?name ;
            schema:startDate ?startDate ;
            schema:url ?url ;
-           schema:description ?desc_with_image ;
+           schema:description ?desc ;
            schema:location ?loc ;
            schema:endDate ?endDate .
     ?loc schema:name ?loc_name ;
@@ -41,7 +41,6 @@ where {
     OPTIONAL {
         ?error sh:focusNode  ?event .
     } 
-    BIND(CONCAT(str(?desc)," <div><a href=\"", str(?image), "\" target=\"_blank\" rel=\"noopener noreferrer\">See image</a></div>") as ?desc_with_image)
     filter(?startDate > now())
     filter(!Bound(?error))
 }
