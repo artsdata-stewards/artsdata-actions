@@ -1,0 +1,16 @@
+PREFIX dbo: <http://dbpedia.org/ontology/>
+PREFIX schema: <http://schema.org/>
+select ?agent (sample(?names) as ?name ) where {
+    ?agent a dbo:Agent .
+    ?agent schema:name ?names .
+    optional {
+        ?agent schema:sameAs ?to_adid .
+        filter(contains(str(?to_adid),"artsdata.ca"))
+    }
+    optional {
+        ?from_adid schema:sameAs ?agent .
+        filter(contains(str(?from_adid),"artsdata.ca"))
+    }
+    filter(contains(str(?agent),"kg.footlight.io"))
+    filter(!bound(?to_adid) && !bound(?from_adid))
+} group by ?agent
