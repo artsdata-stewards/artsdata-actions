@@ -1,0 +1,53 @@
+PREFIX schema: <http://schema.org/>
+PREFIX sh: <http://www.w3.org/ns/shacl#>
+PREFIX xsd:<http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?uri (sample(?name_language) as ?name)  
+(sample(?location_name) as ?location) 
+(sample(?addressRegions) as ?addressRegion)  
+?startDate ?endDate 
+(sample(?sameas_action) as ?artsdata) 
+(sample(?resultSeverity) as ?conforms) 
+WHERE {
+    ?uri a schema:Event .
+    graph <http://kg.artsdata.ca/culture-creates/artsdata-planet-scenesfrancophones/scenesfrancophones-ca> {
+        ?uri schema:name  ?name_language ;
+              a ?additionalType ;
+             schema:startDate ?startDate . 
+        OPTIONAL {  ?uri schema:endDate ?endDate .  }
+    
+        BIND(IF(datatype(?startDate) = xsd:date, xsd:dateTime(CONCAT(STR(?startDate), "T00:00:00")), ?startDate) AS ?normalizedStartDate)
+       
+        OPTIONAL {
+            ?shacl sh:focusNode ?uri ;
+                sh:resultSeverity ?resultSeverity .
+        }
+         OPTIONAL {
+          ?uri a ?additionalType .
+        }
+    } 
+    OPTIONAL {
+      ?adid_sub schema:sameAs ?uri .
+      filter(contains(str(?adid_sub),"http://kg.artsdata.ca/resource/K"))
+    }
+
+    OPTIONAL {
+      ?uri schema:sameAs ?adid_obj .
+      filter(contains(str(?adid_obj),"http://kg.artsdata.ca/resource/K"))
+    }
+
+    bind(COALESCE(?adid_obj, ?adid_sub) as ?adid)
+
+    OPTIONAL {
+        ?uri  schema:location/schema:name ?location_name .
+    }
+   OPTIONAL {
+        ?uri  schema:location/schema:address/schema:addressRegion ?addressRegions .
+    }
+
+    BIND(COALESCE(?adid, ?mint_top_level) as ?sameas_action)
+   
+    
+
+} GROUP BY ?uri  ?normalizedStartDate ?startDate   ?endDate 
+ORDER BY DESC(?normalizedStartDate)
