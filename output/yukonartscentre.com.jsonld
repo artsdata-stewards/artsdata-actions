@@ -1,0 +1,822 @@
+[
+  {
+    "@id": "_:g463840",
+    "@type": [
+      "http://schema.org/Organization"
+    ],
+    "http://schema.org/name": [
+      {
+        "@value": "Yukon Arts Centre"
+      }
+    ]
+  },
+  {
+    "@id": "_:g463860",
+    "@type": [
+      "http://schema.org/Place"
+    ],
+    "http://schema.org/name": [
+      {
+        "@value": "Yukon Arts Centre"
+      }
+    ],
+    "http://schema.org/address": [
+      {
+        "@id": "_:g463880"
+      }
+    ]
+  },
+  {
+    "@id": "_:g463880",
+    "@type": [
+      "http://schema.org/PostalAddress"
+    ],
+    "http://schema.org/streetAddress": [
+      {
+        "@value": "300 University Drive"
+      }
+    ],
+    "http://schema.org/addressLocality": [
+      {
+        "@value": "Whitehorse"
+      }
+    ],
+    "http://schema.org/addressRegion": [
+      {
+        "@value": "YK"
+      }
+    ],
+    "http://schema.org/postalCode": [
+      {
+        "@value": "Y1A 5X9"
+      }
+    ],
+    "http://schema.org/addressCountry": [
+      {
+        "@value": "CA"
+      }
+    ]
+  },
+  {
+    "@id": "https://purchasing.yukonartscentre.com/ChooseSeats/3601",
+    "@type": [
+      "http://schema.org/Offer"
+    ]
+  },
+  {
+    "@id": "https://yukonartscentre.com/whats-on/jotw-vancouver-pianist-miles-black-trio/",
+    "http://ogp.me/ns#type": [
+      {
+        "@language": "en-us",
+        "@value": "website"
+      }
+    ],
+    "http://ogp.me/ns#title": [
+      {
+        "@language": "en-us",
+        "@value": "JOTW – Vancouver Pianist Miles Black Trio"
+      }
+    ],
+    "http://ogp.me/ns#description": [
+      {
+        "@language": "en-us",
+        "@value": "“Black has established himself as one of Canada's most accomplished jazz pianists, and plays regularly among contemporary jazz greats, this ... promises to be both magnetizing and memorable.” ~ Vancouver International Jazz Festival Recognized as one of Canada's most celebrated…"
+      }
+    ],
+    "http://ogp.me/ns#image": [
+      {
+        "@language": "en-us",
+        "@value": "https://yukonartscentre.com/wp-content/uploads/2024/08/jazz_black-1200x700.jpg"
+      }
+    ],
+    "https://api.w.org/": [
+      {
+        "@id": "https://yukonartscentre.com/wp-json/"
+      }
+    ],
+    "http://www.w3.org/ns/prov#wasDerivedFrom": [
+      {
+        "@id": "https://yukonartscentre.com/whats-on/jotw-vancouver-pianist-miles-black-trio/"
+      }
+    ]
+  },
+  {
+    "@id": "_:g465380",
+    "@type": [
+      "http://schema.org/Organization"
+    ],
+    "http://schema.org/name": [
+      {
+        "@value": "Yukon Arts Centre"
+      }
+    ]
+  },
+  {
+    "@id": "_:g465400",
+    "@type": [
+      "http://schema.org/Place"
+    ],
+    "http://schema.org/name": [
+      {
+        "@value": "Yukon Arts Centre"
+      }
+    ],
+    "http://schema.org/address": [
+      {
+        "@id": "_:g465420"
+      }
+    ]
+  },
+  {
+    "@id": "_:g465420",
+    "@type": [
+      "http://schema.org/PostalAddress"
+    ],
+    "http://schema.org/streetAddress": [
+      {
+        "@value": "300 University Drive"
+      }
+    ],
+    "http://schema.org/addressLocality": [
+      {
+        "@value": "Whitehorse"
+      }
+    ],
+    "http://schema.org/addressRegion": [
+      {
+        "@value": "YK"
+      }
+    ],
+    "http://schema.org/postalCode": [
+      {
+        "@value": "Y1A 5X9"
+      }
+    ],
+    "http://schema.org/addressCountry": [
+      {
+        "@value": "CA"
+      }
+    ]
+  },
+  {
+    "@id": "https://purchasing.yukonartscentre.com/ChooseSeats/3401",
+    "@type": [
+      "http://schema.org/Offer"
+    ]
+  },
+  {
+    "@id": "https://yukonartscentre.com/whats-on/jotw-montreal-bassist-carl-mayotte-quintet/",
+    "http://ogp.me/ns#type": [
+      {
+        "@language": "en-us",
+        "@value": "website"
+      }
+    ],
+    "http://ogp.me/ns#title": [
+      {
+        "@language": "en-us",
+        "@value": "JOTW – Montréal Bassist Carl Mayotte Quintet"
+      }
+    ],
+    "http://ogp.me/ns#description": [
+      {
+        "@language": "en-us",
+        "@value": "  Grand winner of the 2020-2021 Radio-Canada Jazz Revelation title, CARL MAYOTTE is one of the most fashionable young bassists and jazzmen in Quebec and Canada. Mayotte’s third album, Escale, earned him a Félix award for best jazz album of…"
+      }
+    ],
+    "http://ogp.me/ns#image": [
+      {
+        "@language": "en-us",
+        "@value": "https://yukonartscentre.com/wp-content/uploads/2024/08/jazz_mayotte-1200x700.jpg"
+      }
+    ],
+    "https://api.w.org/": [
+      {
+        "@id": "https://yukonartscentre.com/wp-json/"
+      }
+    ],
+    "http://www.w3.org/ns/prov#wasDerivedFrom": [
+      {
+        "@id": "https://yukonartscentre.com/whats-on/jotw-montreal-bassist-carl-mayotte-quintet/"
+      }
+    ]
+  },
+  {
+    "@id": "_:g466800",
+    "@type": [
+      "http://schema.org/Organization"
+    ],
+    "http://schema.org/name": [
+      {
+        "@value": "Yukon Arts Centre"
+      }
+    ]
+  },
+  {
+    "@id": "_:g466820",
+    "@type": [
+      "http://schema.org/Place"
+    ],
+    "http://schema.org/name": [
+      {
+        "@value": "Yukon Arts Centre"
+      }
+    ],
+    "http://schema.org/address": [
+      {
+        "@id": "_:g466840"
+      }
+    ]
+  },
+  {
+    "@id": "_:g466840",
+    "@type": [
+      "http://schema.org/PostalAddress"
+    ],
+    "http://schema.org/streetAddress": [
+      {
+        "@value": "300 University Drive"
+      }
+    ],
+    "http://schema.org/addressLocality": [
+      {
+        "@value": "Whitehorse"
+      }
+    ],
+    "http://schema.org/addressRegion": [
+      {
+        "@value": "YK"
+      }
+    ],
+    "http://schema.org/postalCode": [
+      {
+        "@value": "Y1A 5X9"
+      }
+    ],
+    "http://schema.org/addressCountry": [
+      {
+        "@value": "CA"
+      }
+    ]
+  },
+  {
+    "@id": "https://purchasing.yukonartscentre.com/ChooseSeats/2401",
+    "@type": [
+      "http://schema.org/Offer"
+    ]
+  },
+  {
+    "@id": "https://yukonartscentre.com/whats-on/karl-stobbe-and-friends/",
+    "http://ogp.me/ns#type": [
+      {
+        "@language": "en-us",
+        "@value": "website"
+      }
+    ],
+    "http://ogp.me/ns#title": [
+      {
+        "@language": "en-us",
+        "@value": "Karl Stobbe and Friends"
+      }
+    ],
+    "http://ogp.me/ns#description": [
+      {
+        "@language": "en-us",
+        "@value": "Karl Stobbe (violin), Paul Marleyn (cello) and Paul Williamson (piano) anchor this show. They will also be joined by some of the Yukon’s finest classical players."
+      }
+    ],
+    "http://ogp.me/ns#image": [
+      {
+        "@language": "en-us",
+        "@value": "https://yukonartscentre.com/wp-content/uploads/2024/09/whseconcertsstobbe-1200x787.jpg"
+      }
+    ],
+    "https://api.w.org/": [
+      {
+        "@id": "https://yukonartscentre.com/wp-json/"
+      }
+    ],
+    "http://www.w3.org/ns/prov#wasDerivedFrom": [
+      {
+        "@id": "https://yukonartscentre.com/whats-on/karl-stobbe-and-friends/"
+      }
+    ]
+  },
+  {
+    "@id": "_:g470100",
+    "@type": [
+      "http://schema.org/Organization"
+    ],
+    "http://schema.org/name": [
+      {
+        "@value": "Yukon Arts Centre"
+      }
+    ]
+  },
+  {
+    "@id": "_:g470120",
+    "@type": [
+      "http://schema.org/Place"
+    ],
+    "http://schema.org/name": [
+      {
+        "@value": "Yukon Arts Centre"
+      }
+    ],
+    "http://schema.org/address": [
+      {
+        "@id": "_:g470140"
+      }
+    ]
+  },
+  {
+    "@id": "_:g470140",
+    "@type": [
+      "http://schema.org/PostalAddress"
+    ],
+    "http://schema.org/streetAddress": [
+      {
+        "@value": "300 University Drive"
+      }
+    ],
+    "http://schema.org/addressLocality": [
+      {
+        "@value": "Whitehorse"
+      }
+    ],
+    "http://schema.org/addressRegion": [
+      {
+        "@value": "YK"
+      }
+    ],
+    "http://schema.org/postalCode": [
+      {
+        "@value": "Y1A 5X9"
+      }
+    ],
+    "http://schema.org/addressCountry": [
+      {
+        "@value": "CA"
+      }
+    ]
+  },
+  {
+    "@id": "https://purchasing.yukonartscentre.com/EventAvailability?EventId=12401",
+    "@type": [
+      "http://schema.org/Offer"
+    ]
+  },
+  {
+    "@id": "https://yukonartscentre.com/whats-on/2025-yukon-rendezvous-festival-fiddle-show/",
+    "http://ogp.me/ns#type": [
+      {
+        "@language": "en-us",
+        "@value": "website"
+      }
+    ],
+    "http://ogp.me/ns#title": [
+      {
+        "@language": "en-us",
+        "@value": "2025 Yukon Rendezvous Festival: Fiddle Show"
+      }
+    ],
+    "http://ogp.me/ns#description": [
+      {
+        "@language": "en-us",
+        "@value": "Don’t miss the ever-popular fiddle show! Featuring headliner Ethan Harty, Samuel Corry, and the Fiddlehead. Ethan is an old-time fiddler from Lougheed, Alberta. He started playing at age 8 and can often be found playing for dances in Alberta. Ethan…"
+      }
+    ],
+    "http://ogp.me/ns#image": [
+      {
+        "@language": "en-us",
+        "@value": "https://yukonartscentre.com/wp-content/uploads/2025/01/rendezvousweb-1200x800.jpg"
+      }
+    ],
+    "https://api.w.org/": [
+      {
+        "@id": "https://yukonartscentre.com/wp-json/"
+      }
+    ],
+    "http://www.w3.org/ns/prov#wasDerivedFrom": [
+      {
+        "@id": "https://yukonartscentre.com/whats-on/2025-yukon-rendezvous-festival-fiddle-show/"
+      }
+    ]
+  },
+  {
+    "@id": "_:g472020",
+    "@type": [
+      "http://schema.org/Organization"
+    ],
+    "http://schema.org/name": [
+      {
+        "@value": "Yukon Arts Centre"
+      }
+    ]
+  },
+  {
+    "@id": "_:g472040",
+    "@type": [
+      "http://schema.org/Place"
+    ],
+    "http://schema.org/name": [
+      {
+        "@value": "Yukon Arts Centre"
+      }
+    ],
+    "http://schema.org/address": [
+      {
+        "@id": "_:g472060"
+      }
+    ]
+  },
+  {
+    "@id": "_:g472060",
+    "@type": [
+      "http://schema.org/PostalAddress"
+    ],
+    "http://schema.org/streetAddress": [
+      {
+        "@value": "300 University Drive"
+      }
+    ],
+    "http://schema.org/addressLocality": [
+      {
+        "@value": "Whitehorse"
+      }
+    ],
+    "http://schema.org/addressRegion": [
+      {
+        "@value": "YK"
+      }
+    ],
+    "http://schema.org/postalCode": [
+      {
+        "@value": "Y1A 5X9"
+      }
+    ],
+    "http://schema.org/addressCountry": [
+      {
+        "@value": "CA"
+      }
+    ]
+  },
+  {
+    "@id": "https://purchasing.yukonartscentre.com/EventAvailability?EventId=19201",
+    "@type": [
+      "http://schema.org/Offer"
+    ]
+  },
+  {
+    "@id": "https://yukonartscentre.com/whats-on/the-guild-monty-pythons-spamalot/",
+    "http://ogp.me/ns#type": [
+      {
+        "@language": "en-us",
+        "@value": "website"
+      }
+    ],
+    "http://ogp.me/ns#title": [
+      {
+        "@language": "en-us",
+        "@value": "The Guild: Monty Python’s SPAMALOT"
+      }
+    ],
+    "http://ogp.me/ns#description": [
+      {
+        "@language": "en-us",
+        "@value": "A new musical lovingly ripped off from the motion picture Monty Python and the Holy Grail From the original screenplay by Graham Chapman, John Cleese, Terry Gilliam, Eric idle, Terry Jones, Michael Palin A full-tilt musical comedy, SPAMALOT retells the…"
+      }
+    ],
+    "http://ogp.me/ns#image": [
+      {
+        "@language": "en-us",
+        "@value": "https://yukonartscentre.com/wp-content/uploads/2025/02/IMG_2270-1200x532.jpeg"
+      }
+    ],
+    "https://api.w.org/": [
+      {
+        "@id": "https://yukonartscentre.com/wp-json/"
+      }
+    ],
+    "http://www.w3.org/ns/prov#wasDerivedFrom": [
+      {
+        "@id": "https://yukonartscentre.com/whats-on/the-guild-monty-pythons-spamalot/"
+      }
+    ]
+  },
+  {
+    "@id": "https://yukonartscentre.com/temporary/6af05d57-0cd4-4f92-a5a0-8acc2f1626d0",
+    "@type": [
+      "http://schema.org/Event"
+    ],
+    "http://schema.org/name": [
+      {
+        "@value": "JOTW – Vancouver Pianist Miles Black Trio"
+      }
+    ],
+    "http://schema.org/description": [
+      {
+        "@value": "“Black has established himself as one of Canada&#039;s most accomplished jazz pianists, and plays regularly among contemporary jazz greats, this ... promises to be both magnetizing and memorable.” ~ Vancouver International Jazz Festival Recognized as one of Canada&#039;s most celebrated…"
+      }
+    ],
+    "http://schema.org/image": [
+      {
+        "@id": "https://yukonartscentre.com/wp-content/uploads/2024/08/jazz_black-1024x597.jpg"
+      }
+    ],
+    "http://schema.org/startDate": [
+      {
+        "@type": "http://schema.org/Date",
+        "@value": "2025-03-02T19:30:00-07:00"
+      }
+    ],
+    "http://schema.org/endDate": [
+      {
+        "@type": "http://schema.org/Date",
+        "@value": "2025-03-02T21:30:00-07:00"
+      }
+    ],
+    "http://schema.org/organizer": [
+      {
+        "@id": "_:g463840"
+      }
+    ],
+    "http://schema.org/location": [
+      {
+        "@id": "_:g463860"
+      }
+    ],
+    "http://schema.org/offers": [
+      {
+        "@id": "https://purchasing.yukonartscentre.com/ChooseSeats/3601"
+      }
+    ],
+    "http://www.w3.org/ns/prov#wasDerivedFrom": [
+      {
+        "@id": "https://yukonartscentre.com/whats-on/jotw-vancouver-pianist-miles-black-trio/"
+      }
+    ],
+    "http://schema.org/eventAttendanceMode": [
+      {
+        "@id": "http://schema.org/OfflineEventAttendanceMode"
+      }
+    ],
+    "http://schema.org/eventStatus": [
+      {
+        "@id": "http://schema.org/EventScheduled"
+      }
+    ]
+  },
+  {
+    "@id": "https://yukonartscentre.com/temporary/1d9b95cc-6cbd-4adc-a4f5-7abb3abef85c",
+    "@type": [
+      "http://schema.org/Event"
+    ],
+    "http://schema.org/name": [
+      {
+        "@value": "JOTW – Montréal Bassist Carl Mayotte Quintet"
+      }
+    ],
+    "http://schema.org/description": [
+      {
+        "@value": "  Grand winner of the 2020-2021 Radio-Canada Jazz Revelation title, CARL MAYOTTE is one of the most fashionable young bassists and jazzmen in Quebec and Canada. Mayotte’s third album, Escale, earned him a Félix award for best jazz album of…"
+      }
+    ],
+    "http://schema.org/image": [
+      {
+        "@id": "https://yukonartscentre.com/wp-content/uploads/2024/08/jazz_mayotte-1024x597.jpg"
+      }
+    ],
+    "http://schema.org/startDate": [
+      {
+        "@type": "http://schema.org/Date",
+        "@value": "2025-04-13T19:30:00-07:00"
+      }
+    ],
+    "http://schema.org/endDate": [
+      {
+        "@type": "http://schema.org/Date",
+        "@value": "2025-04-13T21:30:00-07:00"
+      }
+    ],
+    "http://schema.org/organizer": [
+      {
+        "@id": "_:g465380"
+      }
+    ],
+    "http://schema.org/location": [
+      {
+        "@id": "_:g465400"
+      }
+    ],
+    "http://schema.org/offers": [
+      {
+        "@id": "https://purchasing.yukonartscentre.com/ChooseSeats/3401"
+      }
+    ],
+    "http://www.w3.org/ns/prov#wasDerivedFrom": [
+      {
+        "@id": "https://yukonartscentre.com/whats-on/jotw-montreal-bassist-carl-mayotte-quintet/"
+      }
+    ],
+    "http://schema.org/eventAttendanceMode": [
+      {
+        "@id": "http://schema.org/OfflineEventAttendanceMode"
+      }
+    ],
+    "http://schema.org/eventStatus": [
+      {
+        "@id": "http://schema.org/EventScheduled"
+      }
+    ]
+  },
+  {
+    "@id": "https://yukonartscentre.com/temporary/6051bae3-8957-40c3-ae65-d0ddbd4a83b6",
+    "@type": [
+      "http://schema.org/Event"
+    ],
+    "http://schema.org/name": [
+      {
+        "@value": "Karl Stobbe and Friends"
+      }
+    ],
+    "http://schema.org/description": [
+      {
+        "@value": "Karl Stobbe (violin), Paul Marleyn (cello) and Paul Williamson (piano) anchor this show. They will also be joined by some of the Yukon’s finest classical players."
+      }
+    ],
+    "http://schema.org/image": [
+      {
+        "@id": "https://yukonartscentre.com/wp-content/uploads/2024/09/whseconcertsstobbe-1024x671.jpg"
+      }
+    ],
+    "http://schema.org/startDate": [
+      {
+        "@type": "http://schema.org/Date",
+        "@value": "2025-03-08T19:00:00-07:00"
+      }
+    ],
+    "http://schema.org/endDate": [
+      {
+        "@type": "http://schema.org/Date",
+        "@value": "2025-03-08T19:00:00-07:00"
+      }
+    ],
+    "http://schema.org/organizer": [
+      {
+        "@id": "_:g466800"
+      }
+    ],
+    "http://schema.org/location": [
+      {
+        "@id": "_:g466820"
+      }
+    ],
+    "http://schema.org/offers": [
+      {
+        "@id": "https://purchasing.yukonartscentre.com/ChooseSeats/2401"
+      }
+    ],
+    "http://www.w3.org/ns/prov#wasDerivedFrom": [
+      {
+        "@id": "https://yukonartscentre.com/whats-on/karl-stobbe-and-friends/"
+      }
+    ],
+    "http://schema.org/eventAttendanceMode": [
+      {
+        "@id": "http://schema.org/OfflineEventAttendanceMode"
+      }
+    ],
+    "http://schema.org/eventStatus": [
+      {
+        "@id": "http://schema.org/EventScheduled"
+      }
+    ]
+  },
+  {
+    "@id": "https://yukonartscentre.com/temporary/b4202d0b-bad5-41f9-9f77-957b567ff726",
+    "@type": [
+      "http://schema.org/Event"
+    ],
+    "http://schema.org/name": [
+      {
+        "@value": "2025 Yukon Rendezvous Festival: Fiddle Show"
+      }
+    ],
+    "http://schema.org/description": [
+      {
+        "@value": "Don’t miss the ever-popular fiddle show! Featuring headliner Ethan Harty, Samuel Corry, and the Fiddlehead. Ethan is an old-time fiddler from Lougheed, Alberta. He started playing at age 8 and can often be found playing for dances in Alberta. Ethan…"
+      }
+    ],
+    "http://schema.org/image": [
+      {
+        "@id": "https://yukonartscentre.com/wp-content/uploads/2025/01/rendezvousweb-1024x682.jpg"
+      }
+    ],
+    "http://schema.org/startDate": [
+      {
+        "@type": "http://schema.org/Date",
+        "@value": "2025-02-20T19:00:00-07:00"
+      }
+    ],
+    "http://schema.org/endDate": [
+      {
+        "@type": "http://schema.org/Date",
+        "@value": "2025-02-21T14:30:00-07:00"
+      }
+    ],
+    "http://schema.org/organizer": [
+      {
+        "@id": "_:g470100"
+      }
+    ],
+    "http://schema.org/location": [
+      {
+        "@id": "_:g470120"
+      }
+    ],
+    "http://schema.org/offers": [
+      {
+        "@id": "https://purchasing.yukonartscentre.com/EventAvailability?EventId=12401"
+      }
+    ],
+    "http://www.w3.org/ns/prov#wasDerivedFrom": [
+      {
+        "@id": "https://yukonartscentre.com/whats-on/2025-yukon-rendezvous-festival-fiddle-show/"
+      }
+    ],
+    "http://schema.org/eventAttendanceMode": [
+      {
+        "@id": "http://schema.org/OfflineEventAttendanceMode"
+      }
+    ],
+    "http://schema.org/eventStatus": [
+      {
+        "@id": "http://schema.org/EventScheduled"
+      }
+    ]
+  },
+  {
+    "@id": "https://yukonartscentre.com/temporary/f6792e01-89e2-4b5f-9405-18488bf0fcab",
+    "@type": [
+      "http://schema.org/Event"
+    ],
+    "http://schema.org/name": [
+      {
+        "@value": "The Guild: Monty Python’s SPAMALOT"
+      }
+    ],
+    "http://schema.org/description": [
+      {
+        "@value": "A new musical lovingly ripped off from the motion picture Monty Python and the Holy Grail From the original screenplay by Graham Chapman, John Cleese, Terry Gilliam, Eric idle, Terry Jones, Michael Palin A full-tilt musical comedy, SPAMALOT retells the…"
+      }
+    ],
+    "http://schema.org/image": [
+      {
+        "@id": "https://yukonartscentre.com/wp-content/uploads/2025/02/IMG_2270-1024x454.jpeg"
+      }
+    ],
+    "http://schema.org/startDate": [
+      {
+        "@type": "http://schema.org/Date",
+        "@value": "2025-03-25T19:00:00-07:00"
+      }
+    ],
+    "http://schema.org/endDate": [
+      {
+        "@type": "http://schema.org/Date",
+        "@value": "2025-03-30T19:30:00-07:00"
+      }
+    ],
+    "http://schema.org/organizer": [
+      {
+        "@id": "_:g472020"
+      }
+    ],
+    "http://schema.org/location": [
+      {
+        "@id": "_:g472040"
+      }
+    ],
+    "http://schema.org/offers": [
+      {
+        "@id": "https://purchasing.yukonartscentre.com/EventAvailability?EventId=19201"
+      }
+    ],
+    "http://www.w3.org/ns/prov#wasDerivedFrom": [
+      {
+        "@id": "https://yukonartscentre.com/whats-on/the-guild-monty-pythons-spamalot/"
+      }
+    ],
+    "http://schema.org/eventAttendanceMode": [
+      {
+        "@id": "http://schema.org/OfflineEventAttendanceMode"
+      }
+    ],
+    "http://schema.org/eventStatus": [
+      {
+        "@id": "http://schema.org/EventScheduled"
+      }
+    ]
+  }
+]
