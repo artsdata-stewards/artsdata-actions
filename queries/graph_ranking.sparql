@@ -5,8 +5,10 @@ PREFIX prov: <http://www.w3.org/ns/prov#>
 select * 
 where {
     ?graph a schema:Dataset ;
-           schema:name ?name ;
-           prov:generatedAtTime ?generatedAtTime .
+           schema:name ?name .
+    OPTIONAL {
+       ?graph prov:generatedAtTime ?generatedAtTime .
+    }
     OPTIONAL {
         ?graph  schema:maintainer ?maintainer .
     }
