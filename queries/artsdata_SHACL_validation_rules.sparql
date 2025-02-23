@@ -1,0 +1,16 @@
+PREFIX sh: <http://www.w3.org/ns/shacl#>
+PREFIX schema: <http://schema.org/>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+select * where {
+    graph ?graph {
+        ?node_shape a sh:NodeShape.
+        OPTIONAL {
+            ?node_shape sh:name ?node_name .
+        }
+        ?node_shape sh:property ?property_shape .
+        OPTIONAL {
+            ?property_shape sh:name ?property_name .
+        }
+    }
+    ?graph <http://www.w3.org/ns/prov#wasDerivedFrom>/foaf:primaryTopic/<http://purl.org/dc/terms/hasVersion> ?shacl_version .
+} 
