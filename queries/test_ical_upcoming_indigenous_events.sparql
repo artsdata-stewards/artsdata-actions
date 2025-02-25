@@ -23,10 +23,11 @@ where {
         }
     }
     # 2 Get event properties needed for iCal
-    ?event a schema:Event .
+    ?event a schema:Event  ;
+            schema:performer/schema:sameAs* ?indigenousPerson  .
+             
     graph ?g {
-         ?event  schema:performer ?indigenousPerson ;
-           schema:name ?name ;
+         ?event  schema:name ?name ;
            schema:startDate ?startDate ;
            schema:url ?url ;
            schema:location ?loc .
