@@ -37,7 +37,7 @@ where {
     }
     # 2 Get event properties needed for iCal
     ?event a schema:Event ;
-           schema:performer ?performer ;
+           schema:performer/schema:sameAs* ?performer ;
            schema:name ?names ;
            schema:startDate ?startDate .
     OPTIONAL {
