@@ -45,8 +45,7 @@ where {
         bind(URI(?url_any) as ?url)
     }
     OPTIONAL {
-        ?event schema:description ?desc .
-        bind(CONCAT(substr(?desc,1,50),"...") as ?descs_trunc)
+        ?event schema:description ?descs_trunc .
     }
     OPTIONAL {
         ?event schema:location ?loc .
