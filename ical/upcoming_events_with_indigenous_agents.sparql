@@ -98,12 +98,14 @@ where {
              schema:addressCountry ?addressCountry ;
              schema:postalCode ?postalCode ;
              schema:addressLocality ?addressLocality .
+    
     # Performer
     ?performer schema:name ?indigenousAgentName ;
                a ?agentType .
     OPTIONAL {
         ?performer schema:sameAs ?indigenousAgentSameAs .
     }
+    
     # Organizer
     OPTIONAL {
         ?event schema:organizer ?organizer .
@@ -111,10 +113,9 @@ where {
                    schema:name ?organizerName ;
                    schema:sameAs ?organizerSameAs .
     }
-    OPTIONAL {
-        ?error sh:focusNode  ?event .
-    }
-    # Remove event duplicates, keeping the Artsdata minted event
+    
+    # Remove event duplicates
+    # keeping the Artsdata minted event if it has a performer
     filter( not exists {
             ?event ^schema:sameAs ?ad_event .
             ?ad_event schema:performer ?some_performer .
