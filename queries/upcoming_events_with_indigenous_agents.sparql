@@ -38,8 +38,8 @@ select  ?event
 (sample(?performer) as ?performer_) 
 (sample(?organizer) as ?organizer_)
 (sample(?desc) as ?description)
-(sample(?loc_names) as ?place) 
-?loc_sameAs
+(sample(?loc_names) as ?place_name) 
+(sample(?loc_sameAs) as ?place)
 (sample(?streetAddress) as ?Address) 
 (sample(?addressLocality) as ?Locality)  
 (sample(?addressRegion) as ?Region)  
