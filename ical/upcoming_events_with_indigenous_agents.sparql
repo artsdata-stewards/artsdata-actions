@@ -4,6 +4,7 @@ PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 PREFIX sh: <http://www.w3.org/ns/shacl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX onto: <http://www.ontotext.com/>
+
 construct {
     ?event a schema:Event ;
            schema:name ?names ;
@@ -16,6 +17,7 @@ construct {
            schema:organizer ?organizer .
     ?loc a schema:Place ;
          schema:name ?loc_names;
+         schema:sameAs ?loc_sameAs;
          schema:address ?address .
     ?address a schema:PostalAddress ;
              schema:streetAddress ?streetAddress ;
@@ -24,13 +26,12 @@ construct {
              schema:postalCode ?postalCode ;
              schema:addressLocality ?addressLocality .
     ?performer a ?agentType ;
-                     schema:name ?indigenousAgentName ;
-                     schema:sameAs ?indigenousAgentSameAs .
+               schema:name ?indigenousAgentName ;
+               schema:sameAs ?indigenousAgentSameAs .
     ?organizer a ?organizerType ;
                schema:name ?organizerName ;
                schema:sameAs ?organizerSameAs .
 }
-
 #select  ?event 
 #(sample(?names) as ?name) 
 #?startDate   
@@ -72,15 +73,12 @@ where {
                     schema:performer/schema:sameAs* ?performer .
         }
     }
-    
-     
     # 3 Get event properties needed for iCal
     graph ?g {
         ?event   schema:name ?names ;
                  schema:startDate ?startDate ;
                  schema:url ?url .
     }
-     
     OPTIONAL {
         ?event schema:description ?desc .
     }
@@ -88,24 +86,21 @@ where {
         ?event schema:endDate ?endDate .
         filter(datatype(?endDate) = xsd:dateTime)
     }
-    
     # Location
     ?event schema:location ?loc .
-    
     ?loc schema:name ?loc_names ;
          schema:address ?address .
-
+    OPTIONAL {
+        ?loc schema:sameAs ?loc_sameAs .
+    }
     ?address schema:streetAddress ?streetAddress ;
              schema:addressRegion ?addressRegion ;
              schema:addressCountry ?addressCountry ;
              schema:postalCode ?postalCode ;
              schema:addressLocality ?addressLocality .
-   
     # Performer
-    ?performer schema:name ?indigenousAgentName .
-    graph ?performer_graph {
-        ?performer a ?agentType .
-    }
+    ?performer schema:name ?indigenousAgentName ;
+               a ?agentType .
     OPTIONAL {
         ?performer schema:sameAs ?indigenousAgentSameAs .
     }
@@ -119,22 +114,18 @@ where {
     OPTIONAL {
         ?error sh:focusNode  ?event .
     }
-    
-    
     # Remove event duplicates, keeping the Artsdata minted event
     filter( not exists {
             ?event ^schema:sameAs ?ad_event .
-              ?ad_event schema:performer ?some_performer .
+            ?ad_event schema:performer ?some_performer .
             filter(contains(str(?ad_event),"kg.artsdata.ca/resource/"))  
         })
-    
     # Remove events with errors
     OPTIONAL {
         ?bn sh:focusNode ?event ;
-         	sh:resultSeverity ?error .
+            sh:resultSeverity ?error .
     }
     filter(!Bound(?error) || ?error != sh:Violation )
-    
     # Remove past events
     filter(?startDate > now())
 } #group by ?event ?startDate ?endDate ?error
