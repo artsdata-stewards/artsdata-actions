@@ -87,6 +87,10 @@ where {
     # Location
     OPTIONAL {
         ?event schema:location ?loc .
+        OPTIONAL {
+            ?bn_loc sh:focusNode ?loc  ;
+                    sh:resultSeverity ?error .
+        }
         ?loc schema:name ?loc_names  .
         OPTIONAL {
             ?loc schema:sameAs ?loc_sameAs .
@@ -133,8 +137,8 @@ where {
         })
     # Remove events with errors
     OPTIONAL {
-        ?bn sh:focusNode ?event ;
-            sh:resultSeverity ?error .
+        ?bn_event sh:focusNode ?event ;
+                  sh:resultSeverity ?error .
     }
     #filter(!Bound(?error) || ?error != sh:Violation )
     # Remove past events
