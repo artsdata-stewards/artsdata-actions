@@ -6,17 +6,16 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX onto: <http://www.ontotext.com/>
 construct {
     ?event a schema:Event ;
-           schema:name ?name ;
+           schema:name ?names ;
            schema:startDate ?startDate ;
-           schema:url ?url ;
+           schema:url ?urls ;
            schema:description ?desc ;
            schema:location ?loc ;
            schema:endDate ?endDate ;
-           schema:performer ?indigenousAgent ;
+           schema:performer ?performer ;
            schema:organizer ?organizer .
     ?loc a schema:Place ;
-         schema:name ?locName ;
-         schema:sameAs ?locSameAs ;
+         schema:name ?loc_names;
          schema:address ?address .
     ?address a schema:PostalAddress ;
              schema:streetAddress ?streetAddress ;
@@ -24,18 +23,34 @@ construct {
              schema:addressCountry ?addressCountry ;
              schema:postalCode ?postalCode ;
              schema:addressLocality ?addressLocality .
-    ?indigenousAgent a ?agentType ;
+    ?performer a ?agentType ;
                      schema:name ?indigenousAgentName ;
                      schema:sameAs ?indigenousAgentSameAs .
     ?organizer a ?organizerType ;
                schema:name ?organizerName ;
                schema:sameAs ?organizerSameAs .
 }
+
+#select  ?event 
+#(sample(?names) as ?name) 
+#?startDate   
+#?endDate 
+#(sample(?performer) as ?sample_performer) 
+#(sample(?organizer) as ?sample_organizer) 
+#(sample(?desc) as ?description)  
+#(sample(?loc_names) as ?loc_name) 
+#(sample(?streetAddresss) as ?streetAddress) 
+#(sample(?addressLocalitys) as ?addressLocality)  
+#(sample(?addressRegions) as ?addressRegion)  
+#(sample(?addressCountrys) as ?addressCountry)  
+#(sample(?postalCodes) as ?postalCode) 
+#(sample(?urls) as ?url)
+#?error
 from onto:explicit
 where {
     # 1 Get indigenous agents in Wikidata with Artsdata IDs
     {
-        select distinct ?indigenousAgent where {
+        select distinct ?performer where {
             SERVICE <https://query.wikidata.org/sparql> {
                 {
                     ?person  wdt:P172/wdt:P279* wd:Q15571255 ;
@@ -46,44 +61,53 @@ where {
                                                  # indigenous peoples in North America            
                                                  wdt:P7627 ?adid .
                 }
-                bind(uri(concat("http://kg.artsdata.ca/resource/",?adid))  as ?indigenousAgent)
+                bind(uri(concat("http://kg.artsdata.ca/resource/",?adid))  as ?performer)
             }
         }
     }
-    # 2 Get event properties needed for iCal
-    ?event a schema:Event .
+    # 2 Get events with indigenous performer
+    {
+        select * where {
+            ?event  a schema:Event ;
+                    schema:performer/schema:sameAs* ?performer .
+        }
+    }
+    
+     
+    # 3 Get event properties needed for iCal
     graph ?g {
-        ?event schema:performer/schema:sameAs* ?indigenousAgent ;
-               schema:name ?name ;
-               schema:startDate ?startDate ;
-               schema:url ?url ;
-               schema:location ?loc .
-        OPTIONAL {
-            ?event schema:description ?desc .
-        }
-        OPTIONAL {
-            ?event schema:endDate ?endDate .
-            filter(datatype(?endDate) = xsd:dateTime)
-        }
+        ?event   schema:name ?names ;
+                 schema:startDate ?startDate ;
+                 schema:url ?url .
     }
-    # Location
-    ?loc schema:name ?locName ;
-         schema:address ?address .
+     
     OPTIONAL {
-        ?loc schema:sameAs ?locSameAs .
+        ?event schema:description ?desc .
     }
+    OPTIONAL {
+        ?event schema:endDate ?endDate .
+        filter(datatype(?endDate) = xsd:dateTime)
+    }
+    
+    # Location
+    ?event schema:location ?loc .
+    
+    ?loc schema:name ?loc_names ;
+         schema:address ?address .
+
     ?address schema:streetAddress ?streetAddress ;
              schema:addressRegion ?addressRegion ;
              schema:addressCountry ?addressCountry ;
              schema:postalCode ?postalCode ;
              schema:addressLocality ?addressLocality .
+   
     # Performer
-    ?indigenousAgent schema:name ?indigenousAgentName .
+    ?performer schema:name ?indigenousAgentName .
     graph ?performer_graph {
-        ?indigenousAgent a ?agentType .
+        ?performer a ?agentType .
     }
     OPTIONAL {
-        ?indigenousAgent schema:sameAs ?indigenousAgentSameAs .
+        ?performer schema:sameAs ?indigenousAgentSameAs .
     }
     # Organizer
     OPTIONAL {
@@ -95,13 +119,22 @@ where {
     OPTIONAL {
         ?error sh:focusNode  ?event .
     }
-    # Remove SHACL errors
-    filter(!Bound(?error))
+    
+    
     # Remove event duplicates, keeping the Artsdata minted event
     filter( not exists {
             ?event ^schema:sameAs ?ad_event .
+              ?ad_event schema:performer ?some_performer .
             filter(contains(str(?ad_event),"kg.artsdata.ca/resource/"))  
         })
+    
+    # Remove events with errors
+    OPTIONAL {
+        ?bn sh:focusNode ?event ;
+         	sh:resultSeverity ?error .
+    }
+    filter(!Bound(?error) || ?error != sh:Violation )
+    
     # Remove past events
     filter(?startDate > now())
-}
+} #group by ?event ?startDate ?endDate ?error
