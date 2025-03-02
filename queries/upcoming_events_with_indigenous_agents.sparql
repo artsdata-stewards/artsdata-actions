@@ -37,9 +37,10 @@ select  ?event
 ?endDate 
 (sample(?performer) as ?performer_) 
 (sample(?organizer) as ?organizer_)
-(sample(?desc) as ?description)  
+(sample(?desc) as ?description)
 (sample(?loc_names) as ?place) 
-(sample(?streetAddress) as ?Adress) 
+?loc_sameAs
+(sample(?streetAddress) as ?Address) 
 (sample(?addressLocality) as ?Locality)  
 (sample(?addressRegion) as ?Region)  
 (sample(?addressCountry) as ?Country)  
