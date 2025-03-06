@@ -18,4 +18,5 @@ where {
     OPTIONAL {
         ?graph  schema:contentRating/schema:ratingExplanation ?ratingExplanation .
     }
+    filter(isURI(?graph))
 } order by DESC(?ratingValue)
