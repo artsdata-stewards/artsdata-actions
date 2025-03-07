@@ -1,5 +1,5 @@
 PREFIX schema: <http://schema.org/>
-PREFIX : <http://dbpedia.org/ontology/>
+
 select ?artsdata (sample(?names) as ?name) ?ISNI ?desc ?region  ?maximumAttendeeCapacity
 where {
     values ?type {
@@ -23,5 +23,6 @@ where {
     OPTIONAL {
         ?artsdata schema:workLocation/schema:address/schema:addressRegion ?region
     }
+    filter ( Bound(?maximumAttendeeCapacity) ||  Bound(?desc) ||  Bound(?ISNI) ||  Bound(?region) )
 } group by ?artsdata ?ISNI ?desc ?region ?maximumAttendeeCapacity
-limit 1000
+limit 500
