@@ -1,0 +1,26 @@
+PREFIX schema: <http://schema.org/>
+PREFIX : <http://dbpedia.org/ontology/>
+select ?artsdata (sample(?names) as ?name) ?ISNI ?desc ?region  ?maximumAttendeeCapacity
+where {
+    values ?type {
+        schema:Place schema:Person schema:Organization
+    }
+    ?artsdata a ?type .
+    ?artsdata schema:name ?names .
+    filter(contains(str(?artsdata),"artsdata.ca"))
+    OPTIONAL {
+        ?artsdata schema:maximumAttendeeCapacity ?maximumAttendeeCapacity
+    }
+    OPTIONAL {
+        graph ?g {
+            ?artsdata schema:description ?desc .
+        }
+    }
+    OPTIONAL {
+        ?artsdata schema:sameAs ?ISNI .
+        filter(contains(str(?ISNI),"isni.org"))
+    }
+    OPTIONAL {
+        ?artsdata schema:workLocation/schema:address/schema:addressRegion ?region
+    }
+} group by ?artsdata ?ISNI ?desc ?region ?maximumAttendeeCapacity
