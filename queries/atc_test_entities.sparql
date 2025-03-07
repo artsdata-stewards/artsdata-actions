@@ -24,3 +24,4 @@ where {
         ?artsdata schema:workLocation/schema:address/schema:addressRegion ?region
     }
 } group by ?artsdata ?ISNI ?desc ?region ?maximumAttendeeCapacity
+limit 1000
