@@ -77,7 +77,7 @@ where {
     graph ?g {
         ?event   schema:name ?names ;
                  schema:startDate ?startDate ;
-                 schema:url ?url .
+                 schema:url ?urls .
     }
     OPTIONAL {
         ?event schema:description ?desc .
