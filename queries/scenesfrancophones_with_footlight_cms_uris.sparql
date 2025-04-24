@@ -1,0 +1,66 @@
+PREFIX schema: <http://schema.org/>
+PREFIX sh: <http://www.w3.org/ns/shacl#>
+PREFIX xsd:<http://www.w3.org/2001/XMLSchema#>
+
+SELECT 
+  ?uri 
+  (sample(?name_language) as ?name)  
+  (sample(?location_name) as ?location) 
+  (sample(?additionalType) as ?type)  
+  ?startDate 
+  ?endDate 
+  (sample(?sameas_action) as ?artsdata)  
+(sample(?cms_id) as ?footlight)  
+  (sample(?resultSeverity) as ?conforms) 
+WHERE {
+    ?uri a schema:Event .
+    graph <http://kg.artsdata.ca/capacoa/artsdata-planet-scenesfrancophones/scenesfrancophones-ca> {
+        ?uri schema:name  ?name_language ;
+              a ?additionalType ;
+             schema:startDate ?startDate . 
+        OPTIONAL {  ?uri schema:endDate ?endDate . 
+          BIND(IF(datatype(?endDate) = xsd:date, xsd:dateTime(CONCAT(STR(?endDate), "T00:00:00")), ?endDate) AS ?normalizedEndDate)
+        }
+        BIND(IF(datatype(?startDate) = xsd:date, xsd:dateTime(CONCAT(STR(?startDate), "T00:00:00")), ?startDate) AS ?normalizedStartDate)
+        OPTIONAL {
+          FILTER NOT EXISTS { ?series schema:subEvent ?uri . }
+          bind(concat("<a class='btn btn-primary btn-sm' href='/mint/preview?externalUri=",ENCODE_FOR_URI(str(?uri)),"'>mint</a>") as ?mint_top_level)
+          bind(COALESCE(?normalizedEndDate,?normalizedStartDate) as ?earliest_end)
+          filter(?earliest_end > now())
+          filter(NOT EXISTS {  ?shacl sh:focusNode ?uri })
+        }
+        OPTIONAL {
+            ?shacl sh:focusNode ?uri ;
+                sh:resultSeverity ?resultSeverity .
+        }
+         OPTIONAL {
+          ?uri a ?additionalType .
+        }
+    } 
+    OPTIONAL {
+      ?adid_sub schema:sameAs ?uri .
+      filter(contains(str(?adid_sub),"http://kg.artsdata.ca/resource/K"))
+    }
+  
+  OPTIONAL {
+    ?cms_id schema:sameAs ?uri .
+     filter(contains(str(?cms_id),"http://lod.footlight.io"))
+  }
+
+    OPTIONAL {
+      ?uri schema:sameAs ?adid_obj .
+      filter(contains(str(?adid_obj),"http://kg.artsdata.ca/resource/K"))
+    }
+
+    bind(COALESCE(?adid_obj, ?adid_sub) as ?adid)
+
+    OPTIONAL {
+        ?uri  schema:location/schema:name ?location_name .
+    }
+
+    BIND(COALESCE(?adid, ?mint_top_level) as ?sameas_action)
+   
+    
+
+} GROUP BY ?uri  ?normalizedStartDate ?startDate   ?endDate 
+ORDER BY DESC(?normalizedStartDate) DESC(?resultSeverity)
