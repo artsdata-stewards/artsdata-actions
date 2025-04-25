@@ -10,7 +10,7 @@ SELECT ?uri (sample(?name_language) as ?name)
 (sample(?resultSeverity) as ?conforms) 
 WHERE {
     ?uri a schema:Event .
-    graph <http://kg.artsdata.ca/culture-creates/artsdata-planet-scenesfrancophones/scenesfrancophones-ca> {
+    graph <http://kg.artsdata.ca/capacoa/artsdata-planet-scenesfrancophones/scenesfrancophones-ca> {
         ?uri schema:name  ?name_language ;
               a ?additionalType ;
              schema:startDate ?startDate . 
