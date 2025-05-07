@@ -11,15 +11,23 @@ SELECT ?event
 (SAMPLE(?names) as ?name)
 ?startDate
 ?endDate
+(SAMPLE(?descriptions) as ?description)
+(SAMPLE(?images) as ?image)
 (SAMPLE(?locationNames) as ?locationName)
-(SAMPLE(?municipalities) as ?municipality) 
+(SAMPLE(?municipalities) as ?municipality)
+?postalCode
 (SAMPLE(?organizerNames) as ?organizerName)
 WHERE {
     ?event a schema:Event ;
            schema:name ?names ;
            schema:startDate ?startDate ;
-           schema:location ?location ;
-           schema:organizer ?organizer .
+           schema:location ?location .
+    OPTIONAL {
+        ?event schema:description ?descriptions .
+    }
+    OPTIONAL {
+        ?event schema:image/schema:url ?images .
+    }
     FILTER( not exists {
             ?event schema:sameAs ?ad_event .
             filter(contains(str(?ad_event),"kg.artsdata.ca/resource/"))  
@@ -70,6 +78,7 @@ WHERE {
         LCASE(?municipalities) = "gatinea"
     )
     OPTIONAL {
+        ?event schema:organizer ?organizer .
         ?organizer schema:name ?organizerNames .
     }
 }
