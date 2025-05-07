@@ -1,0 +1,67 @@
+PREFIX schema: <http://schema.org/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+SELECT ?event
+(GROUP_CONCAT(DISTINCT ?additionalTypeLabel;
+        separator=", ") AS ?additionalTypes)
+(GROUP_CONCAT(DISTINCT ?event_keywords;
+        separator=", ") AS ?event_keyword)
+(GROUP_CONCAT(DISTINCT ?work_keywords;
+        separator=", ") AS ?work_keyword)
+(SAMPLE(?names) as ?name)
+?startDate
+(SAMPLE(?locationNames) as ?locationName)
+(SAMPLE(?municipalities) as ?municipality)
+?postalCode
+(SAMPLE(?organizerNames) as ?organizerName)
+WHERE {
+    GRAPH <http://kg.artsdata.ca/culture-creates/artsdata-planet-nac/nac-events> {
+        ?event a schema:Event ;
+               schema:name ?names ;
+               schema:startDate ?startDate ;
+               schema:location ?location .
+    }
+    BIND(IF(datatype(?startDate) = xsd:date, xsd:dateTime(CONCAT(STR(?startDate), "T00:00:00")), ?startDate) AS ?normalized_startDate)
+    FILTER(?normalized_startDate > now())
+    OPTIONAL {
+        ?event  schema:endDate ?endDate .
+    }
+    OPTIONAL {
+        ?event schema:additionalType ?additionalType .
+        ?additionalType rdfs:label ?additionalTypeLabel_en
+        filter(lang(?additionalTypeLabel_en) = "en")
+        ?additionalType rdfs:label ?additionalTypeLabel_fr
+        filter(lang(?additionalTypeLabel_fr) = "fr")
+        BIND(coalesce(?additionalTypeLabel_en,?additionalTypeLabel_fr) as ?additionalTypeLabel)
+    }
+    OPTIONAL {
+        ?event schema:keywords ?event_keywords .
+    }
+    ?event schema:workPerformed/schema:keywords ?work_keywords .
+    filter(contains(LCASE(?work_keywords),"tourism"))
+    OPTIONAL {
+        ?location schema:name ?locationNames .
+    }
+    OPTIONAL {
+        ?location schema:address ?address .
+        OPTIONAL {
+            ?address schema:addressLocality ?municipalities .
+        }
+        OPTIONAL {
+            ?address   schema:postalCode ?postalCode .
+        }
+    }
+    FILTER(
+        REGEX(?postalCode, "^K[1-4]", "i") ||
+        REGEX(?postalCode, "^J8[L-Z]", "i") ||
+        REGEX(?postalCode, "^J9[A-J]", "i") ||
+        LCASE(?municipalities) = "ottawa" ||
+        LCASE(?municipalities) = "gatinea"
+    )
+    OPTIONAL {
+        ?event schema:organizer ?organizer .
+        ?organizer schema:name ?organizerNames .
+    }
+}
+GROUP BY ?event  ?startDate ?endDate ?location  ?postalCode  
+ORDER BY ?startDate
