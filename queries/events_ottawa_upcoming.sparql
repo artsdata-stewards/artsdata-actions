@@ -20,6 +20,7 @@ WHERE {
            schema:startDate ?startDate ;
            schema:location ?location ;
            schema:organizer ?organizer .
+    # TODO: include startdates without time
     filter(?startDate > now())
     OPTIONAL {
         ?event  schema:endDate ?endDate .
