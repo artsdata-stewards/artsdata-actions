@@ -10,7 +10,7 @@ SELECT ?event
         separator=", ") AS ?work_keyword)
 (SAMPLE(?names) as ?name)
 ?startDate
-?endDate
+(SAMPLE(?endDates) as ?endDate)
 # (SAMPLE(?descriptions) as ?description)
 # (SAMPLE(?images) as ?image)
 (SAMPLE(?locationNames) as ?locationName)
@@ -22,12 +22,7 @@ WHERE {
            schema:name ?names ;
            schema:startDate ?startDate ;
            schema:location ?location .
-    # OPTIONAL {
-    #     ?event schema:description ?descriptions .
-    # }
-    # OPTIONAL {
-    #     ?event schema:image/schema:url ?images .
-    # }
+
     FILTER( not exists {
             ?event schema:sameAs ?ad_event .
             filter(contains(str(?ad_event),"kg.artsdata.ca/resource/"))  
@@ -35,15 +30,9 @@ WHERE {
     BIND(IF(datatype(?startDate) = xsd:date, xsd:dateTime(CONCAT(STR(?startDate), "T00:00:00")), ?startDate) AS ?normalized_startDate)
     FILTER(?normalized_startDate > now())
     OPTIONAL {
-        ?event  schema:endDate ?endDate .
+        ?event  schema:endDate ?endDates .
     }
-    #  FILTER(?location = <http://kg.artsdata.ca/resource/K2-237>)
-    #  FILTER(?organizer IN (
-    #        <http://kg.artsdata.ca/resource/K10-26>,
-    #        <http://kg.artsdata.ca/resource/K14-29>,
-    #        <http://kg.artsdata.ca/resource/K14-16>
-    #    )
-    #)
+
     OPTIONAL {
         ?event schema:additionalType ?additionalType .
         ?additionalType rdfs:label ?additionalTypeLabel_en
@@ -82,5 +71,5 @@ WHERE {
         ?organizer schema:name ?organizerNames .
     }
 }
-GROUP BY ?event  ?startDate ?endDate ?location  ?postalCode  
+GROUP BY ?event  ?startDate  ?postalCode  
 ORDER BY ?startDate
