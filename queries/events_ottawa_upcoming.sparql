@@ -1,18 +1,20 @@
 PREFIX schema: <http://schema.org/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 SELECT ?event
 (GROUP_CONCAT(DISTINCT ?additionalTypeLabel;
         separator=", ") AS ?additionalTypes)
-(GROUP_CONCAT(DISTINCT ?keyword;
-        separator=", ") AS ?keywords)
+(GROUP_CONCAT(DISTINCT ?event_keywords;
+        separator=", ") AS ?event_keyword)
+(GROUP_CONCAT(DISTINCT ?work_keywords;
+        separator=", ") AS ?work_keyword)
+
 (SAMPLE(?names) as ?name)
 ?startDate
 ?endDate
-# ?location
 (SAMPLE(?locationNames) as ?locationName)
 (SAMPLE(?municipalities) as ?municipality) 
-# ?postalCode
-# ?organizer
+
 (SAMPLE(?organizerNames) as ?organizerName)
 WHERE {
     ?event a schema:Event ;
@@ -20,8 +22,12 @@ WHERE {
            schema:startDate ?startDate ;
            schema:location ?location ;
            schema:organizer ?organizer .
-    # TODO: include startdates without time
-    filter(?startDate > now())
+    FILTER( not exists {
+            ?event schema:sameAs ?ad_event .
+            filter(contains(str(?ad_event),"kg.artsdata.ca/resource/"))  
+        })
+    BIND(IF(datatype(?startDate) = xsd:date, xsd:dateTime(CONCAT(STR(?startDate), "T00:00:00")), ?startDate) AS ?normalized_startDate)
+    FILTER(?normalized_startDate > now())
     OPTIONAL {
         ?event  schema:endDate ?endDate .
     }
@@ -34,21 +40,29 @@ WHERE {
     #)
     OPTIONAL {
         ?event schema:additionalType ?additionalType .
-        ?additionalType rdfs:label ?additionalTypeLabel .
+        ?additionalType rdfs:label ?additionalTypeLabel_en
+        filter(lang(?additionalTypeLabel_en) = "en")
+         ?additionalType rdfs:label ?additionalTypeLabel_fr
+        filter(lang(?additionalTypeLabel_fr) = "fr")
+        BIND(coalesce(?additionalTypeLabel_en,?additionalTypeLabel_fr) as ?additionalTypeLabel)
     }
     OPTIONAL {
-        ?event schema:keywords ?keyword .
+        ?event schema:keywords ?event_keywords .
     }
+    OPTIONAL {
+        ?event schema:workPerformed/schema:keywords ?work_keywords .
+    }
+   
     OPTIONAL {
         ?location schema:name ?locationNames .
         ?location schema:address ?address .
         ?address schema:addressLocality ?municipalities ;
                  schema:postalCode ?postalCode .
     }
-#    FILTER(
-#        LCASE(?municipalities) = "ottawa" ||
-#        LCASE(?municipalities) = "gatineau"
-#    )
+    #    FILTER(
+    #        LCASE(?municipalities) = "ottawa" ||
+    #        LCASE(?municipalities) = "gatineau"
+    #    )
     FILTER(
         REGEX(?postalCode, "^K[1-4]", "i") ||
         REGEX(?postalCode, "^J8[L-Z]", "i") ||
@@ -58,5 +72,5 @@ WHERE {
         ?organizer schema:name ?organizerNames .
     }
 }
-GROUP BY ?event  ?startDate ?endDate ?location  ?postalCode
+GROUP BY ?event  ?startDate ?endDate ?location  ?postalCode  
 ORDER BY ?startDate
