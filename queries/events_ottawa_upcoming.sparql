@@ -57,5 +57,5 @@ WHERE {
         ?organizer schema:name ?organizerNames .
     }
 }
-GROUP BY ?event  ?startDate ?endDate ?location  ?postalCode ?organizer 
+GROUP BY ?event  ?startDate ?endDate ?location  ?postalCode
 ORDER BY ?startDate
