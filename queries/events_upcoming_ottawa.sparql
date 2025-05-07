@@ -1,0 +1,65 @@
+PREFIX schema: <http://schema.org/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?event
+       (GROUP_CONCAT(DISTINCT ?additionalTypeLabel; separator=", ") AS ?additionalTypes)
+       (GROUP_CONCAT(DISTINCT ?keyword; separator=", ") AS ?keywords)
+       ?name
+       ?startDate
+       ?endDate
+       ?location
+       ?locationName
+       ?municipality
+       ?postalCode
+       ?organizer
+       ?organizerName
+WHERE {
+  ?event a schema:Event ;
+         schema:name ?name ;
+         schema:startDate ?startDate ;
+         schema:endDate ?endDate ;
+         schema:location ?location ;
+         schema:organizer ?organizer .
+
+#  FILTER(?location = <http://kg.artsdata.ca/resource/K2-237>)
+  FILTER(?organizer IN (
+        <http://kg.artsdata.ca/resource/K10-26>,
+        <http://kg.artsdata.ca/resource/K14-29>,
+        <http://kg.artsdata.ca/resource/K14-16>
+    )
+)
+
+  OPTIONAL {
+    ?event schema:additionalType ?additionalType .
+    ?additionalType rdfs:label ?additionalTypeLabel .
+  }
+
+  OPTIONAL {
+    ?event schema:keywords ?keyword .
+  }
+
+  OPTIONAL {
+    ?location schema:name ?locationName .
+    ?location schema:address ?address .
+    ?address schema:addressLocality ?municipality ;
+             schema:postalCode ?postalCode .
+  }
+
+  FILTER(
+    LCASE(?municipality) = "ottawa" ||
+    LCASE(?municipality) = "gatineau"
+  )
+
+  FILTER(
+    REGEX(?postalCode, "^K[1-4]", "i") ||
+    REGEX(?postalCode, "^J8[L-Z]", "i") ||
+    REGEX(?postalCode, "^J9[A-J]", "i")
+  )
+
+  OPTIONAL {
+    ?organizer schema:name ?organizerName .
+  }
+}
+GROUP BY ?event ?name ?startDate ?endDate ?location ?locationName ?municipality ?postalCode ?organizer ?organizerName
+ORDER BY ?startDate
+LIMIT 10
