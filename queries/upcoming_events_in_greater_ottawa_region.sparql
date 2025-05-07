@@ -8,13 +8,11 @@ SELECT ?event
         separator=", ") AS ?event_keyword)
 (GROUP_CONCAT(DISTINCT ?work_keywords;
         separator=", ") AS ?work_keyword)
-
 (SAMPLE(?names) as ?name)
 ?startDate
 ?endDate
 (SAMPLE(?locationNames) as ?locationName)
 (SAMPLE(?municipalities) as ?municipality) 
-
 (SAMPLE(?organizerNames) as ?organizerName)
 WHERE {
     ?event a schema:Event ;
@@ -42,7 +40,7 @@ WHERE {
         ?event schema:additionalType ?additionalType .
         ?additionalType rdfs:label ?additionalTypeLabel_en
         filter(lang(?additionalTypeLabel_en) = "en")
-         ?additionalType rdfs:label ?additionalTypeLabel_fr
+        ?additionalType rdfs:label ?additionalTypeLabel_fr
         filter(lang(?additionalTypeLabel_fr) = "fr")
         BIND(coalesce(?additionalTypeLabel_en,?additionalTypeLabel_fr) as ?additionalTypeLabel)
     }
@@ -52,21 +50,24 @@ WHERE {
     OPTIONAL {
         ?event schema:workPerformed/schema:keywords ?work_keywords .
     }
-   
     OPTIONAL {
         ?location schema:name ?locationNames .
-        ?location schema:address ?address .
-        ?address schema:addressLocality ?municipalities ;
-                 schema:postalCode ?postalCode .
     }
-    #    FILTER(
-    #        LCASE(?municipalities) = "ottawa" ||
-    #        LCASE(?municipalities) = "gatineau"
-    #    )
+    OPTIONAL {
+        ?location schema:address ?address .
+        OPTIONAL {
+            ?address schema:addressLocality ?municipalities .
+        }
+        OPTIONAL {
+            ?address   schema:postalCode ?postalCode .
+        }
+    }
     FILTER(
         REGEX(?postalCode, "^K[1-4]", "i") ||
         REGEX(?postalCode, "^J8[L-Z]", "i") ||
-        REGEX(?postalCode, "^J9[A-J]", "i")
+        REGEX(?postalCode, "^J9[A-J]", "i") ||
+        LCASE(?municipalities) = "ottawa" ||
+        LCASE(?municipalities) = "gatinea"
     )
     OPTIONAL {
         ?organizer schema:name ?organizerNames .
