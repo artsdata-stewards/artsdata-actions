@@ -1,5 +1,6 @@
 PREFIX schema: <http://schema.org/>
 PREFIX sh: <http://www.w3.org/ns/shacl#>
+PREFIX dbo: <http://dbpedia.org/ontology/>
 construct {
     ?event a schema:Event ;
            schema:name ?name ;
@@ -9,7 +10,8 @@ construct {
            schema:location ?loc ;
            schema:endDate ?endDate .
     ?loc schema:name ?loc_name ;
-         schema:address ?address .
+         schema:address ?address ;
+         dbo:timeZone ?timeZone .
     ?address schema:streetAddress ?streetAddress ;
              schema:addressRegion ?addressRegion ;
              schema:addressCountry ?addressCountry ;
@@ -27,6 +29,9 @@ where {
     }
     ?loc schema:name ?loc_name ;
          schema:address ?address .
+    OPTIONAL {
+         ?loc dbo:timeZone ?timeZone .
+    }
     ?address schema:streetAddress ?streetAddress ;
              schema:addressRegion ?addressRegion ;
              schema:addressCountry ?addressCountry ;
