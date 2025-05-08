@@ -1,0 +1,25 @@
+PREFIX schema: <http://schema.org/>
+
+select ?event (sample(?event_names) as ?event_name)  (sample(?fl_performers) as ?fl_performer)(sample(?wikidatas) as ?wikidata)(sample(?artsdatas) as ?artsdata) (sample(?region) as ?province)
+where { 
+   ?event schema:location/schema:address/schema:addressRegion ?region  .
+    filter(lcase(str(?region)) = "qc" )
+	graph <http://kg.artsdata.ca/core> {
+        ?event a schema:Event ; schema:performer ?performers ; schema:name ?event_names .
+   }
+ BIND(if(contains(str(?performers),"footlight.io"),?performers,"") as ?fl_performers)
+    BIND(if(contains(str(?performers),"wikidata.org"),?performers,"") as ?wd_performers)
+   BIND(if(contains(str(?performers),"kg.artsdata.ca"),?performers,"") as ?ad_performers)
+  
+  OPTIONAL {
+       ?performers schema:sameAs ?same_performers .
+  }
+    
+    BIND(if(contains(str(?same_performers),"wikidata.org"),?same_performers,"") as ?wd_sames)
+   BIND(if(contains(str(?same_performers),"kg.artsdata.ca"),?same_performers,"") as ?ad_sames)
+ 
+  BIND(IF(?wd_performers != "",?wd_performers, ?wd_sames) as ?wikidatas)
+  BIND(IF(?ad_performers != "",?ad_performers, ?ad_sames) as ?artsdatas)
+
+  
+} group by ?event 
