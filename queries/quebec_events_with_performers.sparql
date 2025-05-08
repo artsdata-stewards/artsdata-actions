@@ -1,5 +1,6 @@
 PREFIX schema: <http://schema.org/>
 
+# This SPARQL lists events taking place in the province of Quebec that are linked to performers
 select ?event (sample(?event_names) as ?event_name)  (sample(?fl_performers) as ?fl_performer)(sample(?wikidatas) as ?wikidata)(sample(?artsdatas) as ?artsdata) (sample(?region) as ?province)
 where { 
    ?event schema:location/schema:address/schema:addressRegion ?region  .
