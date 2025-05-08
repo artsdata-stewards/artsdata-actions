@@ -2,7 +2,7 @@ PREFIX schema: <http://schema.org/>
 
 # This SPARQL lists artists (person/organization) performing at an event in Quebec
 
-select  ?performer (count(?s) as ?events)  (sample(?performer_names) as ?performer_name) ?wdid ?from_wdid 
+select  ?performer (count(?s) as ?events)  (sample(?performer_names) as ?performer_name) (sample(?wdids) as ?wdid) (sample(?from_wdids) as ?from_wdid)  
 where { 
    ?s schema:location/schema:address/schema:addressRegion ?region  .
     filter(lcase(str(?region)) = "qc")
@@ -10,13 +10,13 @@ where {
         ?s a schema:Event ; schema:performer ?performer.
    }
   optional {
-    ?performer schema:sameAs ?wdid .
-    filter(contains(str(?wdid), "wikidata.org"))
+    ?performer schema:sameAs ?wdids .
+    filter(contains(str(?wdids), "wikidata.org"))
   }
   optional {
-   ?from_wdid schema:sameAs   ?performer  .
-    filter(contains(str(?from_wdid), "wikidata.org"))
+   ?from_wdids schema:sameAs   ?performer  .
+    filter(contains(str(?from_wdids), "wikidata.org"))
   }
     ?performer schema:name ?performer_names .
-  # filter(!bound(?wdid))
-} group by ?performer ?wdid ?from_wdid
+  # filter(!bound(?wdids))
+} group by ?performer 
