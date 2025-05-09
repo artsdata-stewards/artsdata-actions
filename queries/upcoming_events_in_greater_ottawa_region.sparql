@@ -64,7 +64,7 @@ WHERE {
         REGEX(?postalCode, "^J8[L-Z]", "i") ||
         REGEX(?postalCode, "^J9[A-J]", "i") ||
         LCASE(?municipalities) = "ottawa" ||
-        LCASE(?municipalities) = "gatinea"
+        LCASE(?municipalities) = "gatineau"
     )
     OPTIONAL {
         ?event schema:organizer ?organizer .
