@@ -25,14 +25,9 @@ where {
     BIND(if(contains(str(?same_performers),"wikidata.org"),?same_performers,"") as ?wd_sames)
    BIND(if(contains(str(?same_performers),"kg.artsdata.ca"),?same_performers,"") as ?ad_sames)
 
- OPTIONAL {
-       ?same_performers_sub schema:sameAs ?performers .
-  }
-   BIND(if(contains(str(?same_performers_sub),"wikidata.org"),?same_performers_sub,"") as ?wd_same_subs)
-   BIND(if(contains(str(?same_performers_sub),"kg.artsdata.ca"),?same_performers_sub,"") as ?ad_same_subs)
  
-  BIND(COALESCE(IF(?wd_performers != "",?wd_performers, ?wd_sames),?wd_same_subs) as ?wikidatas)
-  BIND(COALESCE(IF(?ad_performers != "",?ad_performers, ?ad_sames),?ad_same_subs) as ?artsdatas)
+  BIND(IF(?wd_performers != "",?wd_performers, ?wd_sames) as ?wikidatas)
+  BIND(IF(?ad_performers != "",?ad_performers, ?ad_sames) as ?artsdatas)
 
   
 } group by ?event 
