@@ -24,7 +24,7 @@ WHERE {
            schema:location ?location .
 
     FILTER( not exists {
-            ?event schema:sameAs ?ad_event .
+            ?ad_event schema:sameAs ?event .
             filter(contains(str(?ad_event),"kg.artsdata.ca/resource/"))  
         })
     FILTER( not exists {
