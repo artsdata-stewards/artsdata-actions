@@ -27,6 +27,9 @@ WHERE {
             ?event schema:sameAs ?ad_event .
             filter(contains(str(?ad_event),"kg.artsdata.ca/resource/"))  
         })
+    FILTER( not exists {
+            ?event ^schema:subEvent ?super_event .
+        })
     BIND(IF(datatype(?startDate) = xsd:date, xsd:dateTime(CONCAT(STR(?startDate), "T00:00:00")), ?startDate) AS ?normalized_startDate)
     FILTER(?normalized_startDate > now())
     OPTIONAL {
