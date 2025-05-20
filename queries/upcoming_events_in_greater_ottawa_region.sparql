@@ -23,8 +23,12 @@ WHERE {
            schema:startDate ?startDate ;
            schema:location ?location .
 
+   FILTER( not exists {
+            ?event schema:sameAs ?ad_event .
+            filter(contains(str(?ad_event),"kg.artsdata.ca/resource/"))  
+        })
     FILTER( not exists {
-            ?ad_event schema:sameAs ?event .
+            ?event ^schema:sameAs ?ad_event .
             filter(contains(str(?ad_event),"kg.artsdata.ca/resource/"))  
         })
     FILTER( not exists {
