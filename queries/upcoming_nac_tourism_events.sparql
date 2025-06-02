@@ -23,6 +23,11 @@ WHERE {
     }
     BIND(IF(datatype(?startDate) = xsd:date, xsd:dateTime(CONCAT(STR(?startDate), "T00:00:00")), ?startDate) AS ?normalized_startDate)
     FILTER(?normalized_startDate > now())
+        
+    # NAC tag tourism filter
+    ?event schema:workPerformed/schema:keywords ?work_keywords . 
+    filter(contains(LCASE(?work_keywords),"tourism"))
+
     OPTIONAL {
         ?event  schema:endDate ?endDate .
     }
@@ -37,8 +42,7 @@ WHERE {
     OPTIONAL {
         ?event schema:keywords ?event_keywords .
     }
-    ?event schema:workPerformed/schema:keywords ?work_keywords .
-    filter(contains(LCASE(?work_keywords),"tourism"))
+        
     OPTIONAL {
         ?location schema:name ?locationNames .
     }
@@ -51,13 +55,7 @@ WHERE {
             ?address   schema:postalCode ?postalCode .
         }
     }
-    FILTER(
-        REGEX(?postalCode, "^K[1-4]", "i") ||
-        REGEX(?postalCode, "^J8[L-Z]", "i") ||
-        REGEX(?postalCode, "^J9[A-J]", "i") ||
-        LCASE(?municipalities) = "ottawa" ||
-        LCASE(?municipalities) = "gatinea"
-    )
+   
     OPTIONAL {
         ?event schema:organizer ?organizer .
         ?organizer schema:name ?organizerNames .
