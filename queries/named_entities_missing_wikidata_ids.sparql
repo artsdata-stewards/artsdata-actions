@@ -1,0 +1,16 @@
+# Find Wikidata ID missing in Artsdata core
+PREFIX schema: <http://schema.org/>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+select ?ad_uri ?wd_uri ?ad_id  (sample(?names) as ?name) 
+WHERE {
+    SERVICE <https://query.wikidata.org/sparql>
+    {
+        ?wd_uri   wdt:P7627   ?ad_id  .
+    }
+    bind(URI(concat("http://kg.artsdata.ca/resource/",?ad_id)) as ?ad_uri)
+    OPTIONAL {
+        ?ad_uri  schema:sameAs  ?wd_sameAs .
+    }
+    filter(!BOUND(?wd_sameAs))
+    ?ad_uri schema:name ?names .
+} group by ?ad_uri ?wd_uri ?ad_id
