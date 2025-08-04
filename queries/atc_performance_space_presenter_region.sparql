@@ -1,6 +1,6 @@
 PREFIX schema: <http://schema.org/>
 PREFIX sh: <http://www.w3.org/ns/shacl#>
-SELECT ?uri  (sample(?name_language) as ?name)  (sample(?adid) as ?sameAs) (sample(?resultSeverity) as ?conforms)  (sample(?presenters) as ?presenter) (sample(?presenter_regions) as ?presenter_region)
+SELECT ?uri  (sample(?name_language) as ?name)  (sample(?adid) as ?sameAs)   (sample(?presenters) as ?presenter) (sample(?presenter_regions) as ?presenter_region)
 WHERE {
     graph <http://kg.artsdata.ca/culture-creates/artsdata-planet-atc/performance-spaces> {
        ?uri a ?type  . 
