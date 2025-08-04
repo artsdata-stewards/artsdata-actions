@@ -1,0 +1,49 @@
+PREFIX schema: <http://schema.org/>
+PREFIX sh: <http://www.w3.org/ns/shacl#>
+SELECT ?uri  (sample(?presenters) as ?presenter) (sample(?presenter_regions) as ?presenter_region) (sample(?name_language) as ?name) (sample(?addressLocality) as ?locality) (sample(?addressRegion) as ?region) (sample(?adid) as ?sameAs) (sample(?resultSeverity) as ?conforms)
+WHERE {
+    graph <http://kg.artsdata.ca/culture-creates/artsdata-planet-atc/performance-spaces> {
+       ?uri a ?type  . 
+        OPTIONAL {
+          ?uri schema:name ?name_language .
+        }
+       OPTIONAL {
+      ?presenters schema:location ?uri .
+     
+    }
+        
+        OPTIONAL {
+            ?shacl sh:focusNode ?uri ;
+                sh:resultSeverity ?resultSeverity .
+        }
+    }
+  
+    OPTIONAL {
+      ?presenters schema:location ?uri .
+      ?presenters schema:address/schema:addressRegion ?presenter_regions .
+    }
+    ?uri a schema:Place .      
+    #filter(!isBLANK(?uri))  
+    OPTIONAL {
+      ?adid_sub schema:sameAs ?uri .
+      filter(contains(str(?adid_sub),"http://kg.artsdata.ca/resource/K"))
+    }
+
+    OPTIONAL {
+      ?uri schema:sameAs ?adid_obj .
+      filter(contains(str(?adid_obj),"http://kg.artsdata.ca/resource/K"))
+    }
+
+    bind(COALESCE(?adid_obj, ?adid_sub) as ?adid)
+
+
+    OPTIONAL {
+      ?uri schema:address/schema:addressLocality  ?addressLocality .
+    }
+
+    OPTIONAL {
+      ?uri schema:address/schema:addressRegion ?addressRegion  .
+    }
+
+} GROUP BY ?uri  
+ORDER BY ?uri
