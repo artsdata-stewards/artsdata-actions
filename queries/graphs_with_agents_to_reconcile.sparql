@@ -11,7 +11,7 @@ SELECT ?graph_uri
 (SAMPLE(?name) as ?graph_name) 
 ((COUNT(?agent) - COUNT(?sameAs)) as ?to_reconcile)  
 (count(?sameAs) as ?reconciled) 
-("<a class='btn btn-primary'>Batch Reconcile</a>" as ?action)
+("<a class='btn btn-primary btn-sm'>Batch Reconcile</a>" as ?action)
 WHERE {
     ?graph_uri a prov:Entity , schema:Dataset ;
                schema:contentRating ?rating ;
