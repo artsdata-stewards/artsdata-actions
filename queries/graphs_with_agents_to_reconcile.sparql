@@ -33,4 +33,4 @@ WHERE {
         filter(
             strstarts(str(?sameAs), "http://kg.artsdata.ca"))
     }
-} group by ?graph_uri
+} group by ?graph_uri  order by DESC(?to_reconcile)
