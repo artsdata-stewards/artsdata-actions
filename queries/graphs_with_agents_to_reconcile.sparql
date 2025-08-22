@@ -6,12 +6,13 @@ PREFIX dataid: <http://dataid.dbpedia.org/ns/core#>
 
 # This SPARQL lists graph with dbo:Agent and counts the number needing to be reconciled
 
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 SELECT ?graph_uri 
 (SAMPLE(?dataset) as ?dataset) 
 (SAMPLE(?name) as ?graph_name) 
 ((COUNT(?agent) - COUNT(?sameAs)) as ?to_reconcile)  
 (count(?sameAs) as ?reconciled) 
-("<a class='btn btn-primary btn-sm'>Batch Reconcile</a>" as ?action)
+?action
 WHERE {
     ?graph_uri a prov:Entity , schema:Dataset ;
                schema:contentRating ?rating ;
@@ -34,4 +35,5 @@ WHERE {
         filter(
             strstarts(str(?sameAs), "http://kg.artsdata.ca"))
     }
-} group by ?graph_uri  order by DESC(?to_reconcile)
+ bind(CONCAT("<a class='btn btn-primary btn-sm' href='/reconcile/batch?feedUrl=",str(?graph_uri),"&type=Person' >Batch Reconcile</a>") as ?action)
+} group by ?graph_uri ?action  order by DESC(?to_reconcile)
