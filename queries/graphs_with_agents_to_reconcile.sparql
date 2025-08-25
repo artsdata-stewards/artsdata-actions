@@ -35,5 +35,5 @@ WHERE {
         filter(
             strstarts(str(?sameAs), "http://kg.artsdata.ca"))
     }
- bind(CONCAT("<a class='btn btn-primary btn-sm' href='/reconcile/batch?feedUrl=",str(?graph_uri),"&type=Person' >Batch Reconcile</a>") as ?action)
+ bind(CONCAT("<a class='btn btn-primary btn-sm' href='/reconcile/batch?feedUrl=",str(?graph_uri),"&type=Agent' >Batch Reconcile</a>") as ?action)
 } group by ?graph_uri ?action  order by DESC(?to_reconcile)
