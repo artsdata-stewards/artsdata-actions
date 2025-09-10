@@ -1,0 +1,45 @@
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+PREFIX wd: <http://www.wikidata.org/entity/>
+PREFIX schema: <http://schema.org/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+select   
+?organizer
+(sample(?organizer_names) as ?organizer_name) 
+?event
+(sample(?event_names) as ?event_name)  
+?startDate
+(sample(?addressRegions) as ?addressRegion)
+
+(GROUP_CONCAT(distinct ?performer_names_literal; separator=", ") as ?performer_name)
+
+where {
+    SERVICE <https://query.wikidata.org/sparql> {
+        {
+            ?wdid_uri  wdt:P172/wdt:P279* wd:Q15571255 ;
+                                        # indigenous peoples in North America
+                                        wdt:P7627 ?adid .
+        } UNION {
+            ?wdid_uri  wdt:P1552/wdt:P279* wd:Q15571255 ;
+                                         # indigenous peoples in North America
+                                         wdt:P7627 ?adid .
+        }
+    }
+    bind(uri(concat("http://kg.artsdata.ca/resource/",?adid))  as ?artsdata_uri)
+    
+    OPTIONAL {
+        ?artsdata_uri  rdfs:label ?performer_names .
+        bind(str(?performer_names) as ?performer_names_literal)
+    }
+   
+     ?event a schema:Event ; schema:performer ?artsdata_uri  ;
+                      schema:name ?event_names ; schema:startDate ?startDate .
+    
+    OPTIONAL {
+		?event schema:organizer ?organizer .
+        ?organizer schema:name ?organizer_names .
+    }
+    OPTIONAL {
+        ?event schema:location/schema:address/schema:addressRegion ?addressRegions .
+    }
+   
+} group by ?event ?organizer ?startDate
