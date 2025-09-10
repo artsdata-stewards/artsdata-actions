@@ -33,7 +33,12 @@ where {
    
      ?event a schema:Event ; schema:performer ?artsdata_uri  ;
                       schema:name ?event_names ; schema:startDate ?startDate .
-    
+	filter( not exists { 
+      ?event schema:sameAs ?ad_event. 
+      filter(contains(str(?ad_event),"kg.artsdata.ca")) 
+      ?ad_event schema:performer ?artsdata_uri .
+     
+    } )
     OPTIONAL {
 		?event schema:organizer ?organizer .
         ?organizer schema:name ?organizer_names .
