@@ -1,43 +1,46 @@
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-PREFIX luc: <http://www.ontotext.com/owlim/lucene#>
+PREFIX luc: <http://www.ontotext.com/connectors/lucene#>
+PREFIX luc-index: <http://www.ontotext.com/connectors/lucene/instance#>
 PREFIX schema: <http://schema.org/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 PREFIX wd: <http://www.wikidata.org/entity/>
+
 select distinct ?event ?event_name  ?startDate ?linked_performer_name ?score ?agent_name ?artsdataid_uri ?type_sample ?wdid_uri  where {
     {
         select   (sample(?name) as ?agent_name)  ?artsdataid_uri  (sample(?type) as ?type_sample)  ?wdid_uri where {
             SERVICE <https://query.wikidata.org/sparql> {
                 {
                     ?wdid_uri  wdt:P172/wdt:P279* wd:Q15571255 ;
-                                                # indigenous peoples in North America
-                                                wdt:P7627 ?adid .
+                    # indigenous peoples in North America
+                    wdt:P7627 ?adid .
                 } UNION {
                     ?wdid_uri  wdt:P1552/wdt:P279* wd:Q15571255 ;
-                                                 # indigenous peoples in North America
-                                                 wdt:P7627 ?adid .
+                    # indigenous peoples in North America
+                    wdt:P7627 ?adid .
                 }
             }
             bind(uri(concat("http://kg.artsdata.ca/resource/",?adid))  as ?artsdataid_uri)
             graph ?g {
                 ?artsdataid_uri a ?type ;
-                              schema:name ?name .
+                schema:name ?name .
             }
         } group by ?artsdataid_uri  ?wdid_uri 
     }
-    ?event luc:Name ?agent_name ;
-           a schema:Event ;
-           schema:startDate ?startDate ;
-           luc:score ?score ;
-           rdfs:label ?event_name .
-   optional {
+    bind(replace(str(?agent_name),"\"|/"," ")  as ?str)
+   
+    ?search a luc-index:event-index ;
+        luc:query ?str;
+        luc:entities ?event .
+    ?event schema:startDate ?startDate .
+    ?event luc:score ?score ;
+        rdfs:label ?event_name .
+    optional {
         ?event schema:performer/schema:name ?linked_performer_optional_name 
     }
     bind(coalesce(?linked_performer_optional_name,"") as ?linked_performer_name)
     filter(?startDate > now())
-    bind(strdt(?score,xsd:decimal) as ?score_decimal)
-    filter(?score_decimal > 2.0)
+    filter(?score > 5.0)
     filter(str(?linked_performer_name) != str(?agent_name) )
-   
 } order by DESC(?score)
