@@ -54,7 +54,7 @@ where {
     {
         select * where {
             ?event  a schema:Event ;
-            schema:organizer ?indigenousAgent .
+            schema:organizer/schema:sameAs*  ?indigenousAgent .
         }
     }
     # 3 Get event properties needed for iCal
