@@ -33,7 +33,7 @@ WHERE {
     }
     OPTIONAL {
         ?ArtsdataID schema:disambiguatingDescription ?disambiguatingDescriptionAnyLanguage .
-        FILTER(lang(?disambiguatingDescriptionEn) != "en")
+        FILTER(lang(?disambiguatingDescriptionAnyLanguage) != "en")
     }
     BIND(COALESCE(?disambiguatingDescriptionEn, ?disambiguatingDescriptionAnyLanguage) as ?disambiguatingDescriptions)
     OPTIONAL {
