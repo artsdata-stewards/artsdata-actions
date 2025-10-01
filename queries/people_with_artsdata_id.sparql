@@ -30,12 +30,12 @@ WHERE {
     OPTIONAL {
         ?ArtsdataID schema:disambiguatingDescription ?disambiguatingDescriptionEn .
         FILTER(lang(?disambiguatingDescriptionEn) = "en")
-        OPTIONAL {
-            ?ArtsdataID schema:disambiguatingDescription ?disambiguatingDescriptionAnyLanguage .
-            FILTER(lang(?disambiguatingDescriptionEn) != "en")
-        }
-        BIND(COALESCE(?disambiguatingDescriptionEn, ?disambiguatingDescriptionAnyLanguage) as ?disambiguatingDescriptions)
     }
+    OPTIONAL {
+        ?ArtsdataID schema:disambiguatingDescription ?disambiguatingDescriptionAnyLanguage .
+        FILTER(lang(?disambiguatingDescriptionEn) != "en")
+    }
+    BIND(COALESCE(?disambiguatingDescriptionEn, ?disambiguatingDescriptionAnyLanguage) as ?disambiguatingDescriptions)
     OPTIONAL {
         ?ArtsdataID rdfs:label ?labelMul .
         FILTER(LANG(?labelMul) = "mul") 
