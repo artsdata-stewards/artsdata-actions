@@ -1,0 +1,15 @@
+PREFIX schema: <http://schema.org/>
+select ?place ?event ?addressLocality where {
+    graph <http://kg.artsdata.ca/core> {
+        ?place a schema:Place ; schema:address ?add .
+        ?event a schema:Event ; schema:location ?place .
+        OPTIONAL {
+              ?add schema:postalCode ?postalCode .
+        }
+       OPTIONAL {
+              ?add schema:addressLocality ?addressLocality .
+        }
+        filter(!bound(?postalCode))
+    }
+  
+} 
