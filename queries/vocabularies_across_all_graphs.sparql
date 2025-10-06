@@ -4,7 +4,7 @@ PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 select ?graph (SAMPLE(?names) as ?name) ?vocab  (COUNT(?concept) as ?concepts)
 where {
     graph ?graph {
-        ?vocab a skos:ConceptScheme .
+        ?vocab ^skos:inScheme ?concept .
     }
     OPTIONAL {
         ?vocab rdfs:label ?names_en .
@@ -13,6 +13,5 @@ where {
     OPTIONAL {
         ?vocab rdfs:label ?names_any .
     }
-    ?vocab ^skos:inScheme ?concept .
     BIND(COALESCE(?names_en,?names_any) as ?names)
 } group by ?vocab ?graph 
