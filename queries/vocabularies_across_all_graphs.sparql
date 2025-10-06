@@ -10,7 +10,9 @@ where {
         ?vocab rdfs:label ?names_en .
         FILTER(lang(?names_en) = "en")
     }
-    ?vocab rdfs:label ?names_any .
+    OPTIONAL {
+        ?vocab rdfs:label ?names_any .
+    }
     ?vocab ^skos:inScheme ?concept .
     BIND(COALESCE(?names_en,?names_any) as ?names)
 } group by ?vocab ?graph 
