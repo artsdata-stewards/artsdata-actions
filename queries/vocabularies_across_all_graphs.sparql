@@ -1,0 +1,16 @@
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX schema: <http://schema.org/>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+select ?graph (SAMPLE(?names) as ?name) ?vocab  (COUNT(?concept) as ?concepts)
+where {
+    graph ?graph {
+        ?vocab a skos:ConceptScheme .
+    }
+    OPTIONAL {
+        ?vocab rdfs:label ?names_en .
+        FILTER(lang(?names_en) = "en")
+    }
+    ?vocab rdfs:label ?names_any .
+    ?vocab ^skos:inScheme ?concept .
+    BIND(COALESCE(?names_en,?names_any) as ?names)
+} group by ?vocab ?graph 
