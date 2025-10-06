@@ -8,12 +8,12 @@ select
 ?prefLabel 
 ?deprecated 
 ?parent 
-(str(?definition) as ?def)  
+?definition
 ?version3
 ?version4 
 ?v4changeNote 
 ?replacedBy 
-(str(?editorialNote) as ?editorial) 
+?editorialNote
 where {
     ?eventType skos:inScheme <http://kg.artsdata.ca/resource/ArtsdataEventTypes> .
     ?eventType skos:prefLabel ?prefLabel .
