@@ -3,7 +3,18 @@ PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX schema: <http://schema.org/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-select ?eventType ?prefLabel ?deprecated ?parent (str(?definition) as ?def)  ?v3 ?v4 ?v4changeNote ?replacedBy (str(?editorialNote) as ?editorial) where {
+select 
+?eventType 
+?prefLabel 
+?deprecated 
+?parent 
+(str(?definition) as ?def)  
+?version3
+?version4 
+?v4changeNote 
+?replacedBy 
+(str(?editorialNote) as ?editorial) 
+where {
     ?eventType skos:inScheme <http://kg.artsdata.ca/resource/ArtsdataEventTypes> .
     ?eventType skos:prefLabel ?prefLabel .
     OPTIONAL {
@@ -20,10 +31,12 @@ select ?eventType ?prefLabel ?deprecated ?parent (str(?definition) as ?def)  ?v3
     OPTIONAL {
         ?v3  skos:member   ?eventType  ;
         schema:version "3.4.5".
+        bind(!BOUND(?v3) as ?version3)
     }
     OPTIONAL {
         ?v4  skos:member   ?eventType  ;
         schema:version "4.0".
+         bind(!BOUND(?v4) as ?version4)
     }
     OPTIONAL {
         ?eventType skos:changeNote/rdf:value ?v4changeNote .
@@ -35,4 +48,4 @@ select ?eventType ?prefLabel ?deprecated ?parent (str(?definition) as ?def)  ?v3
         ?eventType skos:editorialNote ?editorialNote .
         filter(lang(?editorialNote) = "en")
     }
-} 
+}
