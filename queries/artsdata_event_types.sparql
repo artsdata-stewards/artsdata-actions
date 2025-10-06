@@ -3,36 +3,36 @@ PREFIX owl: <http://www.w3.org/2002/07/owl#>
 PREFIX schema: <http://schema.org/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-select * where {
-    ?s skos:prefLabel ?prefLabel .
+select ?eventType ?prefLabel ?deprecated ?parent (str(?definition) as ?def)  ?v3 ?v4 ?v4changeNote ?replacedBy (str(?editorialNote) as ?editorial) where {
+    ?eventType skos:inScheme <http://kg.artsdata.ca/resource/ArtsdataEventTypes> .
+    ?eventType skos:prefLabel ?prefLabel .
     OPTIONAL {
-        ?s owl:deprecated ?deprecated
+        ?eventType owl:deprecated ?deprecated
     }
-    ?s skos:inScheme <http://kg.artsdata.ca/resource/ArtsdataEventTypes> .
     OPTIONAL {
-        ?s skos:broader ?parent .
+        ?eventType skos:broader ?parent .
     }
     filter(lang(?prefLabel) = "en")
     OPTIONAL {
-        ?s skos:definition ?definition .
+        ?eventType skos:definition ?definition .
         filter(lang(?definition) = "en")
     }
     OPTIONAL {
-        ?collection3  skos:member   ?s  ;
+        ?v3  skos:member   ?eventType  ;
         schema:version "3.4.5".
     }
     OPTIONAL {
-        ?collection4  skos:member   ?s  ;
+        ?v4  skos:member   ?eventType  ;
         schema:version "4.0".
     }
     OPTIONAL {
-        ?s skos:changeNote/rdf:value ?collection4changeNote .
+        ?eventType skos:changeNote/rdf:value ?v4changeNote .
     }
     OPTIONAL {
-        ?s <http://purl.org/dc/terms/isReplacedBy>   ?replacedBy
+        ?eventType <http://purl.org/dc/terms/isReplacedBy>   ?replacedBy
     }
     OPTIONAL {
-        ?s skos:editorialNote ?editorialNote .
+        ?eventType skos:editorialNote ?editorialNote .
         filter(lang(?editorialNote) = "en")
     }
-} limit 100
+} 
