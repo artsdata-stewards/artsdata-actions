@@ -7,7 +7,7 @@ PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 PREFIX wd: <http://www.wikidata.org/entity/>
 
-select distinct ?event ?event_name  ?startDate ?linked_performer_name ?score ?agent_name ?artsdataid_uri ?type_sample ?wdid_uri  where {
+select distinct ?g ?event ?event_name  ?startDate ?linked_performer_name ?score ?agent_name ?artsdataid_uri ?type_sample ?wdid_uri  where {
     {
         select   (sample(?name) as ?agent_name)  ?artsdataid_uri  (sample(?type) as ?type_sample)  ?wdid_uri where {
             SERVICE <https://query.wikidata.org/sparql> {
@@ -33,7 +33,9 @@ select distinct ?event ?event_name  ?startDate ?linked_performer_name ?score ?ag
     ?search a luc-index:event-index ;
         luc:query ?str;
         luc:entities ?event .
-    ?event schema:startDate ?startDate .
+    graph ?g {
+        ?event schema:startDate ?startDate .
+    }
     ?event luc:score ?score ;
         rdfs:label ?event_name .
     optional {
@@ -43,4 +45,5 @@ select distinct ?event ?event_name  ?startDate ?linked_performer_name ?score ?ag
     filter(?startDate > now())
     filter(?score > 5.0)
     filter(str(?linked_performer_name) != str(?agent_name) )
+    filter(?g != <http://kg.artsdata.ca/culture-creates/artsdata-planet-footlight/indigenous-performances>)
 } order by DESC(?score)
