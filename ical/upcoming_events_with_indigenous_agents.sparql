@@ -113,12 +113,20 @@ where {
         schema:sameAs ?organizerSameAs .
     }
     # Remove event duplicates
-    # keeping the Artsdata minted event if it has a performer
+    # Remove duplicate external events not from CMS indigenous-performances that have Artsdata minted event (with some performer)
     filter( not exists {
-            ?event ^schema:sameAs ?ad_event .
+            ?event schema:sameAs ?ad_event .
             ?ad_event schema:performer ?some_performer .
+            ?event schema:isPartOf ?source .
+            filter(?source != <http://kg.artsdata.ca/culture-creates/artsdata-planet-footlight/indigenous-performances>)
             filter(contains(str(?ad_event),"kg.artsdata.ca/resource/"))  
-        })
+        } )
+     # Remove duplicate Artsdata core events if the external event source is CMS indigenous-performances
+     filter( not exists {
+            ?event ^schema:sameAs/schema:isPartOf ?source .
+            filter(?source = <http://kg.artsdata.ca/culture-creates/artsdata-planet-footlight/indigenous-performances>)
+            filter(contains(str(?event),"kg.artsdata.ca/resource/"))  
+        } )
     # Remove events with errors
     OPTIONAL {
         ?bn sh:focusNode ?event ;
