@@ -1,0 +1,56 @@
+PREFIX schema: <http://schema.org/>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+PREFIX wd: <http://www.wikidata.org/entity/>
+select ?event 
+(sample(?names) as ?name) 
+(count(distinct ?performer) as ?performers) 
+(count(distinct ?indigenous_performer) as ?indigenous_performers) 
+(count(distinct ?indigenous_organizer) as ?indigenous_organizers) 
+(count(distinct ?address_complete) as ?address_valid) 
+
+
+
+where {
+    # 1 Get indigenous agents in Wikidata with Artsdata IDs
+    graph <http://kg.artsdata.ca/culture-creates/artsdata-planet-footlight/indigenous-performances> {
+        ?event a schema:Event .
+        {
+            select distinct ?indigenous_agent where {
+                SERVICE <https://query.wikidata.org/sparql> {
+                    {
+                        ?wdid  wdt:P172/wdt:P279* wd:Q15571255 ;
+                        # indigenous peoples in North America
+                        wdt:P7627 ?adid .
+                    } UNION {
+                        ?wdid  wdt:P1552/wdt:P279* wd:Q15571255 ;
+                        # indigenous peoples in North America            
+                        wdt:P7627 ?adid .
+                    }
+                }
+                bind(uri(concat("http://kg.artsdata.ca/resource/",?adid))  as ?indigenous_agent)
+            }
+        }
+        OPTIONAL {
+            ?event schema:performer/schema:sameAs ?indigenous_agent
+            BIND(true as ?indigenous_performer)
+        }
+        OPTIONAL {
+            ?event schema:organizer/schema:sameAs ?indigenous_agent
+            BIND(true as ?indigenous_organizer)
+        }
+        OPTIONAL {
+            ?event schema:performer ?performer
+        }
+        OPTIONAL {
+            ?event schema:location ?location .
+            ?location schema:address ?address .
+            ?address schema:postalCode ?postalCode ;
+            schema:streetAddress ?streetAddress ;
+            schema:addressLocality ?addressLocality ;
+            schema:addressRegion ?addressRegion ;
+            schema:addressCountry ?addressCountry .
+            BIND(true as ?address_complete)
+        }
+        ?event schema:name ?names .
+    }
+} group by ?event
