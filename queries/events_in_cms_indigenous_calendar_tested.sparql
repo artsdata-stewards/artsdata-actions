@@ -7,7 +7,7 @@ select ?event
 (count(distinct ?indigenous_performer) as ?indigenous_performers) 
 (count(distinct ?indigenous_organizer) as ?indigenous_organizers) 
 (count(distinct ?address_complete) as ?address_filled) 
-(IF(((count(distinct ?indigenous_performer) + count(distinct ?indigenous_organizer)) > 0) && (count(distinct ?address_filled) > 0), true, false) as ?good_for_feed)
+(IF(((count(distinct ?indigenous_performer) + count(distinct ?indigenous_organizer)) > 0) && (count(distinct ?address_complete) > 0), true, false) as ?good_for_feed)
 
 where {
     # 1 Get indigenous agents in Wikidata with Artsdata IDs
