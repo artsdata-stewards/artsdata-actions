@@ -4,13 +4,18 @@ PREFIX schema: <http://schema.org/>
 select ?event 
 (SAMPLE(?names) as ?name)
 (SAMPLE(?location_names) as ?location_name)
-(SAMPLE(??generatedAt) as ?mint_date)
+?mint_date
 where {
-    graph <http://kg.artsdata.ca/core> {
-        ?event a schema:Event ;
-                 schema:name ?names ;
-                 schema:location/schema:name ?location_names ;
-        <http://www.w3.org/ns/prov#generatedAtTime> ?generatedAt
+    {
+        select   ?event (SAMPLE(?generatedAt) as ?mint_date) where {
+            graph <http://kg.artsdata.ca/core> {
+                ?event a schema:Event ;
+                <http://www.w3.org/ns/prov#generatedAtTime> ?generatedAt .
+            } 
+        } group by ?event HAVING (COUNT(?generatedAt) > 1)
     }
-} group by ?event
-HAVING (COUNT(?generatedAt) > 1)
+    graph <http://kg.artsdata.ca/core> {
+        ?event   schema:name ?names ;
+        schema:location/schema:name ?location_names .
+    }
+}  group by ?event ?mint_date
