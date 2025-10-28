@@ -1,0 +1,10 @@
+PREFIX schema: <http://schema.org/>
+
+# Diagnose mint collisions by looking for minted entities with 2 mint generatedAtTime dates
+select ?event where {
+    graph <http://kg.artsdata.ca/core> {
+        ?event a schema:Event ;
+        <http://www.w3.org/ns/prov#generatedAtTime> ?generatedAt
+    }
+} group by ?event
+HAVING (COUNT(?generatedAt) > 1)
