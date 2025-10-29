@@ -1,14 +1,21 @@
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-PREFIX : <http://www.ontotext.com/connectors/lucene#>
 PREFIX prov: <http://www.w3.org/ns/prov#>
-select  ?agent (sample(?labels) as ?agent_name) ?activity (count(?s) as ?count)   (sample(?s) as ?sample_subject)   (sample(?p) as ?sample_pred)  (sample(?o) as ?sample_object)    
+select  ?agent (sample(?labels) as ?agent_name) ?activity (SAMPLE(?activity_names) as ?activity_name) (count(?s) as ?count)   (sample(?s) as ?sample_subject)   (sample(?p) as ?sample_pred)  (sample(?o) as ?sample_object)    
 where {
     graph <http://kg.artsdata.ca/core> {
         << ?s ?p ?o >> prov:wasGeneratedBy ?bn.
         ?bn prov:wasAssociatedWith ?agent .
     }
     OPTIONAL {
-        ?bn rdfs:label/prov:wasInformedBy?/rdfs:label? ?activity
+        ?bn rdfs:label?/prov:wasInformedBy?/rdfs:label ?activity_names
+    }
+    OPTIONAL {
+        BIND(?bn as ?activity)
+        filter(!isBlank(?bn))
+    }
+    OPTIONAL {
+        ?bn prov:wasInformedBy ?informer_activity
+        BIND(?informer_activity as ?activity)
     }
     OPTIONAL {
         ?agent rdfs:label ?labels .
