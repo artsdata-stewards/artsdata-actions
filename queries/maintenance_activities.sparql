@@ -1,23 +1,27 @@
+PREFIX schema: <http://schema.org/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX prov: <http://www.w3.org/ns/prov#>
-select  ?agent (sample(?labels) as ?agent_name) ?activity (SAMPLE(?activity_names) as ?activity_name) (count(?s) as ?count)   (sample(?s) as ?sample_subject)   (sample(?p) as ?sample_pred)  (sample(?o) as ?sample_object)    
+select  ?agent (sample(?labels) as ?agent_name) ?activity  ?activity_names  (count(?s) as ?count)   (sample(?s) as ?sample_subject)   (sample(?p) as ?sample_pred)  (sample(?o) as ?sample_object)    
 where {
-    graph <http://kg.artsdata.ca/core> {
+    values ?graphs {
+        <http://kg.artsdata.ca/core> <http://kg.artsdata.ca/core_reconciled> 
+    }
+    graph ?graphs {
         << ?s ?p ?o >> prov:wasGeneratedBy ?bn.
         ?bn prov:wasAssociatedWith ?agent .
+        OPTIONAL {
+            ?bn schema:name?/prov:wasInformedBy?/schema:name ?activity_names
+        }
+        OPTIONAL {
+            BIND(?bn as ?activity)
+            filter(!isBlank(?bn))
+        }
+        OPTIONAL {
+            ?bn prov:wasInformedBy ?informer_activity
+            BIND(?informer_activity as ?activity)
+        }
+        OPTIONAL {
+            ?agent schema:name ?labels .
+        }
     }
-    OPTIONAL {
-        ?bn rdfs:label?/prov:wasInformedBy?/rdfs:label ?activity_names
-    }
-    OPTIONAL {
-        BIND(?bn as ?activity)
-        filter(!isBlank(?bn))
-    }
-    OPTIONAL {
-        ?bn prov:wasInformedBy ?informer_activity
-        BIND(?informer_activity as ?activity)
-    }
-    OPTIONAL {
-        ?agent rdfs:label ?labels .
-    }
-}  group by ?agent  ?activity
+}  group by ?agent  ?activity  ?activity_names
