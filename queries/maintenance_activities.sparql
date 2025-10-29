@@ -1,0 +1,16 @@
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX : <http://www.ontotext.com/connectors/lucene#>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+select  ?agent (sample(?labels) as ?agent_name) ?activity (count(?s) as ?count)   (sample(?s) as ?sample_subject)   (sample(?p) as ?sample_pred)  (sample(?o) as ?sample_object)    
+where {
+    graph <http://kg.artsdata.ca/core> {
+        << ?s ?p ?o >> prov:wasGeneratedBy ?bn.
+        ?bn prov:wasAssociatedWith ?user .
+    }
+    OPTIONAL {
+        ?bn rdfs:label/prov:wasInformedBy?/rdfs:label? ?activity
+    }
+    OPTIONAL {
+        ?user rdfs:label ?labels .
+    }
+}  group by ?user  ?activity
