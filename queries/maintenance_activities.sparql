@@ -5,12 +5,12 @@ select  ?agent (sample(?labels) as ?agent_name) ?activity (count(?s) as ?count) 
 where {
     graph <http://kg.artsdata.ca/core> {
         << ?s ?p ?o >> prov:wasGeneratedBy ?bn.
-        ?bn prov:wasAssociatedWith ?user .
+        ?bn prov:wasAssociatedWith ?agent .
     }
     OPTIONAL {
         ?bn rdfs:label/prov:wasInformedBy?/rdfs:label? ?activity
     }
     OPTIONAL {
-        ?user rdfs:label ?labels .
+        ?agent rdfs:label ?labels .
     }
-}  group by ?user  ?activity
+}  group by ?agent  ?activity
