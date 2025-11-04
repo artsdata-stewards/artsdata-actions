@@ -9,7 +9,6 @@ select  ?place
 (count(distinct ?addressCountry) as ?addressCountry_count) 
 (count(distinct ?streetAddress) as ?streetAddress_count) 
 where {
-   
     graph <http://kg.artsdata.ca/core>  {
         ?place a schema:Place .
         filter(isURI(?place))
@@ -20,7 +19,7 @@ where {
             ?place schema:name ?names .
         }
     }
-    # ?place schema:name  ?name . 
+    FILTER not exists { ?top schema:workLocation ?place }
     OPTIONAL {
         ?place schema:address ?address .
         OPTIONAL {
