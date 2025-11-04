@@ -12,6 +12,7 @@ where {
    
     graph <http://kg.artsdata.ca/core>  {
         ?place a schema:Place .
+        filter(isURI(?place))
         OPTIONAL {
             ?place schema:address ?address .
         }
