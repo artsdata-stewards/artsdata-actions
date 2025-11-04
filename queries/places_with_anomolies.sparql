@@ -6,6 +6,7 @@ select  ?place
 (count(distinct ?addressLocality) as ?addressLocality_count) 
 (count(distinct ?postalCode) as ?postalCode_count) 
 (count(distinct ?addressRegion) as ?addressRegion_count) 
+(sample(?addressCountry) as ?country)
 (count(distinct ?addressCountry) as ?addressCountry_count) 
 (count(distinct ?streetAddress) as ?streetAddress_count) 
 where {
