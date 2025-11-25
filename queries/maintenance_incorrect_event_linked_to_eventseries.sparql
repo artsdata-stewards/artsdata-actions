@@ -1,0 +1,23 @@
+PREFIX schema: <http://schema.org/>
+select *
+where {
+    graph <http://kg.artsdata.ca/core> {
+        ?event1   schema:sameAs ?eventad .
+         
+        ?eventad a schema:Event , ?adtype .
+        OPTIONAL {
+          ?eventad  schema:subEvent ?adSubs .
+        }
+        ?event2 schema:sameAs ?eventad .
+    }
+    filter (?event1 != ?event2)
+    graph ?ext1 {
+          ?event1 a ?ext1type
+    }
+      graph ?ext2 {
+          ?event2 a ?ext2type
+    }
+    filter(?ext1 = ?ext2)
+    filter(?ext1type != ?ext2type)
+    
+}
