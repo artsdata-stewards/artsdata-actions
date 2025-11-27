@@ -6,19 +6,21 @@ select
 ?pages
 ?crawl_start
 ?crawl_end
+?activity
 ?event_count
-?view_events
+?view_events 
+
 where {
     ?spiderfeed a schema:DataFeed ;
-    schema:dataFeedElement ?url .
+      schema:dataFeedElement ?url .
     ?org schema:url ?url ;
-    schema:name ?org_name .
+      schema:name ?org_name .
     ?crawl prov:used ?url ;
-    a prov:Activity ;
-    prov:wasInformedBy/schema:name ?activity ;
+      a prov:Activity ;
     schema:additionalProperty/schema:value ?pages ;
     prov:startedAtTime ?crawl_start ;
     prov:endedAtTime ?crawl_end .
+    OPTIONAL { ?crawl schema:name ?activity .}
     OPTIONAL {
         ?artifact_dataset prov:wasGeneratedBy ?crawl .
         OPTIONAL {
@@ -29,4 +31,4 @@ where {
         ?graph prov:wasDerivedFrom/<http://xmlns.com/foaf/0.1/primaryTopic>  ?artifact_dataset .
         BIND(CONCAT("<a href='/query/show?sparql=list_events&graph=",str(?graph),"'>View events</a>") as ?view_events)
     }
-} group by ?url ?view_events ?pages  ?crawl_start ?crawl_end  ?event_count
+} group by ?url ?view_events ?pages  ?crawl_start ?crawl_end  ?event_count ?activity
