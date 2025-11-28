@@ -1,26 +1,40 @@
 PREFIX prov: <http://www.w3.org/ns/prov#>
 PREFIX schema: <http://schema.org/>
-select 
+select
 (sample(?org_name) as ?org) 
 ?url 
-?pages
+?pages_crawled
+?structured_data_score
+?event_count
+?view_events
 ?crawl_start
 ?crawl_end
 ?activity
-?event_count
-?view_events 
-
+?crawl
 where {
     ?spiderfeed a schema:DataFeed ;
-      schema:dataFeedElement ?url .
+    schema:dataFeedElement ?url .
     ?org schema:url ?url ;
-      schema:name ?org_name .
+    schema:name ?org_name .
     ?crawl prov:used ?url ;
-      a prov:Activity ;
-    schema:additionalProperty/schema:value ?pages ;
-    prov:startedAtTime ?crawl_start ;
-    prov:endedAtTime ?crawl_end .
-    OPTIONAL { ?crawl schema:name ?activity .}
+    a prov:Activity ;
+    prov:startedAtTime ?crawl_start .
+    OPTIONAL {
+        ?crawl prov:endedAtTime ?crawl_end .
+    }
+    OPTIONAL {
+        ?crawl schema:additionalProperty ?stat1 .
+        ?stat1 schema:name "urlsCrawledCount" ;
+        schema:value ?pages_crawled .
+    }
+    OPTIONAL {
+        ?crawl schema:additionalProperty ?stat2 .
+        ?stat2 schema:name "structuredScore" ;
+        schema:value ?structured_data_score .
+    }
+    OPTIONAL {
+        ?crawl schema:name ?activity .
+    }
     OPTIONAL {
         ?artifact_dataset prov:wasGeneratedBy ?crawl .
         OPTIONAL {
@@ -31,4 +45,4 @@ where {
         ?graph prov:wasDerivedFrom/<http://xmlns.com/foaf/0.1/primaryTopic>  ?artifact_dataset .
         BIND(CONCAT("<a href='/query/show?sparql=list_events&graph=",str(?graph),"'>View events</a>") as ?view_events)
     }
-} group by ?url ?view_events ?pages  ?crawl_start ?crawl_end  ?event_count ?activity
+} group by ?url ?view_events ?pages_crawled ?structured_data_score ?crawl_start ?crawl_end  ?event_count ?activity ?crawl
