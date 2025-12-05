@@ -36,13 +36,18 @@ where {
         ?crawl schema:name ?activity .
     }
     OPTIONAL {
-        ?artifact_dataset prov:wasGeneratedBy ?crawl .
+        ?artifact_dataset prov:wasGeneratedBy ?crawl ; <http://dataid.dbpedia.org/ns/core#artifact> ?artifact .
         OPTIONAL {
             ?artifact_dataset  <http://rdfs.org/ns/void#classPortion> ?portions .
             ?portions <http://rdfs.org/ns/void#class> schema:Event ;
             <http://rdfs.org/ns/void#entities> ?event_count .
         }
-        ?graph prov:wasDerivedFrom/<http://xmlns.com/foaf/0.1/primaryTopic>  ?artifact_dataset .
+        OPTIONAL {
+          ?graph prov:wasDerivedFrom/<http://xmlns.com/foaf/0.1/primaryTopic>  ?artifact_dataset .
+        
+        }
         BIND(CONCAT("<a href='/query/show?sparql=list_events&graph=",str(?graph),"'>View events</a>") as ?view_events)
-    }
+        BIND(if(!bound(?view_events), CONCAT("<a href='/artifact/show?artifactUri=",str(?artifact),">Load using databus</a>"),?view_events) as ?view_events)
+  }
+ 
 } group by ?url ?view_events ?pages_crawled ?structured_data_score ?crawl_start ?crawl_end  ?event_count ?activity ?crawl
