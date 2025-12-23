@@ -2,10 +2,11 @@ PREFIX schema: <http://schema.org/>
 PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 
+
 SELECT
 
 ?organization
-?stauts
+?status
 ?name
 ?website
 ?address
@@ -21,11 +22,10 @@ SELECT
 WHERE {
     graph <http://kg.artsdata.ca/culture-creates/artsdata-planet-pact-ca/pact-organizations> {
         ?organization a schema:Organization ;
-                  schema:name ?name ;
-                  schema:url ?website ;
-                  schema:email ?email ;
-                  schema:telephone ?phone .
-    
+                schema:name ?name ;
+        		schema:url ?website ;
+        OPTIONAL { ?organization schema:email ?email ; }
+        OPTIONAL { ?organization schema:telephone ?phone . }
         OPTIONAL { ?organization schema:legalName ?legalname . }
         OPTIONAL { ?organization wdt:P8860 ?businessnumber . }
         OPTIONAL {
@@ -35,13 +35,16 @@ WHERE {
             OPTIONAL { ?orgAddress schema:addressRegion ?province . }
             OPTIONAL { ?orgAddress schema:postalCode ?postalcode . }
         }
-        ?organization schema:additionalType ?type .
-        ?type a skos:Concept .
-        ?type skos:prefLabel ?legalform . 
+        OPTIONAL { 
+            ?organization schema:additionalType ?type .
+            ?type a skos:Concept .
+            ?type skos:prefLabel ?legalform . 
+        }
 
-        ?organization schema:memberOf ?role .
-        ?role a schema:OrganizationRole .
-        ?role schema:roleName ?stauts .
+        OPTIONAL { 
+            ?organization schema:memberOf ?role .
+            ?role a schema:OrganizationRole .
+            ?role schema:roleName ?status . 
+        }
     }
 }
-LIMIT 100
