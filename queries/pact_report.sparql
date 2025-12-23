@@ -1,3 +1,50 @@
-select  * 
-where { ?s ?p ?o } 
-limit 10
+PREFIX schema: <http://schema.org/>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+
+
+SELECT
+
+?organization
+?status
+?name
+?website
+?address
+?city
+?province
+?postalcode
+?legalname
+?legalform
+?businessnumber
+?email
+?phone
+
+WHERE {
+    graph <http://kg.artsdata.ca/culture-creates/artsdata-planet-pact-ca/pact-organizations> {
+        ?organization a schema:Organization ;
+                schema:name ?name ;
+        		schema:url ?website ;
+        OPTIONAL { ?organization schema:email ?email ; }
+        OPTIONAL { ?organization schema:telephone ?phone . }
+        OPTIONAL { ?organization schema:legalName ?legalname . }
+        OPTIONAL { ?organization wdt:P8860 ?businessnumber . }
+        OPTIONAL {
+            ?organization schema:address ?orgAddress .
+            OPTIONAL { ?orgAddress schema:streetAddress ?address . }
+            OPTIONAL { ?orgAddress schema:addressLocality ?city . }
+            OPTIONAL { ?orgAddress schema:addressRegion ?province . }
+            OPTIONAL { ?orgAddress schema:postalCode ?postalcode . }
+        }
+        OPTIONAL { 
+            ?organization schema:additionalType ?type .
+            ?type a skos:Concept .
+            ?type skos:prefLabel ?legalform . 
+        }
+
+        OPTIONAL { 
+            ?organization schema:memberOf ?role .
+            ?role a schema:OrganizationRole .
+            ?role schema:roleName ?status . 
+        }
+    }
+}
