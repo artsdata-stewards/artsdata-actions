@@ -2,7 +2,7 @@ PREFIX adcv: <http://www.adc659.ca/vocabulary#>
 PREFIX schema: <http://schema.org/>
 
 select * where {
-  graph <http://kg.artsdata.ca/culture-creates/huginn/adc659> {
+  graph <http://kg.artsdata.ca/culture-creates/artsdata-orion/adc659-ca> {
     ?uri a schema:Person .
     OPTIONAL { ?uri schema:name ?name }
     OPTIONAL { ?uri adcv:memberType ?memberType }
