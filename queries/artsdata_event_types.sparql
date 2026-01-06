@@ -11,7 +11,7 @@ select
 ?definition
 ?version3
 ?version4 
-?v4changeNote 
+?changeNote 
 ?replacedBy 
 ?editorialNote
 where {
@@ -29,17 +29,15 @@ where {
         filter(lang(?definition) = "en")
     }
     OPTIONAL {
-        ?v3  skos:member   ?eventType  ;
-        schema:version "3.4.5".
-        bind(!BOUND(?v3) as ?version3)
+        <http://kg.artsdata.ca/resource/ArtsdataEventTypes-Collection-3.4>  skos:member   ?eventType  ;
+        bind(true as ?version3)
     }
     OPTIONAL {
-        ?v4  skos:member   ?eventType  ;
-        schema:version "4.0".
-         bind(!BOUND(?v4) as ?version4)
+        <http://kg.artsdata.ca/resource/ArtsdataEventTypes-Collection-4.0>  skos:member   ?eventType  ;
+        bind(true as ?version4)
     }
     OPTIONAL {
-        ?eventType skos:changeNote/rdf:value ?v4changeNote .
+        ?eventType skos:changeNote ?changeNote .
     }
     OPTIONAL {
         ?eventType <http://purl.org/dc/terms/isReplacedBy>   ?replacedBy
