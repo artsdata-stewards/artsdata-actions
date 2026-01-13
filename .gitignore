@@ -1,0 +1,4 @@
+# Ruby dependencies
+/vendor/bundle/
+/.bundle/
+Gemfile.lock
