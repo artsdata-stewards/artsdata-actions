@@ -1,0 +1,129 @@
+[
+  {
+    "@id": "http://example.com/event-valid",
+    "@type": "http://schema.org/Event",
+    "http://schema.org/name": [{ "@value": "Valid Indigenous Event" }],
+    "http://schema.org/startDate": [{
+      "@value": "2026-06-01T19:00:00-05:00",
+      "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+    }],
+    "http://schema.org/url": [{ "@value": "http://example.com/event/valid" }],
+    "http://schema.org/performer": [{ "@id": "http://example.com/performer-valid" }]
+  },
+
+  {
+    "@id": "http://example.com/performer-valid",
+    "@type": "http://schema.org/Person",
+    "http://schema.org/name": [{ "@value": "Indigenous Performer" }],
+    "http://schema.org/sameAs": [{
+      "@id": "http://www.wikidata.org/entity/Q11111"
+    }]
+  },
+
+  {
+    "@id": "http://example.com/event-minimal",
+    "@type": "http://schema.org/Event",
+    "http://schema.org/name": [{ "@value": "Minimal Indigenous Event" }],
+    "http://schema.org/startDate": [{
+      "@value": "2026-12-01T19:00:00-05:00",
+      "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+    }],
+    "http://schema.org/url": [{ "@value": "http://example.com/event/minimal" }],
+    "http://schema.org/performer": [{ "@id": "http://example.com/performer-minimal" }]
+  },
+
+  {
+    "@id": "http://example.com/performer-minimal",
+    "@type": "http://schema.org/Person",
+    "http://schema.org/name": [{ "@value": "Indigenous Performer Minimal" }],
+    "http://schema.org/sameAs": [{
+      "@id": "http://www.wikidata.org/entity/Q12345"
+    }]
+  },
+
+  {
+    "@id": "http://example.com/event-dual",
+    "@type": "http://schema.org/Event",
+    "http://schema.org/name": [{ "@value": "Dual Indigenous Event" }],
+    "http://schema.org/startDate": [{
+      "@value": "2026-11-15T20:00:00-05:00",
+      "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+    }],
+    "http://schema.org/url": [{ "@value": "http://example.com/event/dual" }],
+    "http://schema.org/performer": [{ "@id": "http://example.com/performer-dual" }],
+    "http://schema.org/organizer": [{ "@id": "http://example.com/organizer-dual" }]
+  },
+
+  {
+    "@id": "http://example.com/performer-dual",
+    "@type": "http://schema.org/Person",
+    "http://schema.org/name": [{ "@value": "Indigenous Performer Dual" }],
+    "http://schema.org/sameAs": [{
+      "@id": "http://www.wikidata.org/entity/Q23456"
+    }]
+  },
+
+  {
+    "@id": "http://example.com/organizer-dual",
+    "@type": "http://schema.org/Organization",
+    "http://schema.org/name": [{ "@value": "Indigenous Organizer Dual" }],
+    "http://schema.org/sameAs": [{
+      "@id": "http://www.wikidata.org/entity/Q34567"
+    }]
+  },
+
+  {
+    "@id": "http://example.com/event-multi",
+    "@type": "http://schema.org/Event",
+    "http://schema.org/name": [{ "@value": "Multi Indigenous Event" }],
+    "http://schema.org/startDate": [{
+      "@value": "2026-10-10T18:00:00-05:00",
+      "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+    }],
+    "http://schema.org/url": [{ "@value": "http://example.com/event/multi" }],
+    "http://schema.org/performer": [
+      { "@id": "http://example.com/performer-multi-1" },
+      { "@id": "http://example.com/performer-multi-2" }
+    ],
+    "http://schema.org/organizer": [
+      { "@id": "http://example.com/organizer-multi-1" },
+      { "@id": "http://example.com/organizer-multi-2" }
+    ]
+  },
+
+  {
+    "@id": "http://example.com/performer-multi-1",
+    "@type": "http://schema.org/Person",
+    "http://schema.org/name": [{ "@value": "Indigenous Performer 1" }],
+    "http://schema.org/sameAs": [{
+      "@id": "http://www.wikidata.org/entity/Q45678"
+    }]
+  },
+
+  {
+    "@id": "http://example.com/performer-multi-2",
+    "@type": "http://schema.org/Person",
+    "http://schema.org/name": [{ "@value": "Indigenous Performer 2" }],
+    "http://schema.org/sameAs": [{
+      "@id": "http://www.wikidata.org/entity/Q56789"
+    }]
+  },
+
+  {
+    "@id": "http://example.com/organizer-multi-1",
+    "@type": "http://schema.org/Organization",
+    "http://schema.org/name": [{ "@value": "Indigenous Organizer 1" }],
+    "http://schema.org/sameAs": [{
+      "@id": "http://www.wikidata.org/entity/Q67890"
+    }]
+  },
+
+  {
+    "@id": "http://example.com/organizer-multi-2",
+    "@type": "http://schema.org/Organization",
+    "http://schema.org/name": [{ "@value": "Indigenous Organizer 2" }],
+    "http://schema.org/sameAs": [{
+      "@id": "http://www.wikidata.org/entity/Q78901"
+    }]
+  }
+]
