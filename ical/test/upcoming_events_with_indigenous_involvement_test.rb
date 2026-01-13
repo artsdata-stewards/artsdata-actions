@@ -5,9 +5,9 @@ class UpcomingEventsWithIndigenousInvolvementTest < Minitest::Test
 
   def setup
     # Load the SPARQL file 
-    file_path = File.expand_path("../../upcoming_events_with_indigenous_involvement.sparql", __FILE__)
-    @sparql_simplified = SPARQL.parse(File.read(file_path))
-  
+    file_path = File.expand_path("../upcoming_events_with_indigenous_involvement.sparql", __dir__)
+    stubbed_sparql = replace_federated_service_call(File.read(file_path))
+    @sparql_simplified = SPARQL.parse(stubbed_sparql)
   end
 
   def test_upcoming_events_with_indigenous_involvement
@@ -168,4 +168,24 @@ class UpcomingEventsWithIndigenousInvolvementTest < Minitest::Test
     assert_equal 2, results.query([event_uri, RDF::Vocab::SCHEMA.organizer, nil]).count
   end
 
+  def replace_federated_service_call(str)
+    start_tag = 'SERVICE <https://query.wikidata.org/sparql>'
+    start = str.index(start_tag)
+    replacement_text = "values ?indigenousAgent { <http://example.com/performer-valid> <http://example.com/organizer-valid> }"
+    return str unless start
+    depth = 0
+    str.chars.each_with_index do |char, i|
+      if i > start + start_tag.length
+        depth += 1 if char == '{'
+        depth -= 1 if char == '}'
+        if depth == 0
+          # Replace from first { to matching }
+          return str[0...start] + replacement_text + str[(i + 1)..-1]
+        end
+      end
+    end
+    str # Return original if no matching closing brace
+  end
+
 end
+
