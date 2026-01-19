@@ -61,8 +61,10 @@ where {
                 # Events with indigenous organizers
                 ?event schema:organizer/schema:sameAs* ?indigenousAgent .
             } UNION {
-                # Events from Footlight CMS calendar indigenous-performances source
-                ?event schema:isPartOf <http://kg.artsdata.ca/culture-creates/artsdata-planet-footlight/indigenous-performances> .
+                # All events from Footlight CMS calendar indigenous-performances source
+                graph <http://kg.artsdata.ca/culture-creates/artsdata-planet-footlight/indigenous-performances> {
+                    ?event a schema:Event .
+                }
             }
         }
     }
