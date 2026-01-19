@@ -127,4 +127,18 @@ class UpcomingEventsWithIndigenousInvolvementTest < Minitest::Test
    
   end
 
+  def test_event_series_with_super_event
+    graph = RDF::Graph.load("./ical/test/fixtures/event_series.jsonld")
+
+    results = graph.query(@sparql_simplified)
+    # puts "Results: #{results.dump(:ttl)}"
+
+    event_uris = results.query([nil, RDF.type, RDF::Vocab::SCHEMA.Event]).map(&:subject).uniq
+    assert event_uris.include?(RDF::URI("http://example.com/event-valid")), "Should find event event-valid"
+    
+    url = results.query([RDF::URI("http://example.com/event-valid"), RDF::Vocab::SCHEMA.url, nil]).first&.object&.to_s
+    assert_equal "http://example.com/event/super-event-valid",url,"URL should be from super-event"
+
+  end
+
 end

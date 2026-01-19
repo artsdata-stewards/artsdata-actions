@@ -69,11 +69,20 @@ where {
     # 3 Get event properties needed for iCal
     graph ?g {
         ?event   schema:name ?names ;
-        schema:startDate ?startDate ;
-        schema:url | ^schema:subEvent/schema:url ?urls .
+        schema:startDate ?startDate .
         # Remove past events
         filter(?startDate > now())
     }
+
+    # Get event URL
+    OPTIONAL {
+        ?event schema:url ?url .
+    }
+    OPTIONAL {
+        ?event ^schema:subEvent/schema:url ?super_url .
+    }
+    BIND(COALESCE(?url, ?super_url) AS ?urls)
+    
     OPTIONAL {
         ?event schema:description ?desc .
     }
