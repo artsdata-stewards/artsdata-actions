@@ -105,4 +105,26 @@ class UpcomingEventsWithIndigenousInvolvementTest < Minitest::Test
     assert_equal 2, results.query([multi_event, RDF::Vocab::SCHEMA.organizer, nil]).count
   end
 
+  def test_with_indigenous_calendar_events
+    named_graph = RDF::Graph.load("./ical/test/fixtures/indigenous_calendar_event.jsonld")
+
+    results = named_graph.query(@sparql_simplified)
+    event_uris = results.query([nil, RDF.type, RDF::Vocab::SCHEMA.Event]).map(&:subject).uniq
+    
+    indigenous_calendar_event = RDF::URI("http://example.com/event-indigenous-calendar")
+    assert event_uris.include?(indigenous_calendar_event), "Should find event from Indigenous Calendar"
+    
+  end
+
+  def test_with_both_wikidata_agents_and_indigenous_calendar_events
+    @graph << RDF::Graph.load("./ical/test/fixtures/indigenous_calendar_event.jsonld")
+
+    results = @graph.query(@sparql_simplified)
+    event_uris = results.query([nil, RDF.type, RDF::Vocab::SCHEMA.Event]).map(&:subject).uniq
+   
+    assert event_uris.include?(RDF::URI("http://example.com/event-indigenous-calendar")), "Should find event from Indigenous Calendar"
+    assert event_uris.include?(RDF::URI("http://example.com/event-multi")), "Should find event with multiple indigenous performers and organizers"
+   
+  end
+
 end
