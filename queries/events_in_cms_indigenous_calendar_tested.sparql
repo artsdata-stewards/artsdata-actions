@@ -9,7 +9,6 @@ select ?event
 (count(distinct ?indigenous_organizer) as ?indigenous_organizers) 
 (count(distinct ?address_complete) as ?address_filled) 
 (IF(((count(distinct ?indigenous_performer) + count(distinct ?indigenous_organizer)) > 0) && (count(distinct ?address_complete) > 0) && (count(distinct ?urls) > 0), true, false) as ?good_for_feed)
-
 where {
     # 1 Get indigenous agents in Wikidata with Artsdata IDs
     graph <http://kg.artsdata.ca/culture-creates/artsdata-planet-footlight/indigenous-performances> {
@@ -55,5 +54,6 @@ where {
         OPTIONAL {
             ?event schema:url | ^schema:subEvent/schema:url ?urls .
             BIND(true as ?url_present)
+        }
     }
 } group by ?event
