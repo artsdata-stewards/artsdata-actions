@@ -5,10 +5,10 @@ select ?event
 (sample(?names) as ?name) 
 (count(distinct ?urls) as ?url)
 (count(distinct ?performer) as ?performers) 
-(count(distinct ?indigenous_performer) as ?indigenous_performers) 
-(count(distinct ?indigenous_organizer) as ?indigenous_organizers) 
+(count(distinct ?wikidata_performer) as ?wikidata_performers) 
+(count(distinct ?wikidata_organizer) as ?wikidata_organizers) 
 (count(distinct ?address_complete) as ?address_filled) 
-(IF(((count(distinct ?indigenous_performer) + count(distinct ?indigenous_organizer)) > 0) && (count(distinct ?address_complete) > 0) && (count(distinct ?urls) > 0), true, false) as ?good_for_feed)
+(IF( (count(distinct ?address_complete) > 0) && (count(distinct ?urls) > 0), true, false) as ?good_for_feed)
 where {
     # 1 Get indigenous agents in Wikidata with Artsdata IDs
     graph <http://kg.artsdata.ca/culture-creates/artsdata-planet-footlight/indigenous-performances> {
@@ -31,11 +31,11 @@ where {
         }
         OPTIONAL {
             ?event schema:performer/schema:sameAs ?indigenous_agent
-            BIND(true as ?indigenous_performer)
+            BIND(true as ?wikidata_performer)
         }
         OPTIONAL {
             ?event schema:organizer/schema:sameAs ?indigenous_agent
-            BIND(true as ?indigenous_organizer)
+            BIND(true as ?wikidata_organizer)
         }
         OPTIONAL {
             ?event schema:performer ?performer
