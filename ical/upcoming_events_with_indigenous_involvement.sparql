@@ -50,7 +50,7 @@ where {
             }
         }
     }
-    # 2 Get events with indigenous performer OR indigenous organizer
+    # 2 Get events with indigenous performer OR indigenous organizer OR from Indigenous Calendar
     {
         select * where {
             ?event a schema:Event .
@@ -60,6 +60,11 @@ where {
             } UNION {
                 # Events with indigenous organizers
                 ?event schema:organizer/schema:sameAs* ?indigenousAgent .
+            } UNION {
+                # All events from Indigenous Calendar graph
+                graph <http://kg.artsdata.ca/culture-creates/artsdata-planet-footlight/indigenous-performances> {
+                    ?event a schema:Event .
+                }
             }
         }
     }

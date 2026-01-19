@@ -1,5 +1,9 @@
-[
-  {
+{
+  "@graph": [
+    {
+      "@id": "http://example.com/test-graph",
+      "@graph": [
+        {
     "@id": "http://example.com/event-valid",
     "@type": "http://schema.org/Event",
     "http://schema.org/name": [{ "@value": "Valid Indigenous Event" }],
@@ -234,4 +238,45 @@
     "http://schema.org/addressCountry": [{ "@value": "CA" }],
     "http://schema.org/postalCode": [{ "@value": "T2P 1A1" }]
   }
-]
+      ]
+    },
+  
+  {
+    "@id": "http://kg.artsdata.ca/culture-creates/artsdata-planet-footlight/indigenous-performances",
+    "@graph": [
+      {
+        "@id": "http://example.com/event-from-calendar",
+        "@type": "http://schema.org/Event",
+        "http://schema.org/name": [{ "@value": "Event from Indigenous Calendar" }],
+        "http://schema.org/startDate": [{
+          "@value": "2026-07-15T19:00:00-05:00",
+          "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+        }],
+        "http://schema.org/url": [{ "@value": "http://example.com/event/from-calendar" }],
+        "http://schema.org/performer": [{ "@id": "http://example.com/performer-calendar" }],
+        "http://schema.org/location": [{ "@id": "http://example.com/location-calendar" }]
+      },
+      {
+        "@id": "http://example.com/performer-calendar",
+        "@type": "http://schema.org/Person",
+        "http://schema.org/name": [{ "@value": "Calendar Performer" }]
+      },
+      {
+        "@id": "http://example.com/location-calendar",
+        "@type": "http://schema.org/Place",
+        "http://schema.org/name": [{ "@value": "Calendar Venue" }],
+        "http://schema.org/address": [{ "@id": "http://example.com/address-calendar" }]
+      },
+      {
+        "@id": "http://example.com/address-calendar",
+        "@type": "http://schema.org/PostalAddress",
+        "http://schema.org/streetAddress": [{ "@value": "303 Calendar St" }],
+        "http://schema.org/addressLocality": [{ "@value": "Vancouver" }],
+        "http://schema.org/addressRegion": [{ "@value": "BC" }],
+        "http://schema.org/addressCountry": [{ "@value": "CA" }],
+        "http://schema.org/postalCode": [{ "@value": "V6B 1A1" }]
+      }
+    ]
+  }
+  ]
+}
