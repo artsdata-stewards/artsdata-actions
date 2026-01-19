@@ -17,7 +17,7 @@ class UpcomingEventsWithIndigenousInvolvementTest < Minitest::Test
   end
 
   def test_upcoming_events_with_indigenous_involvement
-    puts "Loaded graph with #{@graph.count} triples"
+   # puts "Loaded graph with #{@graph.count} triples"
     
     # Execute the simplified query
     results = @graph.query(@sparql_simplified)
@@ -32,11 +32,11 @@ class UpcomingEventsWithIndigenousInvolvementTest < Minitest::Test
       performers = results.query([event_uri, RDF::Vocab::SCHEMA.performer, nil]).map(&:object)
       organizers = results.query([event_uri, RDF::Vocab::SCHEMA.organizer, nil]).map(&:object)
       
-      puts "\nEvent: #{event_name}"
-      puts "  URI: #{event_uri}"
-      puts "  Date: #{event_date}"
-      puts "  Performers: #{performers.count}"
-      puts "  Organizers: #{organizers.count}"
+      # puts "\nEvent: #{event_name}"
+      # puts "  URI: #{event_uri}"
+      # puts "  Date: #{event_date}"
+      # puts "  Performers: #{performers.count}"
+      # puts "  Organizers: #{organizers.count}"
     end
     
     # Assertions
