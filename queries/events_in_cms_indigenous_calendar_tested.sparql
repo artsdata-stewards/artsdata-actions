@@ -3,7 +3,7 @@ PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 PREFIX wd: <http://www.wikidata.org/entity/>
 select ?event 
 (sample(?names) as ?name) 
-(count(distinct ?urls) as ?url
+(count(distinct ?urls) as ?url)
 (count(distinct ?performer) as ?performers) 
 (count(distinct ?indigenous_performer) as ?indigenous_performers) 
 (count(distinct ?indigenous_organizer) as ?indigenous_organizers) 
