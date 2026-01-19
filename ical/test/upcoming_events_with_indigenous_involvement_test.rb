@@ -17,8 +17,6 @@ class UpcomingEventsWithIndigenousInvolvementTest < Minitest::Test
   end
 
   def test_upcoming_events_with_indigenous_involvement
-   # puts "Loaded graph with #{@graph.count} triples"
-    
     # Execute the simplified query
     results = @graph.query(@sparql_simplified)
     
@@ -26,18 +24,18 @@ class UpcomingEventsWithIndigenousInvolvementTest < Minitest::Test
     event_uris = results.query([nil, RDF.type, RDF::Vocab::SCHEMA.Event]).map(&:subject).uniq
 
     # Show details of first few events
-    event_uris.first(5).each do |event_uri|
-      event_name = results.query([event_uri, RDF::Vocab::SCHEMA.name, nil]).first&.object
-      event_date = results.query([event_uri, RDF::Vocab::SCHEMA.startDate, nil]).first&.object
-      performers = results.query([event_uri, RDF::Vocab::SCHEMA.performer, nil]).map(&:object)
-      organizers = results.query([event_uri, RDF::Vocab::SCHEMA.organizer, nil]).map(&:object)
+    # event_uris.first(5).each do |event_uri|
+    #   event_name = results.query([event_uri, RDF::Vocab::SCHEMA.name, nil]).first&.object
+    #   event_date = results.query([event_uri, RDF::Vocab::SCHEMA.startDate, nil]).first&.object
+    #   performers = results.query([event_uri, RDF::Vocab::SCHEMA.performer, nil]).map(&:object)
+    #   organizers = results.query([event_uri, RDF::Vocab::SCHEMA.organizer, nil]).map(&:object)
       
-      # puts "\nEvent: #{event_name}"
-      # puts "  URI: #{event_uri}"
-      # puts "  Date: #{event_date}"
-      # puts "  Performers: #{performers.count}"
-      # puts "  Organizers: #{organizers.count}"
-    end
+    #   puts "\nEvent: #{event_name}"
+    #   puts "  URI: #{event_uri}"
+    #   puts "  Date: #{event_date}"
+    #   puts "  Performers: #{performers.count}"
+    #   puts "  Organizers: #{organizers.count}"
+    # end
     
     # Assertions
     assert results.count > 0, "Expected some results from the CONSTRUCT query"
@@ -48,7 +46,6 @@ class UpcomingEventsWithIndigenousInvolvementTest < Minitest::Test
     results = @graph.query(@sparql_simplified)
     
     event_uris = results.query([nil, RDF.type, RDF::Vocab::SCHEMA.Event]).map(&:subject).uniq
-    
     event_uris.first(3).each do |event_uri|
       # Check required properties
       assert results.query([event_uri, RDF::Vocab::SCHEMA.name, nil]).count > 0, 
@@ -113,7 +110,6 @@ class UpcomingEventsWithIndigenousInvolvementTest < Minitest::Test
     
     indigenous_calendar_event = RDF::URI("http://example.com/event-indigenous-calendar")
     assert event_uris.include?(indigenous_calendar_event), "Should find event from Indigenous Calendar"
-    
   end
 
   def test_with_both_wikidata_agents_and_indigenous_calendar_events
@@ -124,21 +120,17 @@ class UpcomingEventsWithIndigenousInvolvementTest < Minitest::Test
    
     assert event_uris.include?(RDF::URI("http://example.com/event-indigenous-calendar")), "Should find event from Indigenous Calendar"
     assert event_uris.include?(RDF::URI("http://example.com/event-multi")), "Should find event with multiple indigenous performers and organizers"
-   
   end
 
   def test_event_series_with_super_event
     graph = RDF::Graph.load("./ical/test/fixtures/event_series.jsonld")
-
     results = graph.query(@sparql_simplified)
-    # puts "Results: #{results.dump(:ttl)}"
 
     event_uris = results.query([nil, RDF.type, RDF::Vocab::SCHEMA.Event]).map(&:subject).uniq
     assert event_uris.include?(RDF::URI("http://example.com/event-valid")), "Should find event event-valid"
     
     url = results.query([RDF::URI("http://example.com/event-valid"), RDF::Vocab::SCHEMA.url, nil]).first&.object&.to_s
     assert_equal "http://example.com/event/super-event-valid",url,"URL should be from super-event"
-
   end
 
 end
