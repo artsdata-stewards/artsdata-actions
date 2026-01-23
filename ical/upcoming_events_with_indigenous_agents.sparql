@@ -24,68 +24,87 @@ construct {
     schema:addressCountry ?addressCountry ;
     schema:postalCode ?postalCode ;
     schema:addressLocality ?addressLocality .
-    ?performer a ?agentType ;
-    schema:name ?indigenousAgentName ;
-    schema:sameAs ?indigenousAgentSameAs .
+    ?performer a ?performerType ;
+    schema:name ?performerName ;
+    schema:sameAs ?performerSameAs .
     ?organizer a ?organizerType ;
     schema:name ?organizerName ;
     schema:sameAs ?organizerSameAs .
 }
-#select  ?event 
-#(sample(?names) as ?name) 
-#?startDate   
-#?endDate 
-#(sample(?performer) as ?sample_performer) 
-#(sample(?organizer) as ?sample_organizer) 
-#(sample(?desc) as ?description)  
-#(sample(?loc_names) as ?loc_name) 
-#(sample(?streetAddresss) as ?streetAddress) 
-#(sample(?addressLocalitys) as ?addressLocality)  
-#(sample(?addressRegions) as ?addressRegion)  
-#(sample(?addressCountrys) as ?addressCountry)  
-#(sample(?postalCodes) as ?postalCode) 
-#(sample(?urls) as ?url)
-#?error
+# select reduced ?event ?names
 from onto:explicit
 where {
-    # 1 Get indigenous agents in Wikidata with Artsdata IDs
+    # All events from Footlight CMS calendar indigenous-performances source
     {
-        select distinct ?performer where {
-            SERVICE <https://query.wikidata.org/sparql> {
-                {
-                    ?person  wdt:P172/wdt:P279* wd:Q15571255 ;
-                    # indigenous peoples in North America
-                    wdt:P7627 ?adid .
-                } UNION {
-                    ?wdid_uri  wdt:P1552/wdt:P279* wd:Q15571255 ;
-                    # indigenous peoples in North America            
-                    wdt:P7627 ?adid .
+        select ?event ?startDate ?endDate where {
+            {
+                graph <http://kg.artsdata.ca/culture-creates/artsdata-planet-footlight/indigenous-performances> {
+                    ?event a schema:Event ;
+                    schema:startDate ?startDate .
+                    filter(?startDate > now())
                 }
-                bind(uri(concat("http://kg.artsdata.ca/resource/",?adid))  as ?performer)
+            }
+            UNION
+            {
+                {
+                    # Get indigenous agents in Wikidata with Artsdata IDs
+                    select distinct ?indigenousAgent where {
+                        SERVICE <https://query.wikidata.org/sparql> {
+                            {
+                                ?person  wdt:P172/wdt:P279* wd:Q15571255 ;
+                                # indigenous peoples in North America
+                                wdt:P7627 ?adid .
+                            } UNION {
+                                ?organization  wdt:P1552/wdt:P279* wd:Q15571255 ;
+                                # indigenous peoples in North America            
+                                wdt:P7627 ?adid .
+                            }
+                            bind(uri(concat("http://kg.artsdata.ca/resource/",?adid))  as ?indigenousAgent)
+                        }
+                    }
+                }
+                # Events with indigenous performers
+                ?event a schema:Event .
+                ?event schema:organizer/schema:sameAs* | schema:performer/schema:sameAs*  ?indigenousAgent .
+                graph ?g {
+                    ?event schema:startDate ?startDate .
+                    filter(?startDate > now())
+                    # Exclude events from Indigenous CMS
+                    filter(?g != <http://kg.artsdata.ca/culture-creates/artsdata-planet-footlight/indigenous-performances>)
+                }
+                # Exclude events that are sameAs events from Indigenous CMS
+                FILTER NOT EXISTS {
+                    graph <http://kg.artsdata.ca/culture-creates/artsdata-planet-footlight/indigenous-performances> {
+                        ?cms_event a schema:Event .
+                    }
+                    ?cms_event schema:sameAs ?event .
+                }
+                # Exclude event that are duplicates with Artsdata Minted Events
+                FILTER NOT EXISTS {
+                    graph <http://kg.artsdata.ca/core> {
+                        ?event schema:sameAs ?ad_event .
+                        filter(contains(str(?ad_event),"kg.artsdata.ca")) 
+                    } 
+                }
             }
         }
     }
-    # 2 Get events with indigenous performer
-    {
-        select * where {
-            ?event  a schema:Event ;
-            schema:performer/schema:sameAs* ?performer .
-        }
-    }
     # 3 Get event properties needed for iCal
-    graph ?g {
-        ?event   schema:name ?names ;
-        schema:startDate ?startDate ;
-        schema:url ?urls .
-        # Remove past events
-        filter(?startDate > now())
-    }
-    OPTIONAL {
-        ?event schema:description ?desc .
-    }
+    ?event  schema:name ?names .
     OPTIONAL {
         ?event schema:endDate ?endDate .
         filter(datatype(?endDate) = xsd:dateTime)
+    }
+    # Get event URL
+    OPTIONAL {
+        ?event schema:url ?url .
+    }
+    OPTIONAL {
+        ?event ^schema:subEvent/schema:url ?super_url .
+    }
+    BIND(COALESCE(?url, ?super_url) AS ?urls)
+    OPTIONAL {
+        ?event schema:description ?desc .
     }
     # Location
     ?event schema:location ?loc .
@@ -99,38 +118,30 @@ where {
     schema:addressCountry ?addressCountry ;
     schema:postalCode ?postalCode ;
     schema:addressLocality ?addressLocality .
-    # Performer
-    ?performer schema:name ?indigenousAgentName ;
-    a ?agentType .
+    
+    # Performer 
     OPTIONAL {
-        ?performer schema:sameAs ?indigenousAgentSameAs .
+        ?event schema:performer ?performer .
+        ?performer schema:name ?performerName ;
+        a ?performerType .
+        OPTIONAL {
+            ?performer schema:sameAs ?performerSameAs .
+        }
     }
-    # Organizer
+    # Organizer 
     OPTIONAL {
         ?event schema:organizer ?organizer .
         ?organizer a ?organizerType ;
-        schema:name ?organizerName ;
-        schema:sameAs ?organizerSameAs .
+        schema:name ?organizerName .
+        OPTIONAL {
+            ?organizer schema:sameAs ?organizerSameAs .
+        }
     }
-    # Remove event duplicates
-    # Remove duplicate external events not from CMS indigenous-performances that have Artsdata minted event (with some performer)
-    filter( not exists {
-            ?event schema:sameAs ?ad_event .
-            ?ad_event schema:performer ?some_performer .
-            ?event schema:isPartOf ?source .
-            filter(?source != <http://kg.artsdata.ca/culture-creates/artsdata-planet-footlight/indigenous-performances>)
-            filter(contains(str(?ad_event),"kg.artsdata.ca/resource/"))  
-        } )
-     # Remove duplicate Artsdata core events if the external event source is CMS indigenous-performances
-     filter( not exists {
-            ?event ^schema:sameAs/schema:isPartOf ?source .
-            filter(?source = <http://kg.artsdata.ca/culture-creates/artsdata-planet-footlight/indigenous-performances>)
-            filter(contains(str(?event),"kg.artsdata.ca/resource/"))  
-        } )
+    
     # Remove events with errors
     OPTIONAL {
         ?bn sh:focusNode ?event ;
         sh:resultSeverity ?error .
     }
     filter(!Bound(?error) || ?error != sh:Violation )
-} #group by ?event ?startDate ?endDate ?error
+}
