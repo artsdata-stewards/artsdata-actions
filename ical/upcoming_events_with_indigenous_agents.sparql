@@ -36,7 +36,7 @@ from onto:explicit
 where {
     # All events from Footlight CMS calendar indigenous-performances source
     {
-        select ?event ?startDate ?endDate where {
+        select ?event ?startDate  where {
             {
                 graph <http://kg.artsdata.ca/culture-creates/artsdata-planet-footlight/indigenous-performances> {
                     ?event a schema:Event ;
