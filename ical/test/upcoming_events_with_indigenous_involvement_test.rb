@@ -6,7 +6,7 @@ class UpcomingEventsWithIndigenousInvolvementTest < Minitest::Test
 
   def setup
     # Load the SPARQL file 
-    file_path = File.expand_path("../upcoming_events_with_indigenous_involvement.sparql", __dir__)
+    file_path = File.expand_path("../upcoming_events_with_indigenous_agents.sparql", __dir__)
     replacement_text = "values ?indigenousAgent { <http://example.com/performer-valid> <http://example.com/organizer-valid> <http://example.com/performer-minimal> <http://example.com/performer-dual> <http://example.com/organizer-dual> <http://example.com/performer-multi-1> <http://example.com/performer-multi-2> <http://example.com/organizer-multi-1> <http://example.com/organizer-multi-2> }"  
     stubbed_sparql = Utils::replace_federated_service_call(File.read(file_path), replacement_text)
     stubbed_sparql.gsub!("from onto:explicit", "")
