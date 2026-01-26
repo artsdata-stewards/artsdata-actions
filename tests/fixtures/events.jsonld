@@ -1,0 +1,29 @@
+{
+    "@context": "http://schema.org",
+    "@graph": [
+        {
+            "@id": "http://example.com/event-valid",
+            "@type": "Event",
+            "name": "Valid Indigenous Event",
+            "startDate": {"@value": "2026-06-01T19:00:00-05:00", "@type": "xsd:dateTime"},
+            "url": "http://example.com/event/valid",
+            "performer": {
+                "@id": "http://example.com/performer-valid",
+                "@type": "Person",
+                "name": "Valid Indigenous Performer"
+            },
+            "location": {
+                "@type": "Place",
+                "name": "Valid Venue",
+                "address": {
+                    "@type": "PostalAddress",
+                    "streetAddress": "123 Main St",
+                    "addressLocality": "Anytown",
+                    "addressRegion": "QC",
+                    "postalCode": "12345",
+                    "addressCountry": "CA"
+                }
+            }
+        }
+    ]
+}

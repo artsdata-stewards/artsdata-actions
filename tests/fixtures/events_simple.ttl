@@ -1,0 +1,23 @@
+@prefix schema: <http://schema.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://example.com/event-valid> a schema:Event ;
+    schema:location <http://example.com/location-1> ;
+    schema:name "Valid Indigenous Event" ;
+    schema:performer <http://example.com/performer-valid> ;
+    schema:startDate "2026-06-01T19:00:00-05:00"^^xsd:dateTime ;
+    schema:url <http://example.com/event/valid> .
+
+<http://example.com/performer-valid> a schema:Person ;
+    schema:name "Valid Indigenous Performer" .
+
+<http://example.com/location-1> a schema:Place ;
+    schema:address <http://example.com/address-1> ;
+    schema:name "Valid Venue" .
+
+<http://example.com/address-1> a schema:PostalAddress ;
+    schema:addressCountry "CA" ;
+    schema:addressLocality "Anytown" ;
+    schema:addressRegion "QC" ;
+    schema:postalCode "12345" ;
+    schema:streetAddress "123 Main St" .

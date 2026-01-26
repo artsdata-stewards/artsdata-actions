@@ -1,0 +1,237 @@
+[
+  {
+    "@id": "http://example.com/event-valid",
+    "@type": "http://schema.org/Event",
+    "http://schema.org/name": [{ "@value": "Valid Indigenous Event" }],
+    "http://schema.org/startDate": [{
+      "@value": "2026-06-01T19:00:00-05:00",
+      "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+    }],
+    "http://schema.org/url": [{ "@value": "http://example.com/event/valid" }],
+    "http://schema.org/performer": [{ "@id": "http://example.com/performer-valid" }],
+    "http://schema.org/location": [{ "@id": "http://example.com/location-1" }]
+  },
+
+  {
+    "@id": "http://example.com/performer-valid",
+    "@type": "http://schema.org/Person",
+    "http://schema.org/name": [{ "@value": "Indigenous Performer" }],
+    "http://schema.org/sameAs": [{
+      "@id": "http://www.wikidata.org/entity/Q11111"
+    }]
+  },
+
+  {
+    "@id": "http://example.com/location-1",
+    "@type": "http://schema.org/Place",
+    "http://schema.org/name": [{ "@value": "Event Venue 1" }],
+    "http://schema.org/address": [{ "@id": "http://example.com/address-1" }]
+  },
+
+  {
+    "@id": "http://example.com/address-1",
+    "@type": "http://schema.org/PostalAddress",
+    "http://schema.org/streetAddress": [{ "@value": "123 Main St" }],
+    "http://schema.org/addressLocality": [{ "@value": "Toronto" }],
+    "http://schema.org/addressRegion": [{ "@value": "ON" }],
+    "http://schema.org/addressCountry": [{ "@value": "CA" }],
+    "http://schema.org/postalCode": [{ "@value": "M5H 2N2" }]
+  },
+
+  {
+    "@id": "http://example.com/event-minimal",
+    "@type": "http://schema.org/Event",
+    "http://schema.org/name": [{ "@value": "Minimal Indigenous Event" }],
+    "http://schema.org/startDate": [{
+      "@value": "2026-12-01T19:00:00-05:00",
+      "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+    }],
+    "http://schema.org/url": [{ "@value": "http://example.com/event/minimal" }],
+    "http://schema.org/performer": [{ "@id": "http://example.com/performer-minimal" }],
+    "http://schema.org/location": [{ "@id": "http://example.com/location-2" }]
+  },
+
+  {
+    "@id": "http://example.com/performer-minimal",
+    "@type": "http://schema.org/Person",
+    "http://schema.org/name": [{ "@value": "Indigenous Performer Minimal" }],
+    "http://schema.org/sameAs": [{
+      "@id": "http://www.wikidata.org/entity/Q12345"
+    }]
+  },
+
+  {
+    "@id": "http://example.com/location-2",
+    "@type": "http://schema.org/Place",
+    "http://schema.org/name": [{ "@value": "Event Venue 2" }],
+    "http://schema.org/address": [{ "@id": "http://example.com/address-2" }]
+  },
+
+  {
+    "@id": "http://example.com/address-2",
+    "@type": "http://schema.org/PostalAddress",
+    "http://schema.org/streetAddress": [{ "@value": "456 Queen St" }],
+    "http://schema.org/addressLocality": [{ "@value": "Montreal" }],
+    "http://schema.org/addressRegion": [{ "@value": "QC" }],
+    "http://schema.org/addressCountry": [{ "@value": "CA" }],
+    "http://schema.org/postalCode": [{ "@value": "H2X 1Y3" }]
+  },
+
+  {
+    "@id": "http://example.com/event-dual",
+    "@type": "http://schema.org/Event",
+    "http://schema.org/name": [{ "@value": "Dual Indigenous Event" }],
+    "http://schema.org/startDate": [{
+      "@value": "2026-11-15T20:00:00-05:00",
+      "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+    }],
+    "http://schema.org/url": [{ "@value": "http://example.com/event/dual" }],
+    "http://schema.org/performer": [{ "@id": "http://example.com/performer-dual" }],
+    "http://schema.org/organizer": [{ "@id": "http://example.com/organizer-dual" }],
+    "http://schema.org/location": [{ "@id": "http://example.com/location-3" }]
+  },
+
+  {
+    "@id": "http://example.com/performer-dual",
+    "@type": "http://schema.org/Person",
+    "http://schema.org/name": [{ "@value": "Indigenous Performer Dual" }],
+    "http://schema.org/sameAs": [{
+      "@id": "http://www.wikidata.org/entity/Q23456"
+    }]
+  },
+
+  {
+    "@id": "http://example.com/organizer-dual",
+    "@type": "http://schema.org/Organization",
+    "http://schema.org/name": [{ "@value": "Indigenous Organizer Dual" }],
+    "http://schema.org/sameAs": [{
+      "@id": "http://www.wikidata.org/entity/Q34567"
+    }]
+  },
+
+  {
+    "@id": "http://example.com/location-3",
+    "@type": "http://schema.org/Place",
+    "http://schema.org/name": [{ "@value": "Event Venue 3" }],
+    "http://schema.org/address": [{ "@id": "http://example.com/address-3" }]
+  },
+
+  {
+    "@id": "http://example.com/address-3",
+    "@type": "http://schema.org/PostalAddress",
+    "http://schema.org/streetAddress": [{ "@value": "789 King St" }],
+    "http://schema.org/addressLocality": [{ "@value": "Vancouver" }],
+    "http://schema.org/addressRegion": [{ "@value": "BC" }],
+    "http://schema.org/addressCountry": [{ "@value": "CA" }],
+    "http://schema.org/postalCode": [{ "@value": "V6B 2E8" }]
+  },
+
+  {
+    "@id": "http://example.com/event-multi",
+    "@type": "http://schema.org/Event",
+    "http://schema.org/name": [{ "@value": "Multi Indigenous Event" }],
+    "http://schema.org/startDate": [{
+      "@value": "2026-10-10T18:00:00-05:00",
+      "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+    }],
+    "http://schema.org/url": [{ "@value": "http://example.com/event/multi" }],
+    "http://schema.org/performer": [
+      { "@id": "http://example.com/performer-multi-1" },
+      { "@id": "http://example.com/performer-multi-2" }
+    ],
+    "http://schema.org/organizer": [
+      { "@id": "http://example.com/organizer-multi-1" },
+      { "@id": "http://example.com/organizer-multi-2" }
+    ],
+    "http://schema.org/location": [{ "@id": "http://example.com/location-4" }]
+  },
+
+  {
+    "@id": "http://example.com/performer-multi-1",
+    "@type": "http://schema.org/Person",
+    "http://schema.org/name": [{ "@value": "Indigenous Performer 1" }],
+    "http://schema.org/sameAs": [{
+      "@id": "http://www.wikidata.org/entity/Q45678"
+    }]
+  },
+
+  {
+    "@id": "http://example.com/performer-multi-2",
+    "@type": "http://schema.org/Person",
+    "http://schema.org/name": [{ "@value": "Indigenous Performer 2" }],
+    "http://schema.org/sameAs": [{
+      "@id": "http://www.wikidata.org/entity/Q56789"
+    }]
+  },
+
+  {
+    "@id": "http://example.com/organizer-multi-1",
+    "@type": "http://schema.org/Organization",
+    "http://schema.org/name": [{ "@value": "Indigenous Organizer 1" }],
+    "http://schema.org/sameAs": [{
+      "@id": "http://www.wikidata.org/entity/Q67890"
+    }]
+  },
+
+  {
+    "@id": "http://example.com/organizer-multi-2",
+    "@type": "http://schema.org/Organization",
+    "http://schema.org/name": [{ "@value": "Indigenous Organizer 2" }],
+    "http://schema.org/sameAs": [{
+      "@id": "http://www.wikidata.org/entity/Q78901"
+    }]
+  },
+
+  {
+    "@id": "http://example.com/location-4",
+    "@type": "http://schema.org/Place",
+    "http://schema.org/name": [{ "@value": "Event Venue 4" }],
+    "http://schema.org/address": [{ "@id": "http://example.com/address-4" }]
+  },
+
+  {
+    "@id": "http://example.com/address-4",
+    "@type": "http://schema.org/PostalAddress",
+    "http://schema.org/streetAddress": [{ "@value": "101 Festival Rd" }],
+    "http://schema.org/addressLocality": [{ "@value": "Ottawa" }],
+    "http://schema.org/addressRegion": [{ "@value": "ON" }],
+    "http://schema.org/addressCountry": [{ "@value": "CA" }],
+    "http://schema.org/postalCode": [{ "@value": "K1P 5A4" }]
+  },
+
+  {
+    "@id": "http://example.com/event-non-indigenous",
+    "@type": "http://schema.org/Event",
+    "http://schema.org/name": [{ "@value": "Non-Indigenous Event" }],
+    "http://schema.org/startDate": [{
+      "@value": "2026-09-01T19:00:00-05:00",
+      "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+    }],
+    "http://schema.org/url": [{ "@value": "http://example.com/event/non-indigenous" }],
+    "http://schema.org/performer": [{ "@id": "http://example.com/performer-non-indigenous" }],
+    "http://schema.org/location": [{ "@id": "http://example.com/location-5" }]
+  },
+
+  {
+    "@id": "http://example.com/performer-non-indigenous",
+    "@type": "http://schema.org/Person",
+    "http://schema.org/name": [{ "@value": "Regular Performer" }]
+  },
+
+  {
+    "@id": "http://example.com/location-5",
+    "@type": "http://schema.org/Place",
+    "http://schema.org/name": [{ "@value": "Event Venue 5" }],
+    "http://schema.org/address": [{ "@id": "http://example.com/address-5" }]
+  },
+
+  {
+    "@id": "http://example.com/address-5",
+    "@type": "http://schema.org/PostalAddress",
+    "http://schema.org/streetAddress": [{ "@value": "202 Main Ave" }],
+    "http://schema.org/addressLocality": [{ "@value": "Calgary" }],
+    "http://schema.org/addressRegion": [{ "@value": "AB" }],
+    "http://schema.org/addressCountry": [{ "@value": "CA" }],
+    "http://schema.org/postalCode": [{ "@value": "T2P 1A1" }]
+  }
+]

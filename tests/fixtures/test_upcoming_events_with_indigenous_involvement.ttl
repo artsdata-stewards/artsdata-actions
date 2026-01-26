@@ -1,0 +1,107 @@
+@prefix schema: <http://schema.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# Event with valid indigenous performer
+<http://example.com/event-valid> a schema:Event ;
+    schema:location <http://example.com/location-1> ;
+    schema:name "Valid Indigenous Event" ;
+    schema:performer <http://example.com/performer-valid> ;
+    schema:startDate "2026-06-01T19:00:00-05:00"^^xsd:dateTime ;
+    schema:url <http://example.com/event/valid> .
+
+<http://example.com/performer-valid> a schema:Person ;
+    schema:name "Indigenous Performer" ;
+    schema:sameAs <http://www.wikidata.org/entity/Q11111> .
+
+<http://example.com/location-1> a schema:Place ;
+    schema:address <http://example.com/address-1> ;
+    schema:name "Event Venue 1" .
+
+<http://example.com/address-1> a schema:PostalAddress ;
+    schema:addressCountry "CA" ;
+    schema:addressLocality "Toronto" ;
+    schema:addressRegion "ON" ;
+    schema:postalCode "M5H 2N2" ;
+    schema:streetAddress "123 Main St" .
+
+# Minimal event with minimal properties
+<http://example.com/event-minimal> a schema:Event ;
+    schema:location <http://example.com/location-2> ;
+    schema:name "Minimal Indigenous Event" ;
+    schema:performer <http://example.com/performer-minimal> ;
+    schema:startDate "2026-12-01T19:00:00-05:00"^^xsd:dateTime ;
+    schema:url <http://example.com/event/minimal> .
+
+<http://example.com/performer-minimal> a schema:Person ;
+    schema:name "Minimal Performer" .
+
+<http://example.com/location-2> a schema:Place ;
+    schema:address <http://example.com/address-2> ;
+    schema:name "Minimal Venue" .
+
+<http://example.com/address-2> a schema:PostalAddress ;
+    schema:addressCountry "CA" ;
+    schema:addressLocality "Vancouver" ;
+    schema:addressRegion "BC" ;
+    schema:postalCode "V6B 1A1" ;
+    schema:streetAddress "456 Oak Ave" .
+
+# Event with both indigenous performer and organizer
+<http://example.com/event-dual> a schema:Event ;
+    schema:location <http://example.com/location-3> ;
+    schema:name "Dual Indigenous Event" ;
+    schema:organizer <http://example.com/organizer-dual> ;
+    schema:performer <http://example.com/performer-dual> ;
+    schema:startDate "2026-07-15T20:00:00-05:00"^^xsd:dateTime ;
+    schema:url <http://example.com/event/dual> .
+
+<http://example.com/performer-dual> a schema:Person ;
+    schema:name "Dual Performer" .
+
+<http://example.com/organizer-dual> a schema:Organization ;
+    schema:name "Dual Organizer" .
+
+<http://example.com/location-3> a schema:Place ;
+    schema:address <http://example.com/address-3> ;
+    schema:name "Dual Venue" .
+
+<http://example.com/address-3> a schema:PostalAddress ;
+    schema:addressCountry "CA" ;
+    schema:addressLocality "Montreal" ;
+    schema:addressRegion "QC" ;
+    schema:postalCode "H2X 1Y9" ;
+    schema:streetAddress "789 Pine St" .
+
+# Event with multiple indigenous performers and organizers
+<http://example.com/event-multi> a schema:Event ;
+    schema:location <http://example.com/location-4> ;
+    schema:name "Multi Indigenous Event" ;
+    schema:organizer <http://example.com/organizer-multi-1>,
+        <http://example.com/organizer-multi-2> ;
+    schema:performer <http://example.com/performer-multi-1>,
+        <http://example.com/performer-multi-2> ;
+    schema:startDate "2026-08-20T19:30:00-05:00"^^xsd:dateTime ;
+    schema:url <http://example.com/event/multi> .
+
+<http://example.com/performer-multi-1> a schema:Person ;
+    schema:name "Multi Performer 1" .
+
+<http://example.com/performer-multi-2> a schema:Person ;
+    schema:name "Multi Performer 2" .
+
+<http://example.com/organizer-multi-1> a schema:Organization ;
+    schema:name "Multi Organizer 1" .
+
+<http://example.com/organizer-multi-2> a schema:Organization ;
+    schema:name "Multi Organizer 2" .
+
+<http://example.com/location-4> a schema:Place ;
+    schema:address <http://example.com/address-4> ;
+    schema:name "Multi Venue" .
+
+<http://example.com/address-4> a schema:PostalAddress ;
+    schema:addressCountry "CA" ;
+    schema:addressLocality "Calgary" ;
+    schema:addressRegion "AB" ;
+    schema:postalCode "T2P 0A8" ;
+    schema:streetAddress "101 Elm Rd" .
