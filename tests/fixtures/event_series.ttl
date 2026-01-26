@@ -1,0 +1,28 @@
+@prefix schema: <http://schema.org/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# Event that is part of a series (has superEvent)
+<http://example.com/event-valid> a schema:Event ;
+    schema:location <http://example.com/location-series> ;
+    schema:name "Series Event" ;
+    schema:performer <http://example.com/performer-valid> ;
+    schema:startDate "2026-10-01T19:00:00-05:00"^^xsd:dateTime ;
+    schema:subEvent <http://example.com/super-event-valid> .
+
+<http://example.com/super-event-valid> a schema:Event ;
+    schema:name "Super Event" ;
+    schema:url <http://example.com/event/super-event-valid> .
+
+<http://example.com/performer-valid> a schema:Person ;
+    schema:name "Series Performer" .
+
+<http://example.com/location-series> a schema:Place ;
+    schema:address <http://example.com/address-series> ;
+    schema:name "Series Venue" .
+
+<http://example.com/address-series> a schema:PostalAddress ;
+    schema:addressCountry "CA" ;
+    schema:addressLocality "Halifax" ;
+    schema:addressRegion "NS" ;
+    schema:postalCode "B3J 1A1" ;
+    schema:streetAddress "222 Spring St" .
