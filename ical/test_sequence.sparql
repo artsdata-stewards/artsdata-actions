@@ -10,7 +10,9 @@ select * where {
       # Get indigenous agents in Wikidata with Artsdata IDs
       values ?indigenousAgent { <http://example.com/performer-valid> <http://example.com/organizer-valid> }
   ?event a schema:Event .
-  ?event schema:organizer ?indigenousAgent . # /schema:sameAs* | schema:performer/schema:sameAs*  ?indigenousAgent  .
+  { ?event schema:organizer ?indigenousAgent . }
+  UNION
+  { ?event schema:performer ?indigenousAgent . }
   
               
 }
