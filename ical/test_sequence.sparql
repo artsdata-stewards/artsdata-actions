@@ -1,0 +1,18 @@
+PREFIX schema: <http://schema.org/>
+PREFIX wd: <http://www.wikidata.org/entity/>
+PREFIX wdt: <http://www.wikidata.org/prop/direct/>
+PREFIX sh: <http://www.w3.org/ns/shacl#>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+PREFIX onto: <http://www.ontotext.com/>
+
+select * where {
+   
+      # Get indigenous agents in Wikidata with Artsdata IDs
+      values ?indigenousAgent { <http://example.com/performer-valid> <http://example.com/organizer-valid> }
+  ?event a schema:Event .
+  ?event schema:organizer ?indigenousAgent . # /schema:sameAs* | schema:performer/schema:sameAs*  ?indigenousAgent  .
+  
+              
+}
+              
+                
