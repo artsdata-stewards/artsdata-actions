@@ -15,6 +15,14 @@ Python tests are located in the `tests/` directory and test SPARQL query syntax 
 - Python 3.7 or higher
 - pip (Python package manager)
 
+To activate your Python virtual environment, run this command in your terminal from your project root:
+```bash
+source .venv/bin/activate
+```
+
+This assumes your virtual environment is in the .venv directory. After activation, you can run Python and pytest commands using the environment’s installed packages.
+
+
 #### Setup
 
 1. Install Python dependencies:
@@ -22,6 +30,8 @@ Python tests are located in the `tests/` directory and test SPARQL query syntax 
 ```bash
 pip install -r requirements.txt
 ```
+
+
 
 This will install:
 - `rdflib` - RDF library for parsing and querying
@@ -32,13 +42,13 @@ This will install:
 To run all Python tests:
 
 ```bash
-pytest tests/
+pytest tests/ -W ignore::DeprecationWarning
 ```
 
 To run tests with verbose output:
 
 ```bash
-pytest tests/ -v
+pytest tests/ -v 
 ```
 
 To run a specific test file:
