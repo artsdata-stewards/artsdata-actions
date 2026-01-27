@@ -1,0 +1,48 @@
+name: Test SPARQL Files
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'queries/**.sparql'
+      - 'ical/**.sparql'
+      - 'tests/**'
+      - 'requirements.txt'
+      - '.github/workflows/test-sparql.yml'
+  push:
+    branches:
+      - main
+    paths:
+      - 'queries/**.sparql'
+      - 'ical/**.sparql'
+      - 'tests/**'
+      - 'requirements.txt'
+      - '.github/workflows/test-sparql.yml'
+
+jobs:
+  test:
+    name: Lint SPARQL Files
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      
+      - name: Run SPARQL linting tests
+        run: |
+          pytest tests/test_lint_all_sparql_files.py -v
+      
+      - name: Run all tests
+        run: |
+          pytest tests/ -v
