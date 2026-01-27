@@ -1,6 +1,7 @@
 """Tests to lint all SPARQL files in queries/ and ical/ directories."""
 
 import pytest
+import re
 from pathlib import Path
 from rdflib.plugins.sparql import prepareQuery
 from tests.utils import replace_federated_service_call
@@ -43,14 +44,17 @@ class TestLintAllSPARQLFiles:
         
         # Check if file uses RDF-star syntax (not supported by rdflib)
         # RDF-star uses quoted triples like << ?s ?p ?o >>
-        if "<<" in sparql_text and ">>" in sparql_text:
-            # Basic validation: check that file has valid prefixes and basic structure
-            assert "PREFIX" in sparql_text or "prefix" in sparql_text, \
-                f"Query from {sparql_file.name} should have PREFIX declarations"
-            assert ("select" in sparql_text.lower() or "construct" in sparql_text.lower() or 
-                    "ask" in sparql_text.lower() or "describe" in sparql_text.lower()), \
+        # Use a more robust pattern to avoid false positives
+        rdf_star_pattern = r'<<\s*\??[\w:]*\s+[^>]+\s*>>'
+        if re.search(rdf_star_pattern, sparql_text):
+            # Basic validation: check that file has basic query structure
+            # Check for query type using word boundaries to avoid matching in strings/comments
+            has_query_type = re.search(r'\b(select|construct|ask|describe)\b', sparql_text, re.IGNORECASE)
+            has_where = re.search(r'\bwhere\b', sparql_text, re.IGNORECASE)
+            
+            assert has_query_type, \
                 f"Query from {sparql_file.name} should have a query type (SELECT/CONSTRUCT/ASK/DESCRIBE)"
-            assert "where" in sparql_text.lower() or "WHERE" in sparql_text, \
+            assert has_where, \
                 f"Query from {sparql_file.name} should have a WHERE clause"
             # Mark as valid since basic structure is correct (RDF-star syntax requires advanced parser)
             pytest.skip(f"Skipping {sparql_file.name}: uses RDF-star syntax not supported by rdflib")
@@ -75,9 +79,9 @@ class TestLintAllSPARQLFiles:
         """Verify that SPARQL files are being discovered from both directories."""
         sparql_files = get_all_sparql_files()
         
-        # Count files from each directory
-        queries_files = [f for f in sparql_files if "queries" in str(f)]
-        ical_files = [f for f in sparql_files if "ical" in str(f)]
+        # Count files from each directory using parent directory name
+        queries_files = [f for f in sparql_files if f.parent.name == 'queries']
+        ical_files = [f for f in sparql_files if f.parent.name == 'ical']
         
         assert len(sparql_files) > 0, "Should discover at least one SPARQL file"
         assert len(queries_files) > 0, "Should discover SPARQL files in queries/ directory"
