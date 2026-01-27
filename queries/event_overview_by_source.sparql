@@ -1,0 +1,48 @@
+PREFIX dataid: <http://dataid.dbpedia.org/ns/core#>
+PREFIX schema: <http://schema.org/>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+select ?g 
+(SAMPLE(?graph_names) as ?graph_name)
+
+?group
+(SAMPLE(?group_names) as ?group_name)
+(SAMPLE(?group_descriptions) as ?group_description)
+(count(distinct ?event) as ?events )  
+(count(distinct ?eventWithImage) as ?eventsWithImage)
+(count(distinct ?eventWithDescription) as ?eventsWithDescription) 
+where {
+    {
+        ?event a schema:Event .
+        graph ?g {
+            ?event a ?type .
+        } 
+      #  filter( ?g != <http://kg.artsdata.ca/core>   )
+    } UNION
+    {
+        ?eventWithImage a schema:Event .
+        graph ?g {
+            ?eventWithImage schema:image ?image .
+        } 
+     #   filter( ?g != <http://kg.artsdata.ca/core>   )
+    } UNION
+    {
+        ?eventWithDescription a schema:Event .
+        graph ?g {
+            ?eventWithDescription schema:description ?description .
+        } 
+     #   filter( ?g != <http://kg.artsdata.ca/core>   )
+    }
+    OPTIONAL { 
+        ?g prov:wasDerivedFrom/foaf:primaryTopic/dataid:group ?group .
+        OPTIONAL {
+            ?group schema:name ?group_names .
+        }
+          OPTIONAL {
+            ?group schema:description ?group_descriptions .
+        }
+    }
+    OPTIONAL {
+        ?g schema:name ?graph_names .
+    }
+} group by ?g ?group
