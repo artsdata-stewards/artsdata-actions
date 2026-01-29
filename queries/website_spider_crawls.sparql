@@ -6,7 +6,7 @@ select
 ?pages_crawled
 ?structured_data_score
 ?event_count
-?view_events
+?view_events_link
 ?crawl_start
 ?crawl_end
 ?activity
@@ -33,6 +33,11 @@ where {
         schema:value ?structured_data_score .
     }
     OPTIONAL {
+        ?crawl schema:additionalProperty ?stat3 .
+        ?stat3 schema:name "eventsLoadedCount" ;
+        schema:value ?event_count_from_additional_property .
+    }
+    OPTIONAL {
         ?crawl schema:name ?activity .
     }
     OPTIONAL {
@@ -41,12 +46,13 @@ where {
         OPTIONAL {
             ?artifact_dataset  <http://rdfs.org/ns/void#classPortion> ?portions .
             ?portions <http://rdfs.org/ns/void#class> schema:Event ;
-            <http://rdfs.org/ns/void#entities> ?event_count .
+            <http://rdfs.org/ns/void#entities> ?event_count_from_artifact .
         }
         OPTIONAL {
             ?graph prov:wasDerivedFrom/<http://xmlns.com/foaf/0.1/primaryTopic>  ?artifact_dataset .
         }
         BIND(CONCAT("<a href='/query/show?sparql=list_events&graph=",str(?graph),"'>View events</a>") as ?view_events)
-        BIND(if(!bound(?view_events), CONCAT("<a href='/artifact/show?artifactUri=",str(?artifact),"'>Load using databus</a>"),?view_events) as ?view_events)
+        BIND(if(!bound(?view_events), CONCAT("<a href='/artifact/show?artifactUri=",str(?artifact),"'>Load using databus</a>"),?view_events) as ?view_events_link)
     }
-} group by ?url ?view_events ?pages_crawled ?structured_data_score ?crawl_start ?crawl_end  ?event_count ?activity ?crawl
+    BIND(COALESCE(?event_count_from_additional_property,?event_count_from_artifact) as ?event_count) 
+} group by ?url ?view_events_link ?pages_crawled ?structured_data_score ?crawl_start ?crawl_end  ?event_count ?activity ?crawl
