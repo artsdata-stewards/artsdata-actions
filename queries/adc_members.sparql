@@ -7,16 +7,16 @@ select * where {
     OPTIONAL { ?uri schema:name ?name }
     OPTIONAL { ?uri adcv:memberType ?memberType }
     OPTIONAL { ?uri adcv:pronounPreference ?pronounPreference }
-    OPTIONAL { ?uri adcv:availableForAssistantAssociate ?availableForAssistantAssociate }
+   #  OPTIONAL { ?uri adcv:availableForAssistantAssociate ?availableForAssistantAssociate }
     OPTIONAL { ?uri adcv:availableForWork ?availableForWork }
     OPTIONAL { ?uri schema:addressRegion ?addressRegion }
     OPTIONAL { ?uri schema:addressLocality ?addressLocality }
     OPTIONAL { ?uri schema:description ?description }
     OPTIONAL { ?uri schema:email ?email }
-    OPTIONAL { ?uri schema:hasOccupation ?hasOccupation }
+    # OPTIONAL { ?uri schema:hasOccupation ?hasOccupation }
     OPTIONAL { ?uri schema:image ?image }
     OPTIONAL { ?uri schema:url ?personal_url }
-    OPTIONAL { ?uri schema:knowsLanguage ?knowsLanguage }
+    # OPTIONAL { ?uri schema:knowsLanguage ?knowsLanguage }
     OPTIONAL { ?uri <http://www.wikidata.org/prop/direct/P2003> ?instagram }
     OPTIONAL { ?uri <http://www.wikidata.org/prop/direct/P2013> ?facebook }
     OPTIONAL { ?uri schema:telephone ?telephone }
