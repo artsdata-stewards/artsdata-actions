@@ -31,9 +31,11 @@ where {
         }
         OPTIONAL {
             ?address schema:addressRegion ?addressRegion .
+            FILTER(strlen(str(?addressRegion)) > 2)
         }
         OPTIONAL {
             ?address schema:addressCountry ?addressCountry .
+            FILTER(strlen(str(?addressRegion)) > 2)
         }
         OPTIONAL {
             ?address schema:streetAddress ?streetAddress .
