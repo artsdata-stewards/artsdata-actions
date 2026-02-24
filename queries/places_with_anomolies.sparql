@@ -1,5 +1,4 @@
 PREFIX schema: <http://schema.org/>
-
 select  ?place  
 (sample(?names) as ?name)
 (count(distinct ?address) as ?address_count)  
@@ -9,6 +8,7 @@ select  ?place
 (sample(?addressCountry) as ?country)
 (count(distinct ?addressCountry) as ?addressCountry_count) 
 (count(distinct ?streetAddress) as ?streetAddress_count) 
+(sample( ?timeZone ) as ?timeZoneId)
 where {
     graph <http://kg.artsdata.ca/core>  {
         ?place a schema:Place .
@@ -20,7 +20,9 @@ where {
             ?place schema:name ?names .
         }
     }
-    FILTER not exists { ?top schema:workLocation ?place }
+    FILTER not exists {
+        ?top schema:workLocation ?place 
+    }
     OPTIONAL {
         ?place schema:address ?address .
         OPTIONAL {
@@ -41,7 +43,7 @@ where {
             ?address schema:streetAddress ?streetAddress .
         }
         OPTIONAL {
-            ?place schema:streetAddress ?streetAddress .
+            ?place <http://dbpedia.org/ontology/timeZone> ?timeZone .
         }
     }
     filter(!bound(?address) || !bound(?postalCode) || !bound(?addressLocality) || !bound(?addressRegion) || !bound(?addressCountry) || !bound(?streetAddress))
