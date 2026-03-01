@@ -13,22 +13,7 @@ where {
     # 1 Get indigenous agents in Wikidata with Artsdata IDs
     graph <http://kg.artsdata.ca/culture-creates/artsdata-planet-footlight/indigenous-performances> {
         ?event a schema:Event .
-        {
-            select distinct ?indigenous_agent where {
-                SERVICE <https://query.wikidata.org/sparql> {
-                    {
-                        ?wdid  wdt:P172/wdt:P279* wd:Q15571255 ;
-                        # indigenous peoples in North America
-                        wdt:P7627 ?adid .
-                    } UNION {
-                        ?wdid  wdt:P1552/wdt:P279* wd:Q15571255 ;
-                        # indigenous peoples in North America            
-                        wdt:P7627 ?adid .
-                    }
-                }
-                bind(uri(concat("http://kg.artsdata.ca/resource/",?adid))  as ?indigenous_agent)
-            }
-        }
+     
         OPTIONAL {
             ?event schema:performer/schema:sameAs ?indigenous_agent
             BIND(true as ?wikidata_performer)
