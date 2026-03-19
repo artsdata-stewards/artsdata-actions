@@ -1,0 +1,19 @@
+
+PREFIX schema: <http://schema.org/>
+select * where {
+    graph <http://kg.artsdata.ca/core> {
+         ?s a schema:Organization ; schema:url ?url .
+        filter(regex(str(?url),"\\.fr$","i") || regex(str(?url),"\\.uk$","i"))
+        optional {
+            ?s schema:address/schema:addressCountry ?country .
+        }
+        optional {
+            ?s schema:location/schema:address/schema:addressCountry ?country .
+        }
+         optional {
+            ?s schema:disambiguatingDescription ?desc .
+        }
+        
+    } 
+   
+} 
