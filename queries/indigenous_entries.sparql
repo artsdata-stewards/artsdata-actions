@@ -577,4 +577,10 @@ select * where {
                         adr:K2-6187
                         adr:K2-6225
                     }
+     OPTIONAL {
+          ?adid ado:originEC ?originEC .
+          }
+     OPTIONAL {
+          ?adid schema:additionalType ?additionalType .
+          }
     }
