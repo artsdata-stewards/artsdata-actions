@@ -1,4 +1,6 @@
 PREFIX adr: <http://kg.artsdata.ca/resource/> 
+PREFIX ado: <http://kg.artsdata.ca/ontology/>
+PREFIX schema: <http://schema.org/>
 select * where {
      VALUES ?adid {
                         adr:K2-5073
