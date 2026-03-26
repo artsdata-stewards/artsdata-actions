@@ -586,6 +586,12 @@ select * where {
         ?adid schema:additionalType ?additionalType .
     }
     OPTIONAL {
+        graph <http://kg.artsdata.ca/core> {
+             ?extId schema:sameAs ?adid .
+            }
+       
+    }
+    OPTIONAL {
         ?adid_dataset schema:about ?adid ;
         schema:dateModified ?dateModified .
     }
