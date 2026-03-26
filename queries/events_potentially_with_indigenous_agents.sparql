@@ -15,9 +15,9 @@ where {
            
             graph ?g {
                 ?artsdataid_uri a ?type ;
-                 ado:originEC ?originEC ;
                 schema:name ?name .
             }
+            ?artsdataid_uri ado:originEC/skos:broader* wd:Q103817 . # Indigenous peoples
         } group by ?artsdataid_uri  
     }
     bind(replace(str(?agent_name),"\"|/"," ")  as ?str)
