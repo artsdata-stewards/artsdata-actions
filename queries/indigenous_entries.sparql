@@ -587,7 +587,8 @@ select * where {
     }
     OPTIONAL {
         graph <http://kg.artsdata.ca/core> {
-             ?extId schema:sameAs ?adid .
+             ?wdid schema:sameAs ?adid .
+            filter(contains(str(?wdid),"www.wikidata.org/entity/"))
             }
        
     }
