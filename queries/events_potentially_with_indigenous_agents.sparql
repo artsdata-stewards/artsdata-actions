@@ -8,6 +8,7 @@ PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 PREFIX wd: <http://www.wikidata.org/entity/>
 PREFIX adr: <http://kg.artsdata.ca/resource/>
 PREFIX ado: <http://kg.artsdata.ca/ontology/>
+PREFIX skos:  <http://www.w3.org/2004/02/skos/core#>
 select distinct ?event ?event_name  ?startDate ?linked_performer_name ?score ?agent_name ?artsdataid_uri ?type_sample   
 where {
     {
