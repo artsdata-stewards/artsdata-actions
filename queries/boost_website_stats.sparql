@@ -2,10 +2,11 @@ PREFIX schema: <http://schema.org/>
 PREFIX prov: <http://www.w3.org/ns/prov#>
 select  
 ?website 
-(GROUP_CONCAT( distinct (?name_updated); separator=", ") as ?name_group) 
+(count(?activity) as ?crawls) 
+(GROUP_CONCAT( distinct (?name_updated); separator=", ") as ?all_crawl_results) 
 (MAX(?urlsCrawledCount) as ?urlsCrawledCount)  
 (MAX(?structured_data_score) as ?structured_data_score) 
-(count(?activity) as ?crawls) 
+
 where {
     {
         <urn:datafeed:wikidata-presenter-websites> <http://schema.org/dataFeedElement> ?website .
