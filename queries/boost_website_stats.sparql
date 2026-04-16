@@ -32,4 +32,4 @@ where {
         schema:value ?structured_data_score .
     }
     BIND(COALESCE(?name,IF(?urlsCrawledCount = 0, "Could not crawl","Events found")) as ?name_updated)
-} group by ?website ?name
+} group by ?website ?name order by DESC(?structured_data_score)
