@@ -1,0 +1,34 @@
+PREFIX schema: <http://schema.org/>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+select  
+?website 
+(GROUP_CONCAT( distinct (?name_updated); separator=", ") as ?name_group) 
+(MAX(?urlsCrawledCount) as ?urlsCrawledCount)  
+(MAX(?structured_data_score) as ?structured_data_score) 
+(count(?activity) as ?crawls) 
+where {
+    {
+        <urn:datafeed:wikidata-presenter-websites> <http://schema.org/dataFeedElement> ?website .
+    }
+    UNION 
+    {
+        <urn:datafeed:artsdata-organizer-websites> <http://schema.org/dataFeedElement> ?website .
+    }
+    ?activity prov:used ?website ;
+    a prov:Activity ;
+    prov:wasInformedBy <http://kg.artsdata.ca/resource/SpiderActivity> .
+    OPTIONAL {
+        ?activity schema:name ?name .
+    } 
+    OPTIONAL {
+        ?activity  <http://schema.org/additionalProperty> ?stat1 .
+        ?stat1 schema:name "urlsCrawledCount"  ;
+        schema:value        ?urlsCrawledCount .
+    } 
+    OPTIONAL {
+        ?activity schema:additionalProperty ?stat2 .
+        ?stat2 schema:name "structuredScore" ;
+        schema:value ?structured_data_score .
+    }
+    BIND(COALESCE(?name,IF(?urlsCrawledCount = 0, "Could not crawl","Events found")) as ?name_updated)
+} group by ?website ?name
