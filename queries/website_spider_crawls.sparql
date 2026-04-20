@@ -56,3 +56,4 @@ where {
     }
     BIND(COALESCE(?event_count_from_additional_property,?event_count_from_artifact) as ?event_count) 
 } group by ?url ?view_events_link ?pages_crawled ?structured_data_score ?crawl_start ?crawl_end  ?event_count ?activity ?crawl
+order by DESC(?crawl_end)
