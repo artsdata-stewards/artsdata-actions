@@ -1,21 +1,13 @@
 PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 PREFIX wd: <http://www.wikidata.org/entity/>
 PREFIX schema: <http://schema.org/>
-select   (sample(?name) as ?name_sample)  ?artsdata_uri (sample(?type) as ?type_sample)  ?wdid_uri where {
-    SERVICE <https://query.wikidata.org/sparql> {
-        {
-            ?wdid_uri  wdt:P172/wdt:P279* wd:Q15571255 ;
-                                        # indigenous peoples in North America
-                                        wdt:P7627 ?adid .
-        } UNION {
-            ?wdid_uri  wdt:P1552/wdt:P279* wd:Q15571255 ;
-                                         # indigenous peoples in North America
-                                         wdt:P7627 ?adid .
+{ 
+    select   (sample(?name) as ?agent_name)  ?artsdataid_uri  (sample(?type) as ?type_sample)  where {
+       
+        graph ?g {
+            ?artsdataid_uri a ?type ;
+            schema:name ?name .
         }
-    }
-    bind(uri(concat("http://kg.artsdata.ca/resource/",?adid))  as ?artsdata_uri)
-    graph ?g {
-        ?artsdata_uri a ?type ;
-                      schema:name ?name .
-    }
-} group by ?artsdata_uri  ?wdid_uri
+        ?artsdataid_uri ado:originEC/skos:broader* wd:Q103817 . #  peoples
+    } group by ?artsdataid_uri              
+}
