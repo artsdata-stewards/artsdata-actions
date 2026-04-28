@@ -22,11 +22,11 @@ select  ?event
 # select reduced ?event ?names
 from onto:explicit
 where {
-    # All events from Footlight CMS calendar indigenous-performances source
+    # All events from Footlight CMS calendar -performances source
     {
         select ?event ?startDate ?endDate where {
             {
-                graph <http://kg.artsdata.ca/culture-creates/artsdata-planet-footlight/indigenous-performances> {
+                graph <http://kg.artsdata.ca/culture-creates/artsdata-planet-footlight/-performances> {
                     ?event a schema:Event ;
                     schema:startDate ?startDate .
                     filter(?startDate > now())
@@ -34,35 +34,28 @@ where {
             }
             UNION
             {
-                {
-                    # Get indigenous agents in Wikidata with Artsdata IDs
-                    select distinct ?indigenousAgent where {
-                        SERVICE <https://query.wikidata.org/sparql> {
-                            {
-                                ?person  wdt:P172/wdt:P279* wd:Q15571255 ;
-                                # indigenous peoples in North America
-                                wdt:P7627 ?adid .
-                            } UNION {
-                                ?organization  wdt:P1552/wdt:P279* wd:Q15571255 ;
-                                # indigenous peoples in North America            
-                                wdt:P7627 ?adid .
-                            }
-                            bind(uri(concat("http://kg.artsdata.ca/resource/",?adid))  as ?indigenousAgent)
+                { 
+                    select   (sample(?name) as ?agent_name)  ?artsdataid_uri  (sample(?type) as ?type_sample)  where {
+                       
+                        graph ?g {
+                            ?artsdataid_uri a ?type ;
+                            schema:name ?name .
                         }
-                    }
+                        ?artsdataid_uri ado:originEC/skos:broader* wd:Q103817 . #  peoples
+                    } group by ?artsdataid_uri              
                 }
-                # Events with indigenous performers
+                # Events with  performers
                 ?event a schema:Event .
-                ?event schema:organizer/schema:sameAs* | schema:performer/schema:sameAs*  ?indigenousAgent .
+                ?event schema:organizer/schema:sameAs* | schema:performer/schema:sameAs* ?artsdataid_uri   .
                 graph ?g {
                     ?event schema:startDate ?startDate .
                     filter(?startDate > now())
-                    # Exclude events from Indigenous CMS
-                    filter(?g != <http://kg.artsdata.ca/culture-creates/artsdata-planet-footlight/indigenous-performances>)
+                    # Exclude events from  CMS
+                    filter(?g != <http://kg.artsdata.ca/culture-creates/artsdata-planet-footlight/-performances>)
                 }
-                # Exclude events that are sameAs events from Indigenous CMS
+                # Exclude events that are sameAs events from  CMS
                 FILTER NOT EXISTS {
-                    graph <http://kg.artsdata.ca/culture-creates/artsdata-planet-footlight/indigenous-performances> {
+                    graph <http://kg.artsdata.ca/culture-creates/artsdata-planet-footlight/-performances> {
                         ?cms_event a schema:Event .
                     }
                     ?cms_event schema:sameAs ?event .
