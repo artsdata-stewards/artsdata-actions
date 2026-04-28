@@ -1,13 +1,15 @@
 PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 PREFIX wd: <http://www.wikidata.org/entity/>
 PREFIX schema: <http://schema.org/>
-{ 
-    select   (sample(?name) as ?agent_name)  ?artsdataid_uri  (sample(?type) as ?type_sample)  where {
-       
-        graph ?g {
-            ?artsdataid_uri a ?type ;
-            schema:name ?name .
-        }
-        ?artsdataid_uri ado:originEC/skos:broader* wd:Q103817 . #  peoples
-    } group by ?artsdataid_uri              
-}
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX ado: <http://kg.artsdata.ca/ontology/> 
+
+select   (sample(?name) as ?agent_name)  ?artsdataid_uri  (sample(?type) as ?type_sample)  where {
+   
+    graph ?g {
+        ?artsdataid_uri a ?type ;
+        schema:name ?name .
+    }
+    ?artsdataid_uri ado:originEC/skos:broader* wd:Q103817 . #  peoples
+} group by ?artsdataid_uri              
+
