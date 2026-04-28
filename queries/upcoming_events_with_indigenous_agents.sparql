@@ -4,6 +4,8 @@ PREFIX wdt: <http://www.wikidata.org/prop/direct/>
 PREFIX sh: <http://www.w3.org/ns/shacl#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 PREFIX onto: <http://www.ontotext.com/>
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+PREFIX ado: <http://kg.artsdata.ca/ontology/>
 
 select  ?event 
 (sample(?names) as ?name) 
