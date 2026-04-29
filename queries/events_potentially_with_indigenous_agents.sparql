@@ -36,6 +36,6 @@ where {
     bind(coalesce(?linked_performer_optional_name,"") as ?linked_performer_name)
     filter(?startDate > now())
     filter(?score > 5.0)
-    filter(str(?linked_performer_name) != str(?agent_name) )
+    filter(LCASE(str(?linked_performer_name)) != LCASE(str(?agent_name) ))
     filter(?g != <http://kg.artsdata.ca/culture-creates/artsdata-planet-footlight/indigenous-performances>)
 } order by DESC(?score)
