@@ -21,9 +21,9 @@ where {
             ?artsdataid_uri ado:originEC/skos:broader* wd:Q103817 . # Indigenous peoples
         } group by ?artsdataid_uri  
     }
-    bind(replace(str(?agent_name),"\"|/"," ")  as ?str)
+    BIND(CONCAT("name:\"",str(?agent_name),"\"") as ?agent_query)
     ?search a luc-index:event-index ;
-    luc:query ?str;
+    luc:query ?agent_query;
     luc:entities ?event .
     graph ?g {
         ?event schema:startDate ?startDate .
