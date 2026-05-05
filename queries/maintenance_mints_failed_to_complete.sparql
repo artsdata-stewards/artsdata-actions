@@ -2,15 +2,20 @@ PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 PREFIX schema: <http://schema.org/>
 
 
-select  ?event (sample(?historyNote) as ?historyNote)  (sample(?type) as ?type)  (count(?p) as ?prop_count)
+select  ?event (sample(?note) as ?note)  (sample(?historyNote) as ?historyNote)  (sample(?type) as ?type)  (count(?p) as ?prop_count)
 where {
-    ?event a schema:Event .
+    VALUES ?types { schema:Event schema:Person schema:Organization schema:Place }
+    ?event a ?types .
     graph <http://kg.artsdata.ca/core> {
         ?event a ?type ; 
-        skos:historyNote ?historyNote ; 
-        ?p ?o .
+            skos:historyNote ?historyNote ; 
+            <http://www.w3.org/ns/prov#generatedAtTime> ?generatedAtTime ;
+            ?p ?o .
         OPTIONAL {
             ?event schema:name ?name .
+        }
+        OPTIONAL {
+            ?event skos:note ?note .
         }
     }
     filter(!bound(?name))
