@@ -19,9 +19,8 @@ where {
                 OPTIONAL {
                     ?event skos:note ?note .
                 }
-                OPTIONAL {
-                    ?extid schema:sameAs  ?event .
-                }
+                BIND(URI(STRBEFORE(STRAFTER(?historyNote,"("),")")) as  ?extid)
+               
             }
             filter(!bound(?name))
         }
