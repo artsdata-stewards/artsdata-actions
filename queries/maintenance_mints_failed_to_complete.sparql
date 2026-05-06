@@ -3,7 +3,7 @@ PREFIX schema: <http://schema.org/>
 select  ?event (sample(?note) as ?note)  (sample(?historyNote) as ?historyNote)  (sample(?type) as ?type)  (count(?p) as ?prop_count) (sample(?extname) as ?extname) (sample(?extid) as ?extid) 
 where {
     {
-        select  ?event  ?note ?historyNote ?type  ?prop_count ?extname ?extid where {
+        select  ?event  ?note ?historyNote ?type  ?p ?extname ?extid where {
             VALUES ?types {
                 schema:Event schema:Person schema:Organization schema:Place 
             }
