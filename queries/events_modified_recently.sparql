@@ -2,14 +2,14 @@
 PREFIX schema: <http://schema.org/>
 PREFIX prov: <http://www.w3.org/ns/prov#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-select ?event (SAMPLE(?event_name) as ?name)  (SAMPLE(?sameAs) as ?external) ?modified_time ?minted where {
+select ?event (SAMPLE(?event_name) as ?name)  (MIN(?sameAs) as ?external) ?modified_time ?minted where {
     ?event_dateset schema:about ?event ;
     schema:dateModified ?modified_time .
     ?event a schema:Event ;
     schema:name ?event_name ;
     prov:generatedAtTime ?mint_time .
     OPTIONAL {
-        ?event  schema:sameAs ?sameAs .
+       ?sameAs schema:sameAs ?event .
     }
     BIND(STRDT( SUBSTR(STR(?mint_time), 1, 10), xsd:date) AS ?minted)
     BIND(STRDT( SUBSTR(STR(?modified_time), 1, 10), xsd:date) AS ?modified)
