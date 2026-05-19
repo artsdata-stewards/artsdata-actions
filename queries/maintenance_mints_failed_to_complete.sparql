@@ -25,5 +25,8 @@ where {
             filter(!bound(?name))
         }
     }
-    ?extid   schema:name ?extname .
+    OPTIONAL {
+          ?extid   schema:name ?extname .
+        }
+  
 }  group by ?event
