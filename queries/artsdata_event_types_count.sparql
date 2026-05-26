@@ -3,12 +3,10 @@ PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 
 SELECT 
-
-  (COALESCE(STR(?eventType), "No Artsdata Event Type") AS ?eventType)
-  (COALESCE(?prefLabel, "No Artsdata Event Type"@en) AS ?prefLabel)
+  (COALESCE(STR(?eventType), "No Artsdata Event Type") AS ?eventTypeLabel)
+  (COALESCE(STR(?prefLabel), "No Artsdata Event Type") AS ?prefLabel2)
   ?deprecated
   (COUNT(DISTINCT ?event) AS ?count)
-
 WHERE {
   # All events in the KG
   ?event a schema:Event .
