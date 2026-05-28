@@ -3,19 +3,31 @@ PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 PREFIX owl: <http://www.w3.org/2002/07/owl#>
 
 SELECT 
+  ?calendarName
   ?eventType
   (COALESCE(?prefLabel, "No Artsdata Event Type"@en) AS ?prefLabelOrDefault)
   ?deprecated
   (COUNT(DISTINCT ?event) AS ?count)
 WHERE {
-  ?event a schema:Event .
-  OPTIONAL {
-    ?event schema:additionalType ?eventType .
-    ?eventType skos:inScheme <http://kg.artsdata.ca/resource/ArtsdataEventTypes> .
-    ?eventType skos:prefLabel ?prefLabel .
-    FILTER(lang(?prefLabel) = "en")
-    OPTIONAL { ?eventType owl:deprecated ?deprecated }
+  VALUES ?g {
+    <http://kg.artsdata.ca/culture-creates/artsdata-planet-footlight/indigenous-performances>
+    <http://kg.artsdata.ca/culture-creates/artsdata-planet-footlight/signe-laval>
+    <http://kg.artsdata.ca/culture-creates/artsdata-planet-footlight/tout-culture>
+  }
+
+  # Fetch the calendar name from graph metadata in the default graph
+  OPTIONAL { ?g schema:name ?calendarName . }
+
+  GRAPH ?g {
+    ?event a schema:Event .
+    OPTIONAL {
+      ?event schema:additionalType ?eventType .
+      ?eventType skos:inScheme <http://kg.artsdata.ca/resource/ArtsdataEventTypes> .
+      ?eventType skos:prefLabel ?prefLabel .
+      FILTER(lang(?prefLabel) = "en")
+      OPTIONAL { ?eventType owl:deprecated ?deprecated }
+    }
   }
 }
-GROUP BY ?eventType ?prefLabel ?deprecated
-ORDER BY DESC(?count)
+GROUP BY ?g ?calendarName ?eventType ?prefLabel ?deprecated
+ORDER BY ?g DESC(?count)
