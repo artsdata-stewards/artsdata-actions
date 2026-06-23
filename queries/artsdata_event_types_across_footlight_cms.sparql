@@ -28,10 +28,9 @@ WHERE {
       ?event schema:additionalType ?footlightTerm .
     }
     GRAPH <http://kg.artsdata.ca/culture-creates/artsdata-data-model/skos-event-types> {
-      <http://kg.artsdata.ca/resource/ArtsdataEventTypes-Collection-4.0>
-          skos:member ?artsdataType .
+	  ?artsdataType skos:inScheme <http://kg.artsdata.ca/resource/ArtsdataEventTypes> .
       FILTER NOT EXISTS { ?artsdataType owl:deprecated true }
-#      ?artsdataType skos:closeMatch ?footlightTerm .
+      ?artsdataType skos:closeMatch ?footlightTerm .
       ?artsdataType skos:prefLabel ?artsdataTypeLabel .
       FILTER ( lang(?artsdataTypeLabel) = "en" )
     }
