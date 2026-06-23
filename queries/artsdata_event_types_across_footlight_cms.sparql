@@ -1,33 +1,43 @@
 PREFIX schema: <http://schema.org/>
-PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
-PREFIX owl: <http://www.w3.org/2002/07/owl#>
+PREFIX skos:   <http://www.w3.org/2004/02/skos/core#>
+PREFIX owl:    <http://www.w3.org/2002/07/owl#>
+PREFIX adr:    <http://kg.artsdata.ca/resource/>
 
-SELECT 
+SELECT
   ?calendarName
-  ?eventType
-  (COALESCE(?prefLabel, "No Artsdata Event Type"@en) AS ?prefLabelOrDefault)
-  ?deprecated
-  (COUNT(DISTINCT ?event) AS ?count)
-WHERE {
-  VALUES ?g {
-    <http://kg.artsdata.ca/culture-creates/artsdata-planet-footlight/indigenous-performances>
-    <http://kg.artsdata.ca/culture-creates/artsdata-planet-footlight/signe-laval>
-    <http://kg.artsdata.ca/culture-creates/artsdata-planet-footlight/tout-culture>
-  }
+  (COALESCE(?artsdataTypeLabel, "No Artsdata Event Type") AS ?artsdataEventType)
+  (COUNT(DISTINCT ?event) AS ?eventCount)
 
-  # Fetch the calendar name from graph metadata in the default graph
-  OPTIONAL { ?g schema:name ?calendarName . }
+WHERE {
+
+  VALUES (?g ?calendarName) {
+    (<http://kg.artsdata.ca/culture-creates/artsdata-planet-footlight/indigenous-performances>
+     "Indigenous Performances")
+    (<http://kg.artsdata.ca/culture-creates/artsdata-planet-footlight/signe-laval>
+     "Signé Laval")
+    (<http://kg.artsdata.ca/culture-creates/artsdata-planet-footlight/tout-culture>
+     "Tout Culture")
+  }
 
   GRAPH ?g {
     ?event a schema:Event .
-    OPTIONAL {
-      ?event schema:additionalType ?eventType .
-      ?eventType skos:inScheme <http://kg.artsdata.ca/resource/ArtsdataEventTypes> .
-      ?eventType skos:prefLabel ?prefLabel .
-      FILTER(lang(?prefLabel) = "en")
-      OPTIONAL { ?eventType owl:deprecated ?deprecated }
+  }
+
+  OPTIONAL {
+    GRAPH ?g {
+      ?event schema:additionalType ?footlightTerm .
+    }
+    GRAPH <http://kg.artsdata.ca/culture-creates/artsdata-data-model/skos-event-types> {
+      <http://kg.artsdata.ca/resource/ArtsdataEventTypes-Collection-4.0>
+          skos:member ?artsdataType .
+      FILTER NOT EXISTS { ?artsdataType owl:deprecated true }
+#      ?artsdataType skos:closeMatch ?footlightTerm .
+      ?artsdataType skos:prefLabel ?artsdataTypeLabel .
+      FILTER ( lang(?artsdataTypeLabel) = "en" )
     }
   }
+
 }
-GROUP BY ?g ?calendarName ?eventType ?prefLabel ?deprecated
-ORDER BY ?g DESC(?count)
+
+GROUP BY ?calendarName ?artsdataTypeLabel
+ORDER BY ?calendarName ?artsdataEventType
