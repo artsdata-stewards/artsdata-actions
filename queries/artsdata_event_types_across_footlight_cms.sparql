@@ -21,7 +21,7 @@ WHERE {
 
   GRAPH ?g {
     ?event a schema:Event ; schema:additionalType ?footlightTerm .
-    ?footlightTerm skos:closeMatch ?artsdataType .
+    ?footlightTerm skos:broader*/skos:closeMatch ?artsdataType .
     
   }
 
