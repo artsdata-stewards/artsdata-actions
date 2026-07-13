@@ -4,13 +4,13 @@ PREFIX owl:    <http://www.w3.org/2002/07/owl#>
 PREFIX adr:    <http://kg.artsdata.ca/resource/>
 
 SELECT
-  ?calendarName
-  (COALESCE(?artsdataTypeLabel, "No Artsdata Event Type") AS ?artsdataEventType)
+  ?FootlightCMS
+  ?artsdataType
   (COUNT(DISTINCT ?event) AS ?eventCount)
 
 WHERE {
 
-  VALUES (?g ?calendarName) {
+  VALUES (?g ?FootlightCMS) {
     (<http://kg.artsdata.ca/culture-creates/artsdata-planet-footlight/indigenous-performances>
      "Indigenous Performances")
     (<http://kg.artsdata.ca/culture-creates/artsdata-planet-footlight/signe-laval>
@@ -20,23 +20,9 @@ WHERE {
   }
 
   GRAPH ?g {
-    ?event a schema:Event .
+    ?event a schema:Event ; schema:additionalType ?footlightTerm .
+    ?footlightTerm skos:closeMatch ?artsdataType .
+    
   }
 
-  OPTIONAL {
-    GRAPH ?g {
-      ?event schema:additionalType ?footlightTerm .
-    }
-    GRAPH <http://kg.artsdata.ca/culture-creates/artsdata-data-model/skos-event-types> {
-	  ?artsdataType skos:inScheme <http://kg.artsdata.ca/resource/ArtsdataEventTypes> .
-      FILTER NOT EXISTS { ?artsdataType owl:deprecated true }
-      ?artsdataType skos:closeMatch ?footlightTerm .
-      ?artsdataType skos:prefLabel ?artsdataTypeLabel .
-      FILTER ( lang(?artsdataTypeLabel) = "en" )
-    }
-  }
-
-}
-
-GROUP BY ?calendarName ?artsdataTypeLabel
-ORDER BY ?calendarName ?artsdataEventType
+} group by ?g  ?FootlightCMS ?artsdataType 
