@@ -1,0 +1,10 @@
+PREFIX schema: <http://schema.org/>
+PREFIX ado: <http://kg.artsdata.ca/ontology/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+select 
+?genreType (MIN(?names) as ?name) (COUNT(?work) as ?work_count) (SAMPLE(?work) as ?sample)
+where {
+    ?work a ado:LivePerformanceWork ;
+    ado:hasGenre ?genreType .
+    ?genreType rdfs:label ?names .
+} group by  ?genreType
