@@ -1,0 +1,10 @@
+PREFIX schema: <http://schema.org/>
+PREFIX ado: <http://kg.artsdata.ca/ontology/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+select 
+?eventType (MIN(?names) as ?name) (COUNT(?event) as ?event_count) (SAMPLE(?event) as ?sample)
+where {
+    ?event a schema:Event ;
+    ado:hasEventTypeConcept ?eventType .
+    ?eventType rdfs:label ?names .
+} group by  ?eventType
