@@ -1,0 +1,7 @@
+PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
+SELECT ?concept ?match WHERE {
+  ?concept skos:inScheme <http://kg.artsdata.ca/resource/ArtsdataEventTypes> .
+  { ?concept skos:closeMatch ?match . }
+  UNION
+  { BIND(?concept AS ?match) }
+}

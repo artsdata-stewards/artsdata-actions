@@ -1,6 +1,0 @@
-PREFIX schema: <http://schema.org/>
-PREFIX ado: <http://kg.artsdata.ca/ontology/>
-select ?type (count(?s) as ?count) where { 
-	?s a schema:Event ; a ?type .
-   ?type a ado:EventType .
-} group by ?type order by DESC(?count)
