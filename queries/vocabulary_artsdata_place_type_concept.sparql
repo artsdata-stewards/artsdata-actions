@@ -4,7 +4,7 @@ PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 select 
 ?placeType (MIN(?names) as ?name) (COUNT(?place) as ?place_count) (SAMPLE(?place) as ?sample)
 where {
-    ?place a schema:Event ;
+    ?place a schema:Place ;
     ado:hasPlaceTypeConcept ?placeType .
     ?placeType rdfs:label ?names .
 } group by  ?placeType
