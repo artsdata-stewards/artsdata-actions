@@ -1,0 +1,10 @@
+PREFIX schema: <http://schema.org/>
+PREFIX ado: <http://kg.artsdata.ca/ontology/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+select 
+?placeType (MIN(?names) as ?name) (COUNT(?place) as ?place_count) (SAMPLE(?place) as ?sample)
+where {
+    ?place a schema:Event ;
+    ado:hasPlaceTypeConcept ?placeType .
+    ?placeType rdfs:label ?names .
+} group by  ?placeType
