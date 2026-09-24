@@ -1,5 +1,6 @@
 PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 PREFIX schema: <http://schema.org/>
+PREFIX ado: <http://kg.artsdata.ca/ontology/>
 select  ?event (sample(?note) as ?note)  (sample(?historyNote) as ?historyNote)  (sample(?type) as ?type)  (count(?p) as ?prop_count) (sample(?extname) as ?extname) (sample(?extid) as ?extid) 
 where {
     {
