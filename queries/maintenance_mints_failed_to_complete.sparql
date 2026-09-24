@@ -5,7 +5,7 @@ where {
     {
         select  ?event  ?note ?historyNote ?type  ?p ?extname ?extid where {
             VALUES ?types {
-                schema:Event schema:Person schema:Organization schema:Place 
+                ado:Event ado:Person ado:Organization ado:Place 
             }
             ?event a ?types .
             graph <http://kg.artsdata.ca/core> {
