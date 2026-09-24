@@ -6,28 +6,25 @@ where {
     {
         select  ?event  ?note ?historyNote ?type  ?p ?extname ?extid where {
             VALUES ?types {
-                ado:Event ado:Person ado:Organization ado:Place 
+                ado:Event  ado:Person ado:Organization ado:Place 
             }
             ?event a ?types .
             graph <http://kg.artsdata.ca/core> {
-                ?event a ?type ;
+                ?event a ?types  ;
                 skos:historyNote ?historyNote ;
                 <http://www.w3.org/ns/prov#generatedAtTime> ?generatedAtTime ;
                 ?p ?o .
-                OPTIONAL {
+                FILTER NOT EXISTS {
                     ?event schema:name ?name .
                 }
                 OPTIONAL {
                     ?event skos:note ?note .
                 }
                 BIND(URI(STRBEFORE(STRAFTER(?historyNote,"("),")")) as  ?extid)
-               
             }
-            filter(!bound(?name))
         }
     }
     OPTIONAL {
-          ?extid   schema:name ?extname .
-        }
-  
+        ?extid   schema:name ?extname .
+    }
 }  group by ?event
