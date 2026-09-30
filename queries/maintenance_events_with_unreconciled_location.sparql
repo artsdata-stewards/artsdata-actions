@@ -13,7 +13,7 @@ where {
     }
     OPTIONAL {
         ?source a schema:Event .
-        BIND(true as ?source_refreshable) 
+        BIND(CONCAT(?external_name," TRUE") as ?source_refreshable) 
     }
     OPTIONAL {
         ?location schema:sameAs ?ad_location .
