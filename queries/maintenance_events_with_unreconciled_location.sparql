@@ -1,9 +1,23 @@
 PREFIX schema: <http://schema.org/>
 PREFIX ado: <http://kg.artsdata.ca/ontology/>
-select * where {
+select *
+where {
     ?event a ado:Event ;
     <http://www.w3.org/ns/prov#generatedAtTime> ?generatedAtTime ;
     schema:location ?location .
+    OPTIONAL {
+        ?location schema:name ?external_name .
+    }
+    graph ?g {
+        <<?event   schema:location ?location >> ?annotation ?source .
+    }
+    OPTIONAL {
+        ?source a schema:Event .
+        BIND(true as ?source_refreshable) 
+    }
+    OPTIONAL {
+        ?location schema:sameAs ?ad_location .
+        FILTER(contains(str(?ad_location),"kg.artsdata.ca"))
+    }
     FILTER(!contains(str(?location),"kg.artsdata.ca"))
-            
-} 
+}
