@@ -3,9 +3,36 @@ PREFIX schema: <http://schema.org/>
 select * where {
     graph <http://kg.artsdata.ca/core> {
         {
-        ?s a schema:Place  .
-        } MINUS {
-            ?s a ado:Place .
+            {
+                ?s a schema:Person  .
+            } MINUS {
+                ?s a ado:Person .
+            }
         }
+        UNION
+        {
+            {
+                ?s a schema:Place  .
+            } MINUS {
+                ?s a ado:Place .
+            }
+        }
+        UNION
+        {
+            {
+                ?s a schema:Organization  .
+            } MINUS {
+                ?s a ado:Organization .
+            }
+        }
+        UNION
+        {
+            {
+                ?s a schema:Event  .
+            } MINUS {
+                ?s a ado:Event .
+            }
+        }
+        FILTER(!isBLANK(?s))
     }
 }
