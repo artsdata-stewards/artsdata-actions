@@ -1,0 +1,11 @@
+PREFIX ado: <http://kg.artsdata.ca/ontology/>
+PREFIX schema: <http://schema.org/>
+select * where {
+    graph <http://kg.artsdata.ca/core> {
+        {
+        ?s a schema:Place  .
+        } MINUS {
+            ?s a ado:Place .
+        }
+    }
+}
