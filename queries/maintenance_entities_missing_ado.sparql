@@ -1,38 +1,43 @@
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX ado: <http://kg.artsdata.ca/ontology/>
+PREFIX adp: <http://kg.artsdata.ca/plugin#>
 PREFIX schema: <http://schema.org/>
-select * where {
-    graph <http://kg.artsdata.ca/core> {
+SELECT  ?entity_uri ?entity_name (MAX(?type) AS ?entity_type) where {
+    GRAPH <http://kg.artsdata.ca/core> {
         {
             {
-                ?s a schema:Person  .
+                ?entity_uri a schema:Person  .
             } MINUS {
-                ?s a ado:Person .
+                ?entity_uri a ado:Person .
             }
         }
         UNION
         {
             {
-                ?s a schema:Place  .
+                ?entity_uri a schema:Place  .
             } MINUS {
-                ?s a ado:Place .
+                ?entity_uri a ado:Place .
             }
         }
         UNION
         {
             {
-                ?s a schema:Organization  .
+                ?entity_uri a schema:Organization  .
             } MINUS {
-                ?s a ado:Organization .
+                ?entity_uri a ado:Organization .
             }
         }
         UNION
         {
             {
-                ?s a schema:Event  .
+                ?entity_uri a schema:Event  .
             } MINUS {
-                ?s a ado:Event .
+                ?entity_uri a ado:Event .
             }
         }
-        FILTER(!isBLANK(?s))
+        FILTER(!isBLANK(?entity_uri))
+        BIND(adp:prefLangLiteral(?entity_uri, schema:name, "en fr") AS ?entity_name)
+        ?entity_uri a ?type.
     }
-}
+} GROUP BY ?entity_uri ?entity_name
+ORDER BY ?entity_uri ?type ?entity_name
