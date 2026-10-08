@@ -40,4 +40,3 @@ SELECT  ?entity_uri ?entity_name (MAX(?type) AS ?entity_type) where {
         ?entity_uri a ?type.
     }
 } GROUP BY ?entity_uri ?entity_name
-ORDER BY ?entity_uri ?type ?entity_name
