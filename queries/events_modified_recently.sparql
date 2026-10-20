@@ -4,10 +4,10 @@ PREFIX prov: <http://www.w3.org/ns/prov#>
 PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
 select ?event (SAMPLE(?event_name) as ?name)  (MIN(?sameAs) as ?external) ?modified_time ?minted where {
     ?event_dateset schema:about ?event ;
-    schema:dateModified ?modified_time .
-    ?event a schema:Event ;
-    schema:name ?event_name ;
+    schema:dateModified ?modified_time ;
     prov:generatedAtTime ?mint_time .
+    ?event a schema:Event ;
+    schema:name ?event_name  .
     OPTIONAL {
        ?sameAs schema:sameAs ?event .
     }
