@@ -14,6 +14,8 @@ SELECT
 (SAMPLE(?addressRegion) AS ?address_region)
 (SAMPLE(?postalCode) AS ?postal_code)
 (SAMPLE(?addressCountry) AS ?address_country)
+# true when none of the PostalAddress properties are filled
+((COUNT(?streetAddress) + COUNT(?addressLocality) + COUNT(?addressRegion) + COUNT(?postalCode) + COUNT(?addressCountry)) = 0 AS ?missing_address)
 WHERE {
     ?ArtsdataID a ado:Organization ;
         schema:sameAs ?WikidataID .
@@ -51,4 +53,4 @@ WHERE {
     }
 }
 GROUP BY ?ArtsdataID ?WikidataID
-ORDER BY ?name
+ORDER BY DESC(?missing_address) ?name
