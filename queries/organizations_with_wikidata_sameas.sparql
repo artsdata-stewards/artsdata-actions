@@ -7,6 +7,8 @@ SELECT
 ?ArtsdataID
 ?WikidataID
 (SAMPLE(?label) AS ?name)
+(SAMPLE(?location) AS ?location_uri)
+(SAMPLE(?locationName) AS ?location_name)
 (SAMPLE(?streetAddress) AS ?street_address)
 (SAMPLE(?addressLocality) AS ?address_locality)
 (SAMPLE(?addressRegion) AS ?address_region)
@@ -35,7 +37,12 @@ WHERE {
     }
     BIND(COALESCE(?labelMul, ?labelEn, ?labelFr, ?labelNone) AS ?label)
     OPTIONAL {
-        ?ArtsdataID schema:address ?address .
+        ?ArtsdataID schema:location ?location .
+        OPTIONAL { ?location schema:name ?locationName . }
+    }
+    # Address directly on the organization, or on its location
+    OPTIONAL {
+        ?ArtsdataID schema:address|schema:location/schema:address ?address .
         OPTIONAL { ?address schema:streetAddress ?streetAddress . }
         OPTIONAL { ?address schema:addressLocality ?addressLocality . }
         OPTIONAL { ?address schema:addressRegion ?addressRegion . }
