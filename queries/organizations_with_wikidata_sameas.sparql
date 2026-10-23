@@ -7,6 +7,11 @@ SELECT
 ?ArtsdataID
 ?WikidataID
 (SAMPLE(?label) AS ?name)
+(SAMPLE(?streetAddress) AS ?street_address)
+(SAMPLE(?addressLocality) AS ?address_locality)
+(SAMPLE(?addressRegion) AS ?address_region)
+(SAMPLE(?postalCode) AS ?postal_code)
+(SAMPLE(?addressCountry) AS ?address_country)
 WHERE {
     ?ArtsdataID a ado:Organization ;
         schema:sameAs ?WikidataID .
@@ -29,6 +34,14 @@ WHERE {
         FILTER(LANG(?labelNone) = "")
     }
     BIND(COALESCE(?labelMul, ?labelEn, ?labelFr, ?labelNone) AS ?label)
+    OPTIONAL {
+        ?ArtsdataID schema:address ?address .
+        OPTIONAL { ?address schema:streetAddress ?streetAddress . }
+        OPTIONAL { ?address schema:addressLocality ?addressLocality . }
+        OPTIONAL { ?address schema:addressRegion ?addressRegion . }
+        OPTIONAL { ?address schema:postalCode ?postalCode . }
+        OPTIONAL { ?address schema:addressCountry ?addressCountry . }
+    }
 }
 GROUP BY ?ArtsdataID ?WikidataID
 ORDER BY ?name
