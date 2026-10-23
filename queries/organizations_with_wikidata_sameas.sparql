@@ -1,0 +1,34 @@
+# Artsdata organizations (ado:Organization) linked with schema:sameAs to Wikidata
+PREFIX ado: <http://kg.artsdata.ca/ontology/>
+PREFIX schema: <http://schema.org/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT
+?ArtsdataID
+?WikidataID
+(SAMPLE(?label) AS ?name)
+WHERE {
+    ?ArtsdataID a ado:Organization ;
+        schema:sameAs ?WikidataID .
+    FILTER(STRSTARTS(STR(?ArtsdataID), "http://kg.artsdata.ca/resource/K"))
+    FILTER(STRSTARTS(STR(?WikidataID), "http://www.wikidata.org/entity/"))
+    OPTIONAL {
+        ?ArtsdataID rdfs:label ?labelMul .
+        FILTER(LANG(?labelMul) = "mul")
+    }
+    OPTIONAL {
+        ?ArtsdataID rdfs:label ?labelEn .
+        FILTER(LANG(?labelEn) = "en")
+    }
+    OPTIONAL {
+        ?ArtsdataID rdfs:label ?labelFr .
+        FILTER(LANG(?labelFr) = "fr")
+    }
+    OPTIONAL {
+        ?ArtsdataID rdfs:label ?labelNone .
+        FILTER(LANG(?labelNone) = "")
+    }
+    BIND(COALESCE(?labelMul, ?labelEn, ?labelFr, ?labelNone) AS ?label)
+}
+GROUP BY ?ArtsdataID ?WikidataID
+ORDER BY ?name
