@@ -1,24 +1,30 @@
+PREFIX adr: <http://kg.artsdata.ca/resource/>
 PREFIX schema: <http://schema.org/>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX prov: <http://www.w3.org/ns/prov#>
-select  ?agent (sample(?labels) as ?agent_name) ?activity  ?activity_names  (count(?s) as ?count)   (sample(?s) as ?sample_subject)   (sample(?p) as ?sample_pred)  (sample(?o) as ?sample_object)    
+select  ?agent 
+(sample(?labels) as ?agent_name)
+?activity  ?activity_names 
+(max(?endedAtTime) as ?latest_date)
+(count(?s) as ?count)   
+(sample(?s) as ?sample_subject) 
+(sample(?p) as ?sample_pred)  
+(sample(?o) as ?sample_object)    
 where {
     values ?graphs {
-        <http://kg.artsdata.ca/core> <http://kg.artsdata.ca/core_reconciled> 
+        <http://kg.artsdata.ca/core> # To include manual linking of blank nodes  <http://kg.artsdata.ca/core_reconciled> 
     }
     graph ?graphs {
         << ?s ?p ?o >> prov:wasGeneratedBy ?bn.
         ?bn prov:wasAssociatedWith ?agent .
-        OPTIONAL {
-            ?bn schema:name?/prov:wasInformedBy?/schema:name ?activity_names
+        FILTER NOT EXISTS {
+            ?agent a <http://www.w3.org/ns/prov#SoftwareAgent>
         }
         OPTIONAL {
-            BIND(?bn as ?activity)
-            filter(!isBlank(?bn))
+            ?bn schema:name ?activity_names
         }
         OPTIONAL {
-            ?bn prov:wasInformedBy ?informer_activity
-            BIND(?informer_activity as ?activity)
+            ?bn prov:endedAtTime ?endedAtTime
         }
         OPTIONAL {
             ?agent schema:name ?labels .
