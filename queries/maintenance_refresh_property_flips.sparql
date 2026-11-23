@@ -1,0 +1,7 @@
+PREFIX prov: <http://www.w3.org/ns/prov#>
+SELECT ?s ?p ?o (COUNT(DISTINCT ?gen) AS ?adds) (COUNT(DISTINCT ?inv) AS ?removes) WHERE {
+  GRAPH <http://kg.artsdata.ca/logs> {
+    << ?s ?p ?o >> prov:wasGeneratedBy ?gen .
+    << ?s ?p ?o >> prov:wasInvalidatedBy ?inv .
+  }
+} GROUP BY ?s ?p ?o HAVING (COUNT(DISTINCT ?gen) >= 2 && COUNT(DISTINCT ?inv) >= 2)
