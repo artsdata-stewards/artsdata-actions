@@ -1,0 +1,54 @@
+PREFIX schema: <http://schema.org/>
+PREFIX void: <http://rdfs.org/ns/void#>
+
+# Find core links (?source schema:sameAs ?artsdata_id) where the Artsdata entity and the source URI,
+# as it is now in its own graph, are not the same kind of event:
+#
+#  - "Series linked to a single event": the Artsdata entity is a schema:EventSeries, but the source URI
+#    has a start date, isn't typed schema:EventSeries and has no schema:subEvent. Usually a source that
+#    dropped its past dates, so the series page now describes only its last performance.
+#    The import unlinks these with K1-227 when auto-minting is on.
+#
+#  - "Single event linked to a series": the Artsdata entity is an event that isn't a schema:EventSeries,
+#    but the source URI is typed schema:EventSeries or has a schema:subEvent. Usually an event page that
+#    gained dates and became a series. The import relinks these with K1-223 when auto-minting is on.
+#
+# Only links from URIs still in the graph of their void:inDataset are checked.
+SELECT ?problem ?artsdata_id (SAMPLE(?ad_names) AS ?artsdata_name) (MIN(?ad_starts) AS ?artsdata_start)
+       ?source (MIN(?source_starts) AS ?source_start) (COUNT(DISTINCT ?subEvent) AS ?source_sub_events) ?graph
+WHERE {
+    {
+        BIND ("Series linked to a single event" AS ?problem)
+        GRAPH <http://kg.artsdata.ca/core> {
+            ?source void:inDataset ?graph ;
+                schema:sameAs ?artsdata_id .
+            ?artsdata_id a schema:EventSeries .
+        }
+        FILTER (STRSTARTS(STR(?artsdata_id), "http://kg.artsdata.ca/resource/K"))
+        GRAPH ?graph { ?source schema:startDate ?source_starts }
+        FILTER NOT EXISTS { GRAPH ?graph { ?source a schema:EventSeries } }
+        FILTER NOT EXISTS { GRAPH ?graph { ?source schema:subEvent ?anySubEvent } }
+    }
+    UNION
+    {
+        BIND ("Single event linked to a series" AS ?problem)
+        GRAPH <http://kg.artsdata.ca/core> {
+            ?source void:inDataset ?graph ;
+                schema:sameAs ?artsdata_id .
+            ?artsdata_id schema:startDate ?ad_start_check .
+        }
+        FILTER (STRSTARTS(STR(?artsdata_id), "http://kg.artsdata.ca/resource/K"))
+        FILTER NOT EXISTS { GRAPH <http://kg.artsdata.ca/core> { ?artsdata_id a schema:EventSeries } }
+        FILTER EXISTS {
+            { GRAPH ?graph { ?source a schema:EventSeries } }
+            UNION
+            { GRAPH ?graph { ?source schema:subEvent ?anySubEvent } }
+        }
+        OPTIONAL { GRAPH ?graph { ?source schema:startDate ?source_starts } }
+    }
+    OPTIONAL { GRAPH ?graph { ?source schema:subEvent ?subEvent } }
+    OPTIONAL { GRAPH <http://kg.artsdata.ca/core> { ?artsdata_id schema:name ?ad_names } }
+    OPTIONAL { GRAPH <http://kg.artsdata.ca/core> { ?artsdata_id schema:startDate ?ad_starts } }
+}
+GROUP BY ?problem ?artsdata_id ?source ?graph
+ORDER BY ?problem ?artsdata_id
