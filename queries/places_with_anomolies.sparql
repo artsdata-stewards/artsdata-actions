@@ -46,7 +46,7 @@ where {
             ?place <http://dbpedia.org/ontology/timeZone> ?timeZone .
         }
     }
-    filter(!bound(?address) || !bound(?postalCode) || !bound(?addressLocality) || !bound(?addressRegion) || !bound(?addressCountry) || !bound(?streetAddress))
+   # filter(!bound(?address) || !bound(?postalCode) || !bound(?addressLocality) || !bound(?addressRegion) || !bound(?addressCountry) || !bound(?streetAddress))
 } group by ?place  
 having (
     (count(?address) > 1 || count(?address) = 0)  ||
